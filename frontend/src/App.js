@@ -1,12 +1,11 @@
-import React from 'react';
-import './App.css';
-import  Flow from './components/screens/Flow'
+import React, { Component } from 'react'
+import Flow from './components/screens/Flow'
 
-function App() {
-  return (
-    <Flow/>
-    
-  );
+export default class App extends Component {
+
+  render() {
+    return (
+      <Flow />
+    )
+  }
 }
-
-export default App;

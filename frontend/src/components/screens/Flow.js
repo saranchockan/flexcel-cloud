@@ -1,25 +1,15 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import FlowNavigation from './../parts/Flow/FlowNavigation'
 
-/**
- * FlowScreen Documentation
- * @param {*} props 
- */
 
-function Flow(props) {
+ // Flow screen setups the FlowNavigation and SpeechDoc. (Use Bootrap Grid)
+ // Should have recieved flow data from AWS and propogate it to FlowNavigation.js through props
 
-    /**
-     * Props should have access to flow data (pulled from AWS -> selected by user -> Flow UI)
-     * i.e. template, flow information should be loaded into the Handsontable API
-     * 
-     * Pass the flow data to FlowNavigation
-     */
+export default class Flow extends Component {
 
-    return (
-    
-        < FlowNavigation/>
-    )
+    render() {
+        return (
+            <FlowNavigation />
+        )
+    }
 }
-
-export default Flow
-

@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-function Login() {
-    return (
-        <div>
-            
-        </div>
-    )
+export default class Login extends Component {
+    static propTypes = {
+        prop: PropTypes
+    }
+
+    render() {
+        return (
+            <div>
+                
+            </div>
+        )
+    }
 }
-
-export default Login

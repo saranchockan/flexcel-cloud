@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-function Dashboard() {
-    return (
-        <div>
-            
-        </div>
-    )
+export default class Dashboard extends Component {
+    static propTypes = {
+        prop: PropTypes
+    }
+
+    render() {
+        return (
+            <div>
+                
+            </div>
+        )
+    }
 }
-
-export default Dashboard
