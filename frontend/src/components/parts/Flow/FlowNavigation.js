@@ -15,10 +15,11 @@ export default class FlowNavigation extends Component {
         super(props)
         this.state = {
             flowTabNames: ['AC', 'Framework', 'NC'],
-            currentFlowTabIndex: 0,
+            currentFlowTabIndex: 1,
             flowSettings: {
                 colHeaders: true,
-                licenseKey: 'non-commercial-and-evaluation'
+                licenseKey: 'non-commercial-and-evaluation',
+                stretchH: 'all'
             }
         }
     }
