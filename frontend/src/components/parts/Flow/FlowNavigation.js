@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Handsontable from 'handsontable';
-import  FlexcelFlow from '@handsontable/react';
+import FlexcelFlow from '@handsontable/react';
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
@@ -15,13 +15,11 @@ export default class FlowNavigation extends Component {
         super(props)
         this.state = {
             flowTabNames: ['AC', 'Framework', 'NC'],
-            flowData: [
-                ["", "Ford", "Volvo", "Toyota", "Honda"],
-                ["2016", 10, 11, 12, 13],
-                ["2017", 20, 11, 14, 13],
-                ["2018", 30, 15, 12, 13]
-            ],
             currentFlowTabIndex: 0,
+            flowSettings: {
+                colHeaders: true,
+                licenseKey: 'non-commercial-and-evaluation'
+            }
         }
     }
 
@@ -32,8 +30,8 @@ export default class FlowNavigation extends Component {
                 {
                     this.state.flowTabNames.map((value, index) => {
                         return (
-                            <Tab eventKey={('tab-' + index)} title={this.state.flowTabNames[index]}>
-                                <FlexcelFlow data={this.state.flowData} rowHeaders={true}/>
+                            <Tab eventKey={('tab-' + index)} title={value}>
+                                <FlexcelFlow settings = {this.state.flowSettings} />
                             </Tab>
                         )
                     })
