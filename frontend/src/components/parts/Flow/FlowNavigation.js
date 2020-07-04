@@ -3,6 +3,7 @@ import $ from 'jquery';
 import './../../../styling/Flow.css';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
 
 // FlowNavigation contains the navigation tab and the hansontable flows
@@ -14,6 +15,7 @@ export default class FlowNavigation extends Component {
 
     constructor(props) {
         super(props)
+        // Initialize flow settings
         this.currentFlowTabIndex = 0;
         this.state = {
             flowTabNames: ['AC', 'Framework', 'NC'],
@@ -35,7 +37,8 @@ export default class FlowNavigation extends Component {
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
             handsontableFlows: [React.createRef(), React.createRef(), React.createRef()]
         }
-        
+
+        // Configure hotkeys
     }
 
     // Adding onLoad() and onResize() listeners
@@ -60,6 +63,7 @@ export default class FlowNavigation extends Component {
     }
 
     // Calculates flow height and width based off flow container and nav tab height 
+    // and changes the handsontable flow settings state 
     setFlowHeightAndWidth = () => {
         // Error checking needed? Will .nav only return one component?
         var flowNavigationContainerHeight = $('#flowNavigationContainer').height()
@@ -71,7 +75,7 @@ export default class FlowNavigation extends Component {
                 ...this.state.flowSettings,
                 height: newFlowHeight,
                 width: newFlowWidth,
-                // colWidths? Need an offset
+                // colWidths? Need an offset to calculate colWidth
             }
         })
     }
