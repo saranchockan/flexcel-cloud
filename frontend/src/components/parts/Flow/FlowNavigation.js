@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './../../../styling/Flow.css';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Handsontable from 'handsontable';
@@ -20,7 +21,8 @@ export default class FlowNavigation extends Component {
             flowSettings: {
                 colHeaders: true,
                 licenseKey: 'non-commercial-and-evaluation',
-                stretchH: 'all'
+                stretchH: 'all', 
+                //preventOverflow: 'horizontal',
             },
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
             handsontableFlows: [React.createRef(), React.createRef(), React.createRef()]
@@ -63,7 +65,9 @@ export default class FlowNavigation extends Component {
                     this.state.flowTabNames.map((value, index) => {
                         return (
                             <Tab eventKey={('tab-' + index)} title={value}>
-                                <FlexcelFlow ref={this.state.handsontableFlows[index]} settings={this.state.flowSettings} />
+                                <div id = 'flowContainer'>
+                                    <FlexcelFlow ref={this.state.handsontableFlows[index]} settings={this.state.flowSettings} />
+                                </div>
                             </Tab>
                         )
                     })

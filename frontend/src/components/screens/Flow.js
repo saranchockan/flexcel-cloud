@@ -10,7 +10,7 @@ export default class Flow extends Component {
 
     render() {
         return (
-            <div id = 'flowContainer'>
+            <div id = 'flowsContainer'>
                 <div id = 'flowNavigationContainer'>
                     <FlowNavigation/>
                 </div>

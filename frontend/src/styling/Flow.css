@@ -1,0 +1,21 @@
+/* Flow CSS styling */
+
+#flowsContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+}
+
+#flowNavigationContainer{
+    background-color: yellow;
+    overflow: auto;
+    height: 100%;
+    width: 65%;
+}
+
+#flowContainer{
+    background-color: red;
+}
+
