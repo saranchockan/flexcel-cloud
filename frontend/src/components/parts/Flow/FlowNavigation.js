@@ -3,7 +3,6 @@ import $ from 'jquery';
 import './../../../styling/Flow.css';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
 
 // FlowNavigation contains the navigation tab and the hansontable flows
@@ -28,6 +27,10 @@ export default class FlowNavigation extends Component {
                 colWidths: 200,
                 minCols: 10,
                 minRows: 40,
+                fillHandle: {
+                    autoInsertRow: true
+                },
+                minSpareRows: true,
                 licenseKey: 'non-commercial-and-evaluation',
             },
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
@@ -39,7 +42,7 @@ export default class FlowNavigation extends Component {
         console.log('LOADED')
         // ADD Loading Modal in here - so that Flexcel can setup height and data properly... (5 Seconds)
         this.setCurrentFlowHeightAndWidth()
-        if(this.state.flowHeight != 500) this.updateAllHandsontableFlowHeightAndWidth()
+        if (this.state.flowHeight != 500) this.updateAllHandsontableFlowHeightAndWidth()
     }
     // Function executed when windows is resized
     handleResize = () => {
