@@ -10,12 +10,6 @@
 
 #flowNavigationContainer{
     background-color: yellow;
-    overflow: auto;
     height: 100%;
     width: 65%;
 }
-
-#flowContainer{
-    background-color: red;
-}
-
