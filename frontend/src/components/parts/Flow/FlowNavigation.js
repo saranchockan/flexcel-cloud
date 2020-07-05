@@ -11,7 +11,6 @@ import FlexcelFlow from '@handsontable/react';
 
 // Flow data, tab data should be part of state - depends on how tab switching works
 
-
 export default class FlowNavigation extends Component {
 
     constructor(props) {
@@ -23,7 +22,6 @@ export default class FlowNavigation extends Component {
             flowHeight: 500,
             flowWidth: 500,
             flowSettings: {
-                colHeaders: true,
                 height: 500,
                 width: 500,
                 colWidths: 200,
@@ -35,13 +33,10 @@ export default class FlowNavigation extends Component {
                 minSpareRows: true,
                 licenseKey: 'non-commercial-and-evaluation',
             },
+            flowsData: [[[]], [[]], [[]]],
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
             handsontableFlows: [React.createRef(), React.createRef(), React.createRef()]
         }
-
-        // Configure mousetrap
-        this.mousetrap = require('mousetrap')
-
     }
 
     // Function executed when app is loaded
@@ -74,9 +69,25 @@ export default class FlowNavigation extends Component {
         })
     }
 
-
+    // Adds a flow tab next to current flow tab index
     addFlowTab = () => {
         console.log('Tab Added!')
+
+        var newFlowTabNames = this.state.flowTabNames
+        newFlowTabNames.splice(this.currentFlowTabIndex + 1, 0, 'New Tab')
+
+        var newHandsontableFlows = this.state.handsontableFlows
+        newHandsontableFlows.splice(this.currentFlowTabIndex + 1, 0, React.createRef())
+
+        var newFlowsData = this.state.flowsData
+        newFlowsData.splice(this.currentFlowTabIndex + 1, 0, [[]])
+
+        this.setState({
+            flowTabNames: newFlowTabNames,
+            flowsData: newFlowsData,
+            handsontableFlows: newHandsontableFlows,
+        })
+
     }
 
     // Function executes everytime a tab is selected.
@@ -86,12 +97,6 @@ export default class FlowNavigation extends Component {
         // Calculates current active tab index
         var tabIndex = parseInt(key.charAt(key.length - 1))
         this.currentFlowTabIndex = tabIndex
-
-        // This is how you insert a flow 
-        // this.setState({
-        //     flowTabNames:[...this.state.flowTabNames, 'Kritk'],
-        //     handsontableFlows: [...this.state.handsontableFlows, React.createRef()]
-        // })
         this.renderCurrentHandsontableFlow()
     }
 
@@ -109,18 +114,22 @@ export default class FlowNavigation extends Component {
         // Adding onLoad() and onResize() listeners
         window.addEventListener('load', this.handleLoad);
         window.addEventListener('resize', this.handleResize);
-        // Adding hotkey for adding tab
-        this.mousetrap.bind('mod+p', (e) => {
-            this.addFlowTab()
-            // Prevents default action from occuring
-            return false
+        
+        // Hotkey configuration...
+        document.addEventListener('keydown', (event) => {
+            // Adding hotkey for adding tab
+            if((event.ctrlKey || event.metaKey) && event.keyCode == 'P'.charCodeAt(0)){
+                if(!event.repeat){
+                    this.addFlowTab()
+                }
+                event.preventDefault()
+            }
         })
     }
     componentWillUnmount() {
         window.removeEventListener('load', this.handleLoad);
         window.removeEventListener('resize', this.handleResize);
-
-        this.mousetrap.unbind('mod+p')
+        document.removeEventListener('keydown')
     }
 
     render() {
@@ -132,7 +141,7 @@ export default class FlowNavigation extends Component {
                         return (
                             <Tab eventKey={('tab-' + index)} title={value}>
                                 <div id='flowContainer'>
-                                    <FlexcelFlow ref={this.state.handsontableFlows[index]} settings={this.state.flowSettings} />
+                                    <FlexcelFlow ref={this.state.handsontableFlows[index]} data={this.state.flowsData[index]} settings={this.state.flowSettings} />
                                 </div>
                             </Tab>
                         )
