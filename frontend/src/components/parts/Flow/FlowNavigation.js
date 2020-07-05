@@ -16,8 +16,8 @@ export default class FlowNavigation extends Component {
     constructor(props) {
         super(props)
         // Initialize flow settings
-        this.currentFlowTabIndex = 0;
         this.state = {
+            currentFlowTabIndex: 0,
             flowTabNames: ['AC', 'Framework', 'NC'],
             flowHeight: 500,
             flowWidth: 500,
@@ -34,9 +34,20 @@ export default class FlowNavigation extends Component {
                 licenseKey: 'non-commercial-and-evaluation',
             },
             flowsData: [[[]], [[]], [[]]],
+            // Logic needs to be implemented
+            selectedCells: [],
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
             handsontableFlows: [React.createRef(), React.createRef(), React.createRef()]
         }
+
+        // Hotkey configuration
+        const HOTKEYS = {
+            73: 'deleteTab',
+            75: 'addTab',
+            79: 'prevTab',
+            80: 'nextTab',
+        }
+
     }
 
     // Function executed when app is loaded
@@ -69,25 +80,67 @@ export default class FlowNavigation extends Component {
         })
     }
 
+    // Sets the next flow to active
+    nextTab = () => {
+        console.log('Next Tab')
+        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) == this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
+        this.setState({
+            currentFlowTabIndex: newCurrentFlowTabIndex
+        })
+    }
+    // Sets the previous tab to active
+    prevTab = () => {
+        console.log('Prev Tab')
+        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex == 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
+        this.setState({
+            currentFlowTabIndex: newCurrentFlowTabIndex
+        })
+    }
+
     // Adds a flow tab next to current flow tab index
-    addFlowTab = () => {
+    addTab = () => {
         console.log('Tab Added!')
 
         var newFlowTabNames = this.state.flowTabNames
-        newFlowTabNames.splice(this.currentFlowTabIndex + 1, 0, 'New Tab')
+        newFlowTabNames.splice(this.state.currentFlowTabIndex + 1, 0, 'New Tab')
 
         var newHandsontableFlows = this.state.handsontableFlows
-        newHandsontableFlows.splice(this.currentFlowTabIndex + 1, 0, React.createRef())
+        newHandsontableFlows.splice(this.state.currentFlowTabIndex + 1, 0, React.createRef())
 
         var newFlowsData = this.state.flowsData
-        newFlowsData.splice(this.currentFlowTabIndex + 1, 0, [[]])
+        newFlowsData.splice(this.state.currentFlowTabIndex + 1, 0, [[]])
 
         this.setState({
             flowTabNames: newFlowTabNames,
             flowsData: newFlowsData,
             handsontableFlows: newHandsontableFlows,
+        }, () => {
+            this.nextTab()
         })
 
+    }
+
+    // Deletes the current active flow tab
+    deleteTab = () => {
+        if(this.state.flowTabNames.length > 0){
+            var newFlowTabNames = this.state.flowTabNames
+            newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
+    
+            var newHandsontableFlows = this.state.handsontableFlows
+            newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
+    
+            var newFlowsData = this.state.flowsData
+            newFlowsData.splice(this.state.currentFlowTabIndex, 1)
+    
+            this.setState({
+                flowTabNames: newFlowTabNames,
+                flowsData: newFlowsData,
+                handsontableFlows: newHandsontableFlows,
+            }, () => {
+                this.prevTab()
+            })
+        }
+ 
     }
 
     // Function executes everytime a tab is selected.
@@ -96,7 +149,9 @@ export default class FlowNavigation extends Component {
         console.log('Tab selected!')
         // Calculates current active tab index
         var tabIndex = parseInt(key.charAt(key.length - 1))
-        this.currentFlowTabIndex = tabIndex
+        this.setState({
+            currentFlowTabIndex: tabIndex
+        })
         this.renderCurrentHandsontableFlow()
     }
 
@@ -105,7 +160,7 @@ export default class FlowNavigation extends Component {
     // and then render the handsontable so that it can display properly    
     renderCurrentHandsontableFlow = () => {
         setTimeout(() => {
-            var currentFlowHotInstance = this.state.handsontableFlows[this.currentFlowTabIndex].current.hotInstance
+            var currentFlowHotInstance = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance
             currentFlowHotInstance.render()
         }, 20)
     }
@@ -114,15 +169,40 @@ export default class FlowNavigation extends Component {
         // Adding onLoad() and onResize() listeners
         window.addEventListener('load', this.handleLoad);
         window.addEventListener('resize', this.handleResize);
-        
+
         // Hotkey configuration...
+        // Find a way to condense this code (switch case? Too much repeatitive code)
+
+        // Improved code design
+        // -- Dictionary that maps event.keyCode to methods; simple hash check if key exists
         document.addEventListener('keydown', (event) => {
-            // Adding hotkey for adding tab
-            if((event.ctrlKey || event.metaKey) && event.keyCode == 'P'.charCodeAt(0)){
-                if(!event.repeat){
-                    this.addFlowTab()
+
+            if ((event.ctrlKey || event.metaKey)) {
+                // Adding hotkey for next tab
+                if (event.keyCode == 'P'.charCodeAt(0)) {
+                    if (!event.repeat) {
+                        this.nextTab()
+                        event.preventDefault()
+                    }
+                } else if(event.keyCode == 'O'.charCodeAt(0)){
+                    if(!event.repeat){
+                        this.prevTab()
+                        event.preventDefault()
+                    }
                 }
-                event.preventDefault()
+                // Adding hotkey for adding tab
+                else if (event.keyCode == 'K'.charCodeAt(0)) {
+                    if (!event.repeat) {
+                        this.addTab()
+                        event.preventDefault()
+                    }
+                } else if(event.keyCode == 'I'.charCodeAt(0)){
+                    if(!event.repeat){
+                        this.deleteTab()
+                        event.preventDefault()
+                    }
+                }
+
             }
         })
     }
@@ -135,7 +215,7 @@ export default class FlowNavigation extends Component {
     render() {
         return (
             // Sets up flow navigation tabs
-            <Tabs justify variant='pills' defaultActiveKey={('tab-' + this.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
+            <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
                 {
                     this.state.flowTabNames.map((value, index) => {
                         return (
