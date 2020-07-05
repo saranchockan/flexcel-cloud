@@ -10,7 +10,8 @@ import FlexcelFlow from '@handsontable/react';
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
 
 // Flow data, tab data should be part of state - depends on how tab switching works
-
+        
+        
 export default class FlowNavigation extends Component {
 
     constructor(props) {
@@ -38,17 +39,26 @@ export default class FlowNavigation extends Component {
             handsontableFlows: [React.createRef(), React.createRef(), React.createRef()]
         }
 
-        // Configure hotkeys
+        // Configure mousetrap
+        this.mousetrap = require('mousetrap')
+
     }
 
-    // Adding onLoad() and onResize() listeners
+    
     componentDidMount() {
+        // Adding onLoad() and onResize() listeners
         window.addEventListener('load', this.handleLoad);
         window.addEventListener('resize', this.handleResize);
+
+        this.mousetrap.bind('ctrl+d', () => {
+            console.log('MOUSETRAP')
+        })
     }
     componentWillUnmount() {
-        window.addEventListener('load', this.handleLoad);
+        window.removeEventListener('load', this.handleLoad);
         window.removeEventListener('resize', this.handleResize);
+
+        this.mousetrap.unbind('ctrl+d')
     }
     // Function executed when app is loaded
     handleLoad = () => {
@@ -80,6 +90,11 @@ export default class FlowNavigation extends Component {
         })
     }
 
+
+    addFlowTab = () => {
+        console.log('Tab Added!')
+    }
+
     // Function executes everytime a tab is selected.
     // Renders the current handsontable sheet to adjust settings (colHeader, width, height)
     onTabSelect = (key) => {
@@ -87,6 +102,12 @@ export default class FlowNavigation extends Component {
         // Calculates current active tab index
         var tabIndex = parseInt(key.charAt(key.length - 1))
         this.currentFlowTabIndex = tabIndex
+
+        // This is how you insert a flow 
+        // this.setState({
+        //     flowTabNames:[...this.state.flowTabNames, 'Kritk'],
+        //     handsontableFlows: [...this.state.handsontableFlows, React.createRef()]
+        // })
         this.renderCurrentHandsontableFlow()
     }
 
@@ -103,6 +124,7 @@ export default class FlowNavigation extends Component {
     render() {
         return (
             // Sets up flow navigation tabs
+
             <Tabs justify variant='pills' defaultActiveKey={('tab-' + this.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
                 {
                     this.state.flowTabNames.map((value, index) => {

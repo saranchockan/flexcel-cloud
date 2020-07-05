@@ -10,6 +10,7 @@
     "bootstrap": "^4.5.0",
     "handsontable": "^7.4.2",
     "jquery": "^3.5.1",
+    "mousetrap": "^1.6.5",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
