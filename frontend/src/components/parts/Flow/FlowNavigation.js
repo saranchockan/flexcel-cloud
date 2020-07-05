@@ -39,15 +39,6 @@ export default class FlowNavigation extends Component {
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
             handsontableFlows: [React.createRef(), React.createRef(), React.createRef()]
         }
-
-        // Hotkey configuration
-        const HOTKEYS = {
-            73: 'deleteTab',
-            75: 'addTab',
-            79: 'prevTab',
-            80: 'nextTab',
-        }
-
     }
 
     // Function executed when app is loaded
@@ -122,16 +113,16 @@ export default class FlowNavigation extends Component {
 
     // Deletes the current active flow tab
     deleteTab = () => {
-        if(this.state.flowTabNames.length > 0){
+        if (this.state.flowTabNames.length > 0) {
             var newFlowTabNames = this.state.flowTabNames
             newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
-    
+
             var newHandsontableFlows = this.state.handsontableFlows
             newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
-    
+
             var newFlowsData = this.state.flowsData
             newFlowsData.splice(this.state.currentFlowTabIndex, 1)
-    
+
             this.setState({
                 flowTabNames: newFlowTabNames,
                 flowsData: newFlowsData,
@@ -140,7 +131,7 @@ export default class FlowNavigation extends Component {
                 this.prevTab()
             })
         }
- 
+
     }
 
     // Function executes everytime a tab is selected.
@@ -164,45 +155,34 @@ export default class FlowNavigation extends Component {
             currentFlowHotInstance.render()
         }, 20)
     }
-
+    // Configuring window and document listeners
     componentDidMount() {
         // Adding onLoad() and onResize() listeners
         window.addEventListener('load', this.handleLoad);
         window.addEventListener('resize', this.handleResize);
-
-        // Hotkey configuration...
-        // Find a way to condense this code (switch case? Too much repeatitive code)
-
-        // Improved code design
-        // -- Dictionary that maps event.keyCode to methods; simple hash check if key exists
+        // Hotkey configuration
         document.addEventListener('keydown', (event) => {
-
             if ((event.ctrlKey || event.metaKey)) {
-                // Adding hotkey for next tab
-                if (event.keyCode == 'P'.charCodeAt(0)) {
-                    if (!event.repeat) {
-                        this.nextTab()
-                        event.preventDefault()
-                    }
-                } else if(event.keyCode == 'O'.charCodeAt(0)){
-                    if(!event.repeat){
-                        this.prevTab()
-                        event.preventDefault()
-                    }
-                }
-                // Adding hotkey for adding tab
-                else if (event.keyCode == 'K'.charCodeAt(0)) {
-                    if (!event.repeat) {
-                        this.addTab()
-                        event.preventDefault()
-                    }
-                } else if(event.keyCode == 'I'.charCodeAt(0)){
-                    if(!event.repeat){
-                        this.deleteTab()
-                        event.preventDefault()
+                if(!event.repeat){
+                    switch(event.keyCode){
+                        case 73:
+                            this.deleteTab()
+                            event.preventDefault()
+                            break
+                        case 75:
+                            this.addTab()
+                            event.preventDefault()
+                            break
+                        case 79:
+                            this.prevTab()
+                            event.preventDefault()
+                            break
+                        case 80:
+                            this.nextTab()
+                            event.preventDefault()
+                            break
                     }
                 }
-
             }
         })
     }
