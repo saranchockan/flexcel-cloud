@@ -10,8 +10,8 @@ import FlexcelFlow from '@handsontable/react';
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
 
 // Flow data, tab data should be part of state - depends on how tab switching works
-        
-        
+
+
 export default class FlowNavigation extends Component {
 
     constructor(props) {
@@ -44,22 +44,6 @@ export default class FlowNavigation extends Component {
 
     }
 
-    
-    componentDidMount() {
-        // Adding onLoad() and onResize() listeners
-        window.addEventListener('load', this.handleLoad);
-        window.addEventListener('resize', this.handleResize);
-
-        this.mousetrap.bind('ctrl+d', () => {
-            console.log('MOUSETRAP')
-        })
-    }
-    componentWillUnmount() {
-        window.removeEventListener('load', this.handleLoad);
-        window.removeEventListener('resize', this.handleResize);
-
-        this.mousetrap.unbind('ctrl+d')
-    }
     // Function executed when app is loaded
     handleLoad = () => {
         console.log('LOADED')
@@ -121,10 +105,27 @@ export default class FlowNavigation extends Component {
         }, 20)
     }
 
+    componentDidMount() {
+        // Adding onLoad() and onResize() listeners
+        window.addEventListener('load', this.handleLoad);
+        window.addEventListener('resize', this.handleResize);
+        // Adding hotkey for adding tab
+        this.mousetrap.bind('mod+p', (e) => {
+            this.addFlowTab()
+            // Prevents default action from occuring
+            return false
+        })
+    }
+    componentWillUnmount() {
+        window.removeEventListener('load', this.handleLoad);
+        window.removeEventListener('resize', this.handleResize);
+
+        this.mousetrap.unbind('mod+p')
+    }
+
     render() {
         return (
             // Sets up flow navigation tabs
-
             <Tabs justify variant='pills' defaultActiveKey={('tab-' + this.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
                 {
                     this.state.flowTabNames.map((value, index) => {

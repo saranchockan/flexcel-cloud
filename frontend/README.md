@@ -1,5 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Frontend Libraries
+1. React
+2. react-bootstrap (Tab Flow Navigation)
+3. Handsontable (Spreadsheet API)
+4. Mousetrap.js (Hotkeys API)
+
 ## Available Scripts
 
 In the project directory, you can run:
