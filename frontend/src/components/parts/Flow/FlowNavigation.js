@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import $ from 'jquery';
 import './../../../styling/Flow.css';
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import Modal from 'react-bootstrap/Modal'
 import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
+import RenameModal from './../modals/RenameModal'
+
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
@@ -82,7 +81,7 @@ export default class FlowNavigation extends Component {
     nextTab = () => {
         console.log('Next Tab')
         // Determining current active index
-        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) == this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
+        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) === this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
         this.setState({
             currentFlowTabIndex: newCurrentFlowTabIndex
         })
@@ -91,7 +90,7 @@ export default class FlowNavigation extends Component {
     prevTab = () => {
         console.log('Prev Tab')
         // Determining current active index
-        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex == 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
+        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
         this.setState({
             currentFlowTabIndex: newCurrentFlowTabIndex
         })
@@ -172,7 +171,7 @@ export default class FlowNavigation extends Component {
         var newFlowTabNames = this.state.flowTabNames
         var tabRenameInput = this.state.renameModalTextInput.current.value
         // Can't have empty tab name
-        if(tabRenameInput != ''){
+        if (tabRenameInput !== '') {
             newFlowTabNames[this.state.currentFlowTabIndex] = this.state.renameModalTextInput.current.value
         }
         this.setState({
@@ -241,30 +240,16 @@ export default class FlowNavigation extends Component {
                         })
                     }
                 </Tabs>
-                <Modal
-                    show={this.state.showTabRenameModal}
-                    onHide={this.closeRenameModal}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Rename Tab</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={e => { 
-                            this.closeRenameModal()
-                            e.preventDefault() 
-                            }}>
-                            <Form.Group>
-                                <Form.Label>Enter Tab Name</Form.Label>
-                                <Form.Control ref = {this.state.renameModalTextInput} placeholder = {this.state.flowTabNames[this.state.currentFlowTabIndex]} />
-                            </Form.Group>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.closeRenameModal}>
-                            Rename
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                {/* Modals */}
+
+                {/* Rename Modal */}
+                <RenameModal
+                    showTabRenameModal={this.state.showTabRenameModal}
+                    closeRenameModal={this.closeRenameModal}
+                    renameModalTextInput={this.state.renameModalTextInput}
+                    placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
+                />
+
             </div>
         )
     }
