@@ -6,6 +6,7 @@ import Tab from 'react-bootstrap/Tab'
 import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
 import RenameModal from './../modals/RenameModal'
+import DeleteTabWarningModal from './../modals/DeleteTabWarningModal'
 
 
 // FlowNavigation contains the navigation tab and the hansontable flows
@@ -44,6 +45,7 @@ export default class FlowNavigation extends Component {
             // Modal configuration
             renameModalTextInput: React.createRef(),
             showTabRenameModal: false,
+            showDeleteTabWarningModal: false,
         }
     }
 
@@ -138,7 +140,8 @@ export default class FlowNavigation extends Component {
                 flowsData: newFlowsData,
                 handsontableFlows: newHandsontableFlows,
             }, () => {
-                this.prevTab()
+                this.closeDeleteTabWarningModal()
+                this.nextTab()
             })
         }
 
@@ -188,6 +191,13 @@ export default class FlowNavigation extends Component {
         })
     }
 
+    // Closes the delete tab warning modal
+    closeDeleteTabWarningModal = () => {
+        this.setState({
+            showDeleteTabWarningModal: false
+        })
+    }
+
     // Configuring window and document listeners
     componentDidMount() {
         // Adding onLoad() and onResize() listeners
@@ -199,7 +209,10 @@ export default class FlowNavigation extends Component {
                 if (!event.repeat) {
                     switch (event.keyCode) {
                         case 73:
-                            this.deleteTab()
+                            // this.deleteTab()
+                            this.setState({
+                                showDeleteTabWarningModal: true
+                            })
                             event.preventDefault()
                             break
                         case 75:
@@ -257,6 +270,12 @@ export default class FlowNavigation extends Component {
                     renameTab={this.renameTab}
                     renameModalTextInput={this.state.renameModalTextInput}
                     placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
+                />
+
+                <DeleteTabWarningModal 
+                    showDeleteTabWarningModal={this.state.showDeleteTabWarningModal}
+                    closeDeleteTabWarningModal={this.closeDeleteTabWarningModal}
+                    deleteTab={this.deleteTab}
                 />
 
             </div>
