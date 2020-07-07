@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import $ from 'jquery';
 import './../../../styling/Flow.css';
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import Modal from 'react-bootstrap/Modal'
 import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
 
@@ -37,7 +40,11 @@ export default class FlowNavigation extends Component {
             // Logic needs to be implemented
             selectedCells: [],
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
-            handsontableFlows: [React.createRef(), React.createRef(), React.createRef()]
+            handsontableFlows: [React.createRef(), React.createRef(), React.createRef()],
+
+            // Modal configuration
+            renameModalTextInput: React.createRef(),
+            showTabRenameModal: false,
         }
     }
 
@@ -159,6 +166,21 @@ export default class FlowNavigation extends Component {
             currentFlowHotInstance.render()
         }, 20)
     }
+
+    // Modal configuration
+    closeRenameModal = () => {
+        var newFlowTabNames = this.state.flowTabNames
+        var tabRenameInput = this.state.renameModalTextInput.current.value
+        // Can't have empty tab name
+        if(tabRenameInput != ''){
+            newFlowTabNames[this.state.currentFlowTabIndex] = this.state.renameModalTextInput.current.value
+        }
+        this.setState({
+            flowTabNames: newFlowTabNames,
+            showTabRenameModal: false
+        })
+    }
+
     // Configuring window and document listeners
     componentDidMount() {
         // Adding onLoad() and onResize() listeners
@@ -167,8 +189,8 @@ export default class FlowNavigation extends Component {
         // Hotkey configuration
         document.addEventListener('keydown', (event) => {
             if ((event.ctrlKey || event.metaKey)) {
-                if(!event.repeat){
-                    switch(event.keyCode){
+                if (!event.repeat) {
+                    switch (event.keyCode) {
                         case 73:
                             this.deleteTab()
                             event.preventDefault()
@@ -185,6 +207,12 @@ export default class FlowNavigation extends Component {
                             this.nextTab()
                             event.preventDefault()
                             break
+                        case 82:
+                            this.setState({
+                                showTabRenameModal: true
+                            })
+                            event.preventDefault()
+                            break
                     }
                 }
             }
@@ -198,20 +226,46 @@ export default class FlowNavigation extends Component {
 
     render() {
         return (
-            // Sets up flow navigation tabs
-            <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
-                {
-                    this.state.flowTabNames.map((value, index) => {
-                        return (
-                            <Tab eventKey={('tab-' + index)} title={value}>
-                                <div id='flowContainer'>
-                                    <FlexcelFlow ref={this.state.handsontableFlows[index]} data={this.state.flowsData[index]} settings={this.state.flowSettings} />
-                                </div>
-                            </Tab>
-                        )
-                    })
-                }
-            </Tabs>
+            <div>
+                {/* Sets up flow navigation tabs */}
+                <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
+                    {
+                        this.state.flowTabNames.map((value, index) => {
+                            return (
+                                <Tab eventKey={('tab-' + index)} title={value}>
+                                    <div id='flowContainer'>
+                                        <FlexcelFlow ref={this.state.handsontableFlows[index]} data={this.state.flowsData[index]} settings={this.state.flowSettings} />
+                                    </div>
+                                </Tab>
+                            )
+                        })
+                    }
+                </Tabs>
+                <Modal
+                    show={this.state.showTabRenameModal}
+                    onHide={this.closeRenameModal}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Rename Tab</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={e => { 
+                            this.closeRenameModal()
+                            e.preventDefault() 
+                            }}>
+                            <Form.Group>
+                                <Form.Label>Enter Tab Name</Form.Label>
+                                <Form.Control ref = {this.state.renameModalTextInput} placeholder = {this.state.flowTabNames[this.state.currentFlowTabIndex]} />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.closeRenameModal}>
+                            Rename
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
         )
     }
 }
