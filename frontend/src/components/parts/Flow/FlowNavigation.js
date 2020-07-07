@@ -167,7 +167,15 @@ export default class FlowNavigation extends Component {
     }
 
     // Modal configuration
-    closeRenameModal = () => {
+
+    // Closes the tab rename modal
+    closeTabRenameModal = () => {
+        this.setState({
+            showTabRenameModal: false
+        })
+    }
+    // Renames the tab and closes the modal
+    renameTab = () => {
         var newFlowTabNames = this.state.flowTabNames
         var tabRenameInput = this.state.renameModalTextInput.current.value
         // Can't have empty tab name
@@ -245,7 +253,8 @@ export default class FlowNavigation extends Component {
                 {/* Rename Modal */}
                 <RenameModal
                     showTabRenameModal={this.state.showTabRenameModal}
-                    closeRenameModal={this.closeRenameModal}
+                    closeTabRenameModal={this.closeTabRenameModal}
+                    renameTab={this.renameTab}
                     renameModalTextInput={this.state.renameModalTextInput}
                     placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
                 />

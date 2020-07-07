@@ -12,7 +12,7 @@ export default class RenameModal extends Component {
         return (
             <Modal
                 show={this.props.showTabRenameModal}
-                onHide={this.props.closeRenameModal}
+                onHide={this.props.closeTabRenameModal}
                 onEntered={() =>{
                     // Focuses text input area after modal is shown
                     setTimeout(() => {
@@ -27,7 +27,7 @@ export default class RenameModal extends Component {
                     
                     <Form onSubmit={e => {
                         // Prevents document from refershing (default event) on enter
-                        this.props.closeRenameModal()
+                        this.props.renameTab()
                         e.preventDefault()
                     }}>
                         <Form.Group>
@@ -37,7 +37,7 @@ export default class RenameModal extends Component {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={this.props.closeRenameModal}>
+                    <Button variant="secondary" onClick={this.props.renameTab}>
                         Rename
                     </Button>
                 </Modal.Footer>
