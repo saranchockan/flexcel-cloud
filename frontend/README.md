@@ -1,8 +1,7 @@
 ## Frontend Libraries
 1. React
-2. react-bootstrap (Tab Flow Navigation)
+2. react-bootstrap 
 3. Handsontable (Spreadsheet API)
-4. Mousetrap.js (Hotkeys API)
 
 ## Available Scripts
 
