@@ -5,6 +5,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
+// Importing Modals
 import RenameModal from './../modals/RenameModal'
 import DeleteTabWarningModal from './../modals/DeleteTabWarningModal'
 
@@ -83,7 +84,7 @@ export default class FlowNavigation extends Component {
     nextTab = () => {
         console.log('Next Tab')
         // Determining current active index
-        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) === this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
+        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) >= this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
         this.setState({
             currentFlowTabIndex: newCurrentFlowTabIndex
         })
@@ -123,28 +124,24 @@ export default class FlowNavigation extends Component {
 
     // Deletes the current active flow tab
     deleteTab = () => {
-        // Can't delete all tabs, one tab must be there
-        if (this.state.flowTabNames.length > 1) {
-            // Deleting tab name
-            var newFlowTabNames = this.state.flowTabNames
-            newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
-            // Deleting handsontable reference
-            var newHandsontableFlows = this.state.handsontableFlows
-            newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
-            // Deleting flow data
-            var newFlowsData = this.state.flowsData
-            newFlowsData.splice(this.state.currentFlowTabIndex, 1)
-            // Updating state, rendering UI
-            this.setState({
-                flowTabNames: newFlowTabNames,
-                flowsData: newFlowsData,
-                handsontableFlows: newHandsontableFlows,
-            }, () => {
-                this.closeDeleteTabWarningModal()
-                this.nextTab()
-            })
-        }
-
+        // Deleting tab name
+        var newFlowTabNames = this.state.flowTabNames
+        newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
+        // Deleting handsontable reference
+        var newHandsontableFlows = this.state.handsontableFlows
+        newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
+        // Deleting flow data
+        var newFlowsData = this.state.flowsData
+        newFlowsData.splice(this.state.currentFlowTabIndex, 1)
+        // Updating state, rendering UI
+        this.setState({
+            flowTabNames: newFlowTabNames,
+            flowsData: newFlowsData,
+            handsontableFlows: newHandsontableFlows,
+        }, () => {
+            this.closeDeleteTabWarningModal()
+            this.prevTab()
+        })
     }
 
     // Function executes everytime a tab is selected.
@@ -209,10 +206,12 @@ export default class FlowNavigation extends Component {
                 if (!event.repeat) {
                     switch (event.keyCode) {
                         case 73:
-                            // this.deleteTab()
-                            this.setState({
-                                showDeleteTabWarningModal: true
-                            })
+                            // Can't delete all tabs, one tab must be there
+                            if (this.state.flowTabNames.length > 1) {
+                                this.setState({
+                                    showDeleteTabWarningModal: true
+                                })
+                            }
                             event.preventDefault()
                             break
                         case 75:
@@ -271,8 +270,8 @@ export default class FlowNavigation extends Component {
                     renameModalTextInput={this.state.renameModalTextInput}
                     placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
                 />
-
-                <DeleteTabWarningModal 
+                {/* Delete Tab Warning Modal */}
+                <DeleteTabWarningModal
                     showDeleteTabWarningModal={this.state.showDeleteTabWarningModal}
                     closeDeleteTabWarningModal={this.closeDeleteTabWarningModal}
                     deleteTab={this.deleteTab}
