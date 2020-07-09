@@ -11,11 +11,14 @@
     "handsontable": "^7.4.2",
     "jquery": "^3.5.1",
     "mousetrap": "^1.6.5",
+    "popper": "^1.0.1",
+    "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-hotkeys": "^2.0.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-summernote": "^2.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

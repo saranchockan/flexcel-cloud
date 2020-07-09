@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import './../../styling/Flow.css';
 import FlowNavigation from './../parts/Flow/FlowNavigation'
 import SpeechDoc from './../parts/Flow/SpeechDoc'
+import RichTextEditor from './../parts/Flow/RichTextEditor'
 
  // Flow screen setups the FlowNavigation and SpeechDoc. (Use Bootrap Grid)
  // Should have recieved flow data from AWS and propogate it to FlowNavigation.js through props
 
+// Key codes that have hotkeys tied to them in FlowNavigation.js
 var KEY_CODES = {
         73: '',
         75: '',
@@ -38,7 +40,7 @@ export default class Flow extends Component {
                     <FlowNavigation/>
                 </div>
                 <div>
-                    <SpeechDoc />
+                    <RichTextEditor />
                 </div>            
             </div>
         )
