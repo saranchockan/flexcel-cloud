@@ -202,8 +202,8 @@ export default class FlowNavigation extends Component {
         window.addEventListener('resize', this.handleResize);
         // Hotkey configuration
         document.addEventListener('keydown', (event) => {
-            if ((event.ctrlKey || event.metaKey)) {
-                if (!event.repeat) {
+            if(!event.repeat){
+                if ((event.ctrlKey || event.metaKey)) {
                     switch (event.keyCode) {
                         case 73:
                             // Can't delete all tabs, one tab must be there
@@ -233,7 +233,7 @@ export default class FlowNavigation extends Component {
                             event.preventDefault()
                             break
                     }
-                }
+                } 
             }
         })
     }
