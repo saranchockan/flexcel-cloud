@@ -2,7 +2,7 @@
 1. React
 2. react-bootstrap 
 3. Handsontable (Spreadsheet API)
-4. AlloyEditor (Speech Doc API)
+4. Summernote (Speech Doc API)
 
 ## Available Scripts
 
