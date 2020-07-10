@@ -260,6 +260,7 @@ export default class FlowNavigation extends Component {
                         })
                     }
                 </Tabs>
+                
                 {/* Modals */}
 
                 {/* Rename Modal */}

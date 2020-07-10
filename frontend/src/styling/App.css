@@ -1,0 +1,5 @@
+
+/* Prevents scroll on body */
+html, body {
+    overflow: hidden;
+}
