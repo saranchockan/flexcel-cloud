@@ -58,7 +58,7 @@ export default class SpeechDoc extends Component {
 
   // Function executes everytime a tab is selected.
   onTabSelect = (key) => {
-    console.log('SpeechDoc selected!')
+    console.log('Speech Doc selected!')
     // Calculates current active tab index
     var tabIndex = parseInt(key.charAt(key.length - 1))
     this.setState({
@@ -87,30 +87,35 @@ export default class SpeechDoc extends Component {
     })
   }
 
+  // Handles hotkey combinations and fires methods 
+  // associated with the feature 
+  handleHotkeys = (event) => {
+    if(!event.repeat){
+      if ((event.ctrlKey || event.metaKey)) {
+        switch(event.keyCode){
+          // Rename Tab Modal
+          case 76:
+            this.setState({
+              showTabRenameModal: true
+          })
+          event.preventDefault()
+          break
+        }
+      }
+    }
+  }
+
   componentDidMount() {
     window.addEventListener('load', this.handleLoad)
     window.addEventListener('resize', this.handleResize)
-
-    document.addEventListener('keydown', (event) => {
-      if(!event.repeat){
-        if ((event.ctrlKey || event.metaKey)) {
-          switch(event.keyCode){
-            // Rename Tab Modal
-            case 76:
-              this.setState({
-                showTabRenameModal: true
-            })
-            event.preventDefault()
-            break
-          }
-        }
-      }
-    })
+    document.addEventListener('keydown', this.handleHotkeys)
+    
   }
 
   componentWillMount() {
     window.removeEventListener('load', this.handleLoad)
     window.removeEventListener('resize', this.handleResize)
+    document.removeEventListener('keydown', this.handleHotkeys)
   }
 
   render() {

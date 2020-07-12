@@ -195,52 +195,56 @@ export default class FlowNavigation extends Component {
         })
     }
 
+    // Handles hotkey combinations and fires methods 
+    // associated with the feature 
+    handleHotkeys = (event) => {
+        if(!event.repeat){
+            if ((event.ctrlKey || event.metaKey)) {
+                switch (event.keyCode) {
+                    case 73:
+                        // Can't delete all tabs, one tab must be there
+                        if (this.state.flowTabNames.length > 1) {
+                            this.setState({
+                                showDeleteTabWarningModal: true
+                            })
+                        }
+                        event.preventDefault()
+                        break
+                    case 75:
+                        this.addTab()
+                        event.preventDefault()
+                        break
+                    case 79:
+                        this.prevTab()
+                        event.preventDefault()
+                        break
+                    case 80:
+                        this.nextTab()
+                        event.preventDefault()
+                        break
+                    case 82:
+                        this.setState({
+                            showTabRenameModal: true
+                        })
+                        event.preventDefault()
+                        break
+                }
+            } 
+        } 
+    }
+
     // Configuring window and document listeners
     componentDidMount() {
         // Adding onLoad() and onResize() listeners
         window.addEventListener('load', this.handleLoad);
         window.addEventListener('resize', this.handleResize);
         // Hotkey configuration
-        document.addEventListener('keydown', (event) => {
-            if(!event.repeat){
-                if ((event.ctrlKey || event.metaKey)) {
-                    switch (event.keyCode) {
-                        case 73:
-                            // Can't delete all tabs, one tab must be there
-                            if (this.state.flowTabNames.length > 1) {
-                                this.setState({
-                                    showDeleteTabWarningModal: true
-                                })
-                            }
-                            event.preventDefault()
-                            break
-                        case 75:
-                            this.addTab()
-                            event.preventDefault()
-                            break
-                        case 79:
-                            this.prevTab()
-                            event.preventDefault()
-                            break
-                        case 80:
-                            this.nextTab()
-                            event.preventDefault()
-                            break
-                        case 82:
-                            this.setState({
-                                showTabRenameModal: true
-                            })
-                            event.preventDefault()
-                            break
-                    }
-                } 
-            }
-        })
+        document.addEventListener('keydown', this.handleHotkeys)
     }
     componentWillUnmount() {
         window.removeEventListener('load', this.handleLoad);
         window.removeEventListener('resize', this.handleResize);
-        document.removeEventListener('keydown')
+        document.removeEventListener('keydown', this.handleHotkeys)
     }
 
     render() {
