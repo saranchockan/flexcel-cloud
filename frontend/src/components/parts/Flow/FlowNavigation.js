@@ -265,6 +265,7 @@ export default class FlowNavigation extends Component {
 
                 {/* Rename Modal */}
                 <RenameModal
+                    renameEntity = 'Tab'
                     showTabRenameModal={this.state.showTabRenameModal}
                     closeTabRenameModal={this.closeTabRenameModal}
                     renameTab={this.renameTab}

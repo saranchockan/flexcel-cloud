@@ -21,7 +21,7 @@ export default class RenameModal extends Component {
                 }}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Rename Tab</Modal.Title>
+                    <Modal.Title>Rename {this.props.renameEntity}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     
@@ -31,7 +31,7 @@ export default class RenameModal extends Component {
                         e.preventDefault()
                     }}>
                         <Form.Group>
-                            <Form.Label>Enter Tab Name</Form.Label>
+                            <Form.Label>Enter {this.props.renameEntity} Name</Form.Label>
                             <Form.Control ref={this.props.renameModalTextInput} placeholder={this.props.placeHolderTabName} />
                         </Form.Group>
                     </Form>

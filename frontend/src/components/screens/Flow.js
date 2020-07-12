@@ -10,9 +10,11 @@ import SpeechDoc from '../parts/Flow/SpeechDoc'
 var KEY_CODES = {
         73: '',
         75: '',
+        76: '',
         79: '',
         80: '',
         82: '',
+        
 }
 
 export default class Flow extends Component {
