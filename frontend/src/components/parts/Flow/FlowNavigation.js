@@ -19,7 +19,7 @@ export default class FlowNavigation extends Component {
 
     constructor(props) {
         super(props)
-        // Initialize flow settings
+        // Initialize flow settings, modals, feature configurations
         this.state = {
             currentFlowTabIndex: 0,
             flowTabNames: ['AC', 'Framework', 'NC'],
@@ -47,6 +47,9 @@ export default class FlowNavigation extends Component {
             renameModalTextInput: React.createRef(),
             showTabRenameModal: false,
             showDeleteTabWarningModal: false,
+
+            // Selected cells
+            selectedCells: [[0,0],[0,0],[0,0]],
         }
     }
 
@@ -80,22 +83,54 @@ export default class FlowNavigation extends Component {
         })
     }
 
+    // Gets the selected cell in the current handsontable flow
+    // and returns an update state variable for selected cells
+    getCurrentSelectedCell = () => {
+        var currentLastSelectedCell = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.getSelectedLast()
+        var newSelectedCells = this.state.selectedCells
+        // If null, then just return current selected cell state
+        if(currentLastSelectedCell != null){
+            var currentSelectedRow = currentLastSelectedCell[0]
+            var currentSelectedCol = currentLastSelectedCell[1]
+            newSelectedCells[this.state.currentFlowTabIndex] = [currentSelectedRow, currentSelectedCol]
+        }
+        return newSelectedCells
+    }
+
+    // Select last selected cell in current handsontable flow
+    selectLastSelectedCell = () => {
+        var selectedRow = this.state.selectedCells[this.state.currentFlowTabIndex][0]
+        var selectedCol = this.state.selectedCells[this.state.currentFlowTabIndex][1]
+        this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.selectCell(selectedRow, selectedCol)    
+    }
+
     // Sets the next flow to active
     nextTab = () => {
         console.log('Next Tab')
+        // Gets the updated current selecte cell and updates state
+        var newSelectedCells = this.getCurrentSelectedCell()
         // Determining current active index
         var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) >= this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
+        // Update state
         this.setState({
-            currentFlowTabIndex: newCurrentFlowTabIndex
+            currentFlowTabIndex: newCurrentFlowTabIndex,
+            selectedCells: newSelectedCells,
+        }, () => {
+            this.selectLastSelectedCell()
         })
     }
     // Sets the previous tab to active
     prevTab = () => {
         console.log('Prev Tab')
+        // Gets the updated current selecte cell and updates state
+        var newSelectedCells = this.getCurrentSelectedCell()
         // Determining current active index
         var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
         this.setState({
-            currentFlowTabIndex: newCurrentFlowTabIndex
+            currentFlowTabIndex: newCurrentFlowTabIndex,
+            selectedCells: newSelectedCells,
+        }, () => {
+            this.selectLastSelectedCell()
         })
     }
 
@@ -111,11 +146,15 @@ export default class FlowNavigation extends Component {
         // Adding flow data 
         var newFlowsData = this.state.flowsData
         newFlowsData.splice(this.state.currentFlowTabIndex + 1, 0, [[]])
+        // Adding selected cell data
+        var newSelectedCells = this.state.selectedCells
+        newSelectedCells.splice(this.state.currentFlowTabIndex + 1, 0, [0,0])
         // Updating state, rendering UI
         this.setState({
             flowTabNames: newFlowTabNames,
             flowsData: newFlowsData,
             handsontableFlows: newHandsontableFlows,
+            selectedCells: newSelectedCells
         }, () => {
             this.nextTab()
         })
@@ -133,11 +172,15 @@ export default class FlowNavigation extends Component {
         // Deleting flow data
         var newFlowsData = this.state.flowsData
         newFlowsData.splice(this.state.currentFlowTabIndex, 1)
+        // Deleting selected cells data
+        var newSelectedCells = this.state.selectedCells
+        newSelectedCells.splice(this.state.currentFlowTabIndex, 1)
         // Updating state, rendering UI
         this.setState({
             flowTabNames: newFlowTabNames,
             flowsData: newFlowsData,
             handsontableFlows: newHandsontableFlows,
+            selectedCells: newSelectedCells,
         }, () => {
             this.closeDeleteTabWarningModal()
             this.prevTab()
