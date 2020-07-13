@@ -18,7 +18,9 @@
     "react-dom": "^16.13.1",
     "react-hotkeys": "^2.0.0",
     "react-scripts": "3.4.1",
-    "react-summernote": "^2.0.2"
+    "react-summernote": "^2.0.2",
+    "react-timecode": "^1.1.23",
+    "react-timer-wrapper": "^0.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

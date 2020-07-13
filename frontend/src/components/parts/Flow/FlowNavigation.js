@@ -70,8 +70,8 @@ export default class FlowNavigation extends Component {
     setFlowHeightAndWidth = () => {
         // Error checking needed? Will .nav only return one component?
         var flowNavigationContainerHeight = $('#flowNavigationContainer').height()
-        var navTabHeight = $('.nav').height()
-        var newFlowWidth = $('.nav').width()
+        var navTabHeight = $('#flowNavigationContainer .nav').height()
+        var newFlowWidth = $('#flowNavigationContainer .nav').width()
         var newFlowHeight = flowNavigationContainerHeight - navTabHeight
         this.setState({
             flowSettings: {
@@ -266,6 +266,8 @@ export default class FlowNavigation extends Component {
                         event.preventDefault()
                         break
                     case 82:
+                        // Deselects currently selected cell
+                        this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.deselectCell()
                         this.setState({
                             showTabRenameModal: true
                         })

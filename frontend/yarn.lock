@@ -3010,6 +3010,11 @@ clean-css@^4.2.3:
   dependencies:
     source-map "~0.6.0"
 
+clean-react-props@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/clean-react-props/-/clean-react-props-0.4.0.tgz#68642be5538a5fece380fed704a560de2db67954"
+  integrity sha512-8KKm9sC/cUax4SBWwSY5a3W44aJKOUQg39Bo3fRErp3/mF8D1kMN9xc1lvQGmvkK/AmpH2Xh/UYVZOJMcxoy9w==
+
 clean-stack@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
@@ -9048,6 +9053,22 @@ react-summernote@^2.0.2:
     codemirror "^5.26.0"
     prop-types "^15.5.10"
     summernote "^0.8.15"
+
+react-timecode@^1.1.23:
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/react-timecode/-/react-timecode-1.1.23.tgz#2b23cdfc4f8c3fc033a5527294be1f622b4129c4"
+  integrity sha512-D0XZ1Povyc5uYKTIJ5h1r4/QQzo7C6+5Xf3VIWz1SqQzLabkOq1DedhRjykLtk1xXyVqExkiV9sfnu0FQCjSNA==
+  dependencies:
+    clean-react-props "^0.4.0"
+    prop-types "^15.7.2"
+
+react-timer-wrapper@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-timer-wrapper/-/react-timer-wrapper-0.4.0.tgz#9595c826ea16a8c43a0a28f40c9f98d6d3b6ebc7"
+  integrity sha512-AymIvYe6MQKs8p3AgaULxAH40khKdOoOMfg/GaDCmMAJSgCaXheKRQ5PDE4dKyB+p3g2fzmLAYtZR215rZeysg==
+  dependencies:
+    clean-react-props "^0.4.0"
+    prop-types "^15.5.10"
 
 react-transition-group@^4.0.0:
   version "4.4.1"
