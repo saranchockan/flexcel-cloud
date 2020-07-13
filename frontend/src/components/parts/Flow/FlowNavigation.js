@@ -49,7 +49,7 @@ export default class FlowNavigation extends Component {
             showDeleteTabWarningModal: false,
 
             // Selected cells
-            selectedCells: [[0,0],[0,0],[0,0]],
+            selectedCells: [[1,0],[1,0],[1,0]],
         }
     }
 
@@ -86,13 +86,15 @@ export default class FlowNavigation extends Component {
     // Gets the selected cell in the current handsontable flow
     // and returns an update state variable for selected cells
     getCurrentSelectedCell = () => {
-        var currentLastSelectedCell = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.getSelectedLast()
         var newSelectedCells = this.state.selectedCells
-        // If null, then just return current selected cell state
-        if(currentLastSelectedCell != null){
-            var currentSelectedRow = currentLastSelectedCell[0]
-            var currentSelectedCol = currentLastSelectedCell[1]
-            newSelectedCells[this.state.currentFlowTabIndex] = [currentSelectedRow, currentSelectedCol]
+        if(this.currentTabExists()){
+            var currentLastSelectedCell = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.getSelectedLast()
+            // If null, then just return current selected cell state
+            if(currentLastSelectedCell != null){
+                var currentSelectedRow = currentLastSelectedCell[0]
+                var currentSelectedCol = currentLastSelectedCell[1]
+                newSelectedCells[this.state.currentFlowTabIndex] = [currentSelectedRow, currentSelectedCol]
+            }
         }
         return newSelectedCells
     }
@@ -123,6 +125,7 @@ export default class FlowNavigation extends Component {
     prevTab = () => {
         console.log('Prev Tab')
         // Gets the updated current selecte cell and updates state
+        
         var newSelectedCells = this.getCurrentSelectedCell()
         // Determining current active index
         var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
@@ -148,7 +151,7 @@ export default class FlowNavigation extends Component {
         newFlowsData.splice(this.state.currentFlowTabIndex + 1, 0, [[]])
         // Adding selected cell data
         var newSelectedCells = this.state.selectedCells
-        newSelectedCells.splice(this.state.currentFlowTabIndex + 1, 0, [0,0])
+        newSelectedCells.splice(this.state.currentFlowTabIndex + 1, 0, [1,0])
         // Updating state, rendering UI
         this.setState({
             flowTabNames: newFlowTabNames,
@@ -187,6 +190,13 @@ export default class FlowNavigation extends Component {
         })
     }
 
+    // Checks if current flow tab index exists; Important
+    // to check if tab has been deleted
+    currentTabExists = () => {
+        if(this.state.currentFlowTabIndex >= this.state.flowTabNames.length)
+            return false
+        return true
+    }
     // Function executes everytime a tab is selected.
     // Renders the current handsontable sheet to adjust settings (colHeader, width, height)
     onTabSelect = (key) => {
