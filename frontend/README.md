@@ -3,6 +3,7 @@
 2. react-bootstrap 
 3. Handsontable (Spreadsheet API)
 4. Summernote (Speech Doc API)
+5. react-countdown (Timer API) https://github.com/ndresx/react-countdown#motivation
 
 ## Available Scripts
 

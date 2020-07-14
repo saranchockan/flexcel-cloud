@@ -12,14 +12,18 @@
     "draft-js-import-html": "^1.4.1",
     "handsontable": "^7.4.2",
     "jquery": "^3.5.1",
+    "moment": "^2.27.0",
+    "moment-duration-format": "^2.3.2",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-countdown": "^2.2.1",
     "react-dom": "^16.13.1",
     "react-hotkeys": "^2.0.0",
     "react-scripts": "3.4.1",
     "react-summernote": "^2.0.2",
     "react-timecode": "^1.1.23",
+    "react-timer-machine": "^1.0.2",
     "react-timer-wrapper": "^0.4.0"
   },
   "scripts": {

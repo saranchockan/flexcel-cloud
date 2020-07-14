@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import Timer from 'react-timer-wrapper'
-import Timecode from 'react-timecode'
+import Timer from './Timer'
+import './../../../styling/Timer.css'
+
+// This component manages the tab navigation 
+// of the Timer(s)
 
 export default class TimerNavigation extends Component {
     constructor(props) {
@@ -13,21 +16,8 @@ export default class TimerNavigation extends Component {
         }
     }
 
-    onTimerUpdate = (time, duration) => {
-        this.setState({
-            time,
-            duration
-        })
-    }
-
     render() {
-        const {
-            time,
-            duration,
-        } = this.state;
-
         return (
-
             <div>
                 <Tabs justify variant='pills'>
                     {
@@ -35,8 +25,7 @@ export default class TimerNavigation extends Component {
                             return (
                                 <Tab eventKey={('tab-' + index)} title={value}>
                                     <div>
-                                        <Timer active duration={45 * 60 * 1000} onTimeUpdate={this.onTimerUpdate} />
-                                        <Timecode time={duration - time} />
+                                        <Timer/>
                                     </div>
                                 </Tab>
                             )
