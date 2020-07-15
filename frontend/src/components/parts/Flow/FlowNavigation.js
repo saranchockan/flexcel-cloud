@@ -36,6 +36,17 @@ export default class FlowNavigation extends Component {
                 },
                 minSpareRows: true,
                 licenseKey: 'non-commercial-and-evaluation',
+                // Autocomplete configuration
+                afterChange: (changes) => {
+                    if(changes !== null){
+                        changes.forEach(([row, prop, oldValue, newValue]) => {
+                            if(newValue in this.state.autocompleteDict){
+                                this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.setDataAtCell(row, prop, this.state.autocompleteDict[newValue])
+                            }
+                        });
+                    }
+
+                  }
             },
             flowsData: [[[]], [[]], [[]]],
             // Logic needs to be implemented
@@ -49,8 +60,15 @@ export default class FlowNavigation extends Component {
             showDeleteTabWarningModal: false,
 
             // Selected cells
-            selectedCells: [[1,0],[1,0],[1,0]],
+            selectedCells: [[1, 0], [1, 0], [1, 0]],
+
+            // Autocomplete snippets keys and values
+            autocompleteDict: {
+                'fw': 'framework'
+            }
         }
+
+
     }
 
     // Function executed when app is loaded
@@ -87,10 +105,10 @@ export default class FlowNavigation extends Component {
     // and returns an update state variable for selected cells
     getCurrentSelectedCell = () => {
         var newSelectedCells = this.state.selectedCells
-        if(this.currentTabExists()){
+        if (this.currentTabExists()) {
             var currentLastSelectedCell = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.getSelectedLast()
             // If null, then just return current selected cell state
-            if(currentLastSelectedCell != null){
+            if (currentLastSelectedCell != null) {
                 var currentSelectedRow = currentLastSelectedCell[0]
                 var currentSelectedCol = currentLastSelectedCell[1]
                 newSelectedCells[this.state.currentFlowTabIndex] = [currentSelectedRow, currentSelectedCol]
@@ -103,7 +121,7 @@ export default class FlowNavigation extends Component {
     selectLastSelectedCell = () => {
         var selectedRow = this.state.selectedCells[this.state.currentFlowTabIndex][0]
         var selectedCol = this.state.selectedCells[this.state.currentFlowTabIndex][1]
-        this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.selectCell(selectedRow, selectedCol)    
+        this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.selectCell(selectedRow, selectedCol)
     }
 
     // Sets the next flow to active
@@ -125,7 +143,7 @@ export default class FlowNavigation extends Component {
     prevTab = () => {
         console.log('Prev Tab')
         // Gets the updated current selecte cell and updates state
-        
+
         var newSelectedCells = this.getCurrentSelectedCell()
         // Determining current active index
         var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
@@ -151,7 +169,7 @@ export default class FlowNavigation extends Component {
         newFlowsData.splice(this.state.currentFlowTabIndex + 1, 0, [[]])
         // Adding selected cell data
         var newSelectedCells = this.state.selectedCells
-        newSelectedCells.splice(this.state.currentFlowTabIndex + 1, 0, [1,0])
+        newSelectedCells.splice(this.state.currentFlowTabIndex + 1, 0, [1, 0])
         // Updating state, rendering UI
         this.setState({
             flowTabNames: newFlowTabNames,
@@ -193,7 +211,7 @@ export default class FlowNavigation extends Component {
     // Checks if current flow tab index exists; Important
     // to check if tab has been deleted
     currentTabExists = () => {
-        if(this.state.currentFlowTabIndex >= this.state.flowTabNames.length)
+        if (this.state.currentFlowTabIndex >= this.state.flowTabNames.length)
             return false
         return true
     }
@@ -251,7 +269,7 @@ export default class FlowNavigation extends Component {
     // Handles hotkey combinations and fires methods 
     // associated with the feature 
     handleHotkeys = (event) => {
-        if(!event.repeat){
+        if (!event.repeat) {
             if ((event.ctrlKey || event.metaKey)) {
                 switch (event.keyCode) {
                     case 73:
@@ -284,8 +302,8 @@ export default class FlowNavigation extends Component {
                         event.preventDefault()
                         break
                 }
-            } 
-        } 
+            }
+        }
     }
 
     // Configuring window and document listeners
@@ -319,12 +337,12 @@ export default class FlowNavigation extends Component {
                         })
                     }
                 </Tabs>
-                
+
                 {/* Modals */}
 
                 {/* Rename Modal */}
                 <RenameModal
-                    renameEntity = 'Tab'
+                    renameEntity='Tab'
                     showTabRenameModal={this.state.showTabRenameModal}
                     closeTabRenameModal={this.closeTabRenameModal}
                     renameTab={this.renameTab}

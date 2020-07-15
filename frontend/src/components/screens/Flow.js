@@ -14,7 +14,6 @@ var KEY_CODES = {
     79: '',
     80: '',
     82: '',
-
 }
 
 export default class Flow extends Component {
