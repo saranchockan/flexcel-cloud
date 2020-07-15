@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './../../styling/Flow.css';
 import FlowNavigation from './../parts/Flow/FlowNavigation'
-import TimerNavigation from './../parts/Timer/TimerNavigation'
 import SpeechDoc from '../parts/Flow/SpeechDoc'
 
 // Flow screen setups the FlowNavigation and SpeechDoc. (Use Bootrap Grid)
@@ -44,13 +43,8 @@ export default class Flow extends Component {
                 <div id='flowNavigationContainer'>
                     <FlowNavigation />
                 </div>
-                <div id='speechDocTimerContainer'>
-                    <div id='timer'>
-                        <TimerNavigation />
-                    </div>
-                    <div id='speechDoc'>
+                <div id='speechDocContainer'>
                         <SpeechDoc />
-                    </div>
                 </div>
             </div>
         )

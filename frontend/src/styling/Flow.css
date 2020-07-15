@@ -13,13 +13,10 @@
     width: 65%;
 }
 
-#speechDocTimerContainer{
-    display: flex;
-    flex-direction: column;
+#speechDocContainer{
     height: 100%;
     width: 35%;
 }
 
-/* Timer Styling */
 
 

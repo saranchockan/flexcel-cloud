@@ -50,11 +50,10 @@ export default class SpeechDoc extends Component {
   // Calculates speech doc height and width based off speech doc 
   // container and timer height
   setSpeechDocHeightAndWidth = () => {
-    var timerHeight = $('#timer').height()
-    var speechDocNavTabHeight = $('#speechDocTimerContainer .nav').height()
-    var speechDocContainerHeight = $('#speechDocTimerContainer').height()
-    var speechDocContainerWidth = $('#speechDocTimerContainer').width()
-    $('.note-editable').height((speechDocContainerHeight - speechDocNavTabHeight - timerHeight - 25))
+    var speechDocNavTabHeight = $('#speechDocContainer .nav').height()
+    var speechDocContainerHeight = $('#speechDocContainer').height()
+    var speechDocContainerWidth = $('#speechDocContainer').width()
+    $('.note-editable').height((speechDocContainerHeight - speechDocNavTabHeight - 25))
     $('.note-editor').width(speechDocContainerWidth - 2)
   }
 
