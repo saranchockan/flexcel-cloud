@@ -5,10 +5,8 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
-// Importing Modals
 import RenameModal from './../modals/RenameModal'
 import DeleteTabWarningModal from './../modals/DeleteTabWarningModal'
-
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
@@ -38,26 +36,7 @@ export default class FlowNavigation extends Component {
                 licenseKey: 'non-commercial-and-evaluation',
                 // Autocomplete configuration
                 afterChange: (changes) => {
-                    if (changes !== null) {
-                        changes.forEach(([row, prop, oldValue, newValue]) => {
-                            if (newValue !== undefined) {
-                                var autocompleteUsed = false
-                                var cellLine = newValue.split(' ')
-                                for (var i = 0; i < cellLine.length; i++) {
-                                    var word = cellLine[i]
-                                    if (word in this.state.autocompleteDict) {
-                                        cellLine[i] = this.state.autocompleteDict[word]
-                                        autocompleteUsed = true
-                                    }
-                                }
-                                if (autocompleteUsed) {
-                                    cellLine = cellLine.join(" ")
-                                    this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.setDataAtCell(row, prop, cellLine)
-                                }
-                            }
-                        });
-                    }
-
+                    this.handleAutocomplete(changes)
                 }
             },
             flowsData: [[[]], [[]], [[]]],
@@ -78,7 +57,6 @@ export default class FlowNavigation extends Component {
                 'vm': 'value: morality',
                 'st': 'standard',
                 'mew': 'maximizing expected wellbeing'
-
             }
         }
     }
@@ -93,6 +71,29 @@ export default class FlowNavigation extends Component {
     handleResize = () => {
         console.log('RESIZE')
         this.setFlowHeightAndWidth()
+    }
+
+    // Function that handles autocomplete feature
+    handleAutocomplete = (changes) => {
+        if (changes !== null && changes !== undefined) {
+            changes.forEach(([row, prop, oldValue, newValue]) => {
+                if (newValue !== undefined && newValue !== null) {
+                    var autocompleteUsed = false
+                    var cellLine = newValue.split(' ')
+                    for (var i = 0; i < cellLine.length; i++) {
+                        var word = cellLine[i]
+                        if (word in this.state.autocompleteDict) {
+                            cellLine[i] = this.state.autocompleteDict[word]
+                            autocompleteUsed = true
+                        }
+                    }
+                    if (autocompleteUsed) {
+                        cellLine = cellLine.join(" ")
+                        this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.setDataAtCell(row, prop, cellLine)
+                    }
+                }
+            });
+        }
     }
 
     // Calculates flow height and width based off flow container and nav tab height 
