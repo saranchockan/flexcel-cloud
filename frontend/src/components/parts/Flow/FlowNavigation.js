@@ -38,19 +38,29 @@ export default class FlowNavigation extends Component {
                 licenseKey: 'non-commercial-and-evaluation',
                 // Autocomplete configuration
                 afterChange: (changes) => {
-                    if(changes !== null){
+                    if (changes !== null) {
                         changes.forEach(([row, prop, oldValue, newValue]) => {
-                            if(newValue in this.state.autocompleteDict){
-                                this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.setDataAtCell(row, prop, this.state.autocompleteDict[newValue])
+                            if (newValue !== undefined) {
+                                var autocompleteUsed = false
+                                var cellLine = newValue.split(' ')
+                                for (var i = 0; i < cellLine.length; i++) {
+                                    var word = cellLine[i]
+                                    if (word in this.state.autocompleteDict) {
+                                        cellLine[i] = this.state.autocompleteDict[word]
+                                        autocompleteUsed = true
+                                    }
+                                }
+                                if (autocompleteUsed) {
+                                    cellLine = cellLine.join(" ")
+                                    this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.setDataAtCell(row, prop, cellLine)
+                                }
                             }
                         });
                     }
 
-                  }
+                }
             },
             flowsData: [[[]], [[]], [[]]],
-            // Logic needs to be implemented
-            selectedCells: [],
             // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
             handsontableFlows: [React.createRef(), React.createRef(), React.createRef()],
 
@@ -64,11 +74,13 @@ export default class FlowNavigation extends Component {
 
             // Autocomplete snippets keys and values
             autocompleteDict: {
-                'fw': 'framework'
+                'fw': 'framework',
+                'vm': 'value: morality',
+                'st': 'standard',
+                'mew': 'maximizing expected wellbeing'
+
             }
         }
-
-
     }
 
     // Function executed when app is loaded
