@@ -7,6 +7,7 @@ import Handsontable from 'handsontable';
 import FlexcelFlow from '@handsontable/react';
 import RenameModal from './../modals/RenameModal'
 import DeleteTabWarningModal from './../modals/DeleteTabWarningModal'
+import HotkeyConfigModal from './../modals/HotkeyConfigModal'
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
@@ -21,8 +22,6 @@ export default class FlowNavigation extends Component {
         this.state = {
             currentFlowTabIndex: 0,
             flowTabNames: ['AC', 'Framework', 'NC'],
-            flowHeight: 500,
-            flowWidth: 500,
             flowSettings: {
                 height: 500,
                 width: 500,
@@ -47,6 +46,7 @@ export default class FlowNavigation extends Component {
             renameModalTextInput: React.createRef(),
             showTabRenameModal: false,
             showDeleteTabWarningModal: false,
+            showHotkeyConfigModal: false,
 
             // Selected cells
             selectedCells: [[1, 0], [1, 0], [1, 0]],
@@ -279,12 +279,25 @@ export default class FlowNavigation extends Component {
         })
     }
 
+    // Closes the hotkey config modal
+    closeHotkeyConfigModal = () => {
+        this.setState({
+            showHotkeyConfigModal: false
+        })
+    }
+
     // Handles hotkey combinations and fires methods 
     // associated with the feature 
     handleHotkeys = (event) => {
         if (!event.repeat) {
             if ((event.ctrlKey || event.metaKey)) {
                 switch (event.keyCode) {
+                    case 72:
+                        this.setState({
+                            showHotkeyConfigModal: true
+                        })
+                        event.preventDefault()
+                        break
                     case 73:
                         // Can't delete all tabs, one tab must be there
                         if (this.state.flowTabNames.length > 1) {
@@ -368,6 +381,13 @@ export default class FlowNavigation extends Component {
                     closeDeleteTabWarningModal={this.closeDeleteTabWarningModal}
                     deleteTab={this.deleteTab}
                 />
+                {/* Hotkey configuration modal */}
+                <HotkeyConfigModal
+                    showHotkeyConfigModal={this.state.showHotkeyConfigModal}
+                    closeHotkeyConfigModal={this.closeHotkeyConfigModal}
+                >
+
+                </HotkeyConfigModal>
 
             </div>
         )
