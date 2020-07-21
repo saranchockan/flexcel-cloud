@@ -18,7 +18,6 @@ export default class HotkeyConfigModal extends Component {
                     <Modal.Title>Hotkey Configuration</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Note: macOS users can use CMD instead of Ctrl
                     <Accordion defaultActiveKey="0">
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="0">
@@ -74,13 +73,28 @@ export default class HotkeyConfigModal extends Component {
                         </Card>
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="2">
-                                Tab Rename
+                                Spreadsheet
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey="2">
                                 <Card.Body>Hello! I'm another body</Card.Body>
                             </Accordion.Collapse>
                         </Card>
-
+                        <Card>
+                            <Accordion.Toggle as={Card.Header} eventKey="3">
+                                SpeechDoc
+                            </Accordion.Toggle>
+                            <Accordion.Collapse eventKey="3">
+                                <Card.Body>
+                                    <ListGroup>
+                                        <ListGroup.Item>
+                                            <h3>
+                                                <Badge variant="dark">Ctrl + E</Badge> : Rename Doc
+                                            </h3>
+                                        </ListGroup.Item>
+                                    </ListGroup>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
 
                     </Accordion>
                 </Modal.Body>

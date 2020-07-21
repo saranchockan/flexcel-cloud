@@ -95,7 +95,7 @@ export default class SpeechDoc extends Component {
       if ((event.ctrlKey || event.metaKey)) {
         switch(event.keyCode){
           // Rename Tab Modal
-          case 76:
+          case 69:
             this.setState({
               showTabRenameModal: true
           })
