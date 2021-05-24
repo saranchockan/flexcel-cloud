@@ -29,6 +29,8 @@ The fundamental shift from Flexcel to Flexcel Cloud is in the tech stack. For th
 
 Here are the following objectives
 - Authentication
+  - [ ] Login, Signup endpoint
+  - [ ] Login, Signup frontend screen
 - Dashboard 
 - Migrate features from jQuery to React
   - [x]  Tab Navigation
