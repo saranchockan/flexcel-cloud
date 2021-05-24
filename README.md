@@ -14,12 +14,21 @@ with Electron.
 Flexcel Cloud is the next stage in the development of Flexcel. The overarching objective 
 is to host Flexcel on the cloud, which will allow for anywhere access, more scalability,
 access to cloud computing resources, etc.
+## Vision
+Flexcel is aiming to be a central access to debate resources. It is going to be more than just a flowing software. The Flexcel Dashboard will consist of each debater's upcoming tournaments, 
+debate logs, progress metrics, etc. The Flexcel will have a smoother workflow and more advanced features. 
+## Tech Stack
+1. React 
+2. Amazon Web Services
+## Libraries
+1. React-Bootstrap(https://react-bootstrap.github.io/)
+2. Handsontable React(https://handsontable.com/docs/8.4.0/frameworks-wrapper-for-react-installation.html) 
 
 # Open-Source Objectives
 The fundamental shift from Flexcel to Flexcel Cloud is in the tech stack. For the frontend, it is rewriting jQuery code to React. For the backend, it is hosting the app on the cloud, instead of the  Microsoft and Apple Store.
 
 Here are the following objectives
-- Authentication (Login, SignUp)
+- Authentication
 - Dashboard 
 - Migrate features from jQuery to React
   - [x]  Tab Navigation
@@ -32,4 +41,5 @@ Here are the following objectives
   - [ ]  Loading Flow
 
 # Contributors
+
 
