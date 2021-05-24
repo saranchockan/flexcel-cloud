@@ -6,9 +6,9 @@ at state and national level tournaments.
 Flexcel is a web-app built with JavaScript, jQuery and packaged into a desktop environment
 with Electron. 
 ### Libraries
-1. Bootstrap 
-2. Handsontable
-3. Textbox.io
+1. Bootstrap (https://getbootstrap.com/)
+2. Handsontable (https://handsontable.com/)
+3. Textbox.io (https://www.textbox.io/)
 
 # Flexcel Cloud
 
