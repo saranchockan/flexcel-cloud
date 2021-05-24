@@ -15,8 +15,8 @@ Flexcel Cloud is the next stage in the development of Flexcel. The overarching o
 is to host Flexcel on the cloud, which will allow for anywhere access, more scalability,
 access to cloud computing resources, etc.
 ## Vision
-Flexcel is aiming to be a central access to debate resources. It is going to be more than just a flowing software. The Flexcel Dashboard will consist of each debater's upcoming tournaments, 
-debate logs, progress metrics, etc. The Flexcel will have a smoother workflow and more advanced features. 
+Flexcel is aiming to be a central access to debate resources. It is going to be more than just a flowing software. The Dashboard will consist of each debater's upcoming tournaments, 
+debate logs, progress metrics, etc. The Flow will have a smoother workflow and more advanced features. 
 ## Tech Stack
 1. React 
 2. Amazon Web Services
