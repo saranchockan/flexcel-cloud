@@ -22,7 +22,7 @@ Here are the following objectives
 - Authentication (Login, SignUp)
 - Dashboard 
 - Migrate features from jQuery to React
-- [x] Tab Navigation
+  -[x] Tab Navigation
 
 # Contributors
 
