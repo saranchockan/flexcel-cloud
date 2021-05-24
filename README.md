@@ -22,14 +22,14 @@ Here are the following objectives
 - Authentication (Login, SignUp)
 - Dashboard 
 - Migrate features from jQuery to React
-  - [x] Tab Navigation
-  - [x] Tab Addition/Deletion
-  - []  Tab Rename
-  - []  Tab Reorder
-  - [x] Autocomplete
-  - []  Autocomplete Customization
-  - []  Saving Flow
-  - []  Loading Flow
+  - [x]  Tab Navigation
+  - [x]  Tab Addition/Deletion
+  - [ ]  Tab Rename
+  - [ ]  Tab Reorder
+  - [x]  Autocomplete
+  - [ ]  Autocomplete Customization
+  - [ ]  Saving Flow
+  - [ ]  Loading Flow
 
 # Contributors
 
