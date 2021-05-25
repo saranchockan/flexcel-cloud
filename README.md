@@ -1,5 +1,5 @@
 # Flexcel Cloud
-Flexcel is a debate strategizing software for competitive high school debaters at state and national level tournaments. It has acquired over 8000 downloads and 30,000+ hours of usage. Premier Debate recognizes Flexcel as an extremely efficient tool to have a smoother debate experience. 
+Flexcel is a debate strategizing software for competitive high school debaters at state and national level tournaments. It has acquired over 8000 downloads and 30,000+ hours of usage. Premier Debate recognizes Flexcel as an extremely efficient tool for debaters.  
 
 Flexcel Cloud is the next stage in the development of Flexcel. The overarching objective 
 is to host Flexcel on the cloud, which will allow for anywhere access, more scalability,
