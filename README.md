@@ -11,7 +11,7 @@ Flexcel Cloud is aiming to be a central access to debate resources. It is going 
 Flexcel is a web-app built with JavaScript, jQuery and packaged into a desktop environment
 with Electron. Flexcel Cloud will be built using - 
 1. React 
-2. Cloud Service - TBD
+2. Backend - TBD
 ### Libraries
 1. React-Bootstrap (https://react-bootstrap.github.io/)
 2. Handsontable React (https://handsontable.com/docs/8.4.0/frameworks-wrapper-for-react-installation.html) 
@@ -39,6 +39,8 @@ The fundamental shift from Flexcel to Flexcel Cloud is in the tech stack. For th
   - [ ]  Loading Flow
   - [x]  Speech Doc
 - Flexcel Brand Website
+  - [ ]  Home Page
+  - [ ]  Feature Page
 
 # Contributors
 
