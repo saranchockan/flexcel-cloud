@@ -31,7 +31,7 @@ The fundamental shift from Flexcel to Flexcel Cloud is in the tech stack. For th
 - Migrate features from jQuery to React
   - [x]  Tab Navigation
   - [x]  Tab Addition/Deletion
-  - [ ]  Tab Rename
+  - [x]  Tab Rename
   - [ ]  Tab Reorder
   - [x]  Autocomplete
   - [ ]  Autocomplete Customization
