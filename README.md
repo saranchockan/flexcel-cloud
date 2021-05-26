@@ -13,8 +13,8 @@ with Electron. Flexcel Cloud will be built using -
 1. React 
 2. Backend - TBD
 ### Libraries
-1. React-Bootstrap (https://react-bootstrap.github.io/)
-2. Handsontable React (https://handsontable.com/docs/8.4.0/frameworks-wrapper-for-react-installation.html) 
+1. [React-Bootstrap](https://react-bootstrap.github.io/)
+2. [Handsontable React](https://handsontable.com/docs/8.4.0/frameworks-wrapper-for-react-installation.html) 
 
 The fundamental shift from Flexcel to Flexcel Cloud is in the tech stack. For the frontend, it is rewriting jQuery code to React. For the backend, it is hosting the app on the cloud, instead of the  Microsoft and Apple Store.
 
