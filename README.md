@@ -38,10 +38,31 @@ The fundamental shift from Flexcel to Flexcel Cloud is in the tech stack. For th
   - [ ]  Saving Flow
   - [ ]  Loading Flow
   - [x]  Speech Doc
-- Flexcel Brand Website
+- Brand Website
   - [ ]  Home Page
   - [ ]  Feature Page
 
 # Contributors
+Flexcel Cloud is welcome to anyone interested in product management, product design, 
+or software engineering. 
+## Product Management 
+PMs will be be mainly responsible for solidifying Flexcel Cloud's vision, value proposition,
+conducting customer interviews (debate institutions, debaters), and managing desingers and engineers. 
+
+## Product Design
+PDs will be designing the UI for Flexcel Cloud (Login, SignUp, Dashboard) and the Flexcel brand website. 
+
+### Figma
+
+## Software Engineering
+SWEs will be heavily involved in coding Flexcel Cloud (Dashboard, Flow UI (React), Authentication, Flow) and
+development of the brand website. 
+### Resources
+1. [Project Board](https://github.com/saranchockan/flexcel-cloud/projects/1)
+2. [Wiki Documentation](https://github.com/saranchockan/flexcel-cloud/wiki/Frontend-Documentation)
+
+## Communication
+### Slack
+
 
 
