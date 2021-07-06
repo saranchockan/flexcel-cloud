@@ -4,14 +4,11 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Sign In with Auth0</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 </head>
   <style>
     body, html {
-      height: 100%;
-      /*background-color: #f9f9f9;*/
-      background-image: url("https://i.ibb.co/ZhHmGf0/flexcel-Background-Full.png");
+      background-image: url("https://raw.githubusercontent.com/saranchockan/Flexcel/master/img/logo/flexcel-logo.png");
       min-height: 100%;
       min-width: 100%;
       background-repeat: no-repeat;
@@ -21,188 +18,76 @@
       -o-background-size: cover;
       background-size: cover;
     }
-
-    .login-container {
-      position: relative;
-      height: 100%;
-    }
-
-    .login-box {
-      position: absolute;
-      top: 53%;
-      left: 32%;
-      transform: translateY(-50%);
-      padding: 15px;
-      background-color: #000;
-      box-shadow: 0px 5px 5px #ccc;
-      border-radius: 5px;
-      border-top: 1px solid #e9e9e9;
-    }
-
-    .login-header {
-      text-align: center;
-    }
-
-    .login-header img {
-      width: 75px;
-    }
-    
-    .login-text {
-    	color: #fff
-    }
-
-    #error-message {
-      display: none;
-      white-space: break-spaces;
-    }
   </style>
 <body>
-  <div class="login-container">
-    <div class="col-xs-12 col-sm-4 col-sm-offset-4 login-box">
-      <div class="login-header">
-        <img src="https://cdn.auth0.com/styleguide/1.0.0/img/badge.svg"/>
-        <h3 class="login-text">Welcome</h3>
-        <h5 class="login-text">PLEASE LOG IN</h5>
-      </div>
-      <div id="error-message" class="alert alert-danger"></div>
-      <form onsubmit="return false;" method="post">
-        <div class="form-group">
-         <label class="login-text" for="name">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Enter your email">
-        </div>
-        <div class="form-group">
-          <label class="login-text" for="name">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Enter your password">
-        </div>
-        <div class="captcha-container form-group"></div>
-        <button
-          type="submit"
-          id="btn-login"
-          class="btn btn-primary btn-block">
-            Log In
-        </button>
-        <button
-          type="button"
-          id="btn-signup"
-          class="btn btn-default btn-block">
-            Sign Up
-        </button>
-        <hr>
-        <button
-          type="button"
-          id="btn-google"
-          class="btn btn-default btn-danger btn-block">
-            Log In with Google
-        </button>
-      </form>
-    </div>
-  </div>
 
   <!--[if IE 8]>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
   <![endif]-->
 
   <!--[if lte IE 9]>
-  <script src="https://cdn.auth0.com/js/polyfills/1.0/base64.min.js"></script>
-  <script src="https://cdn.auth0.com/js/polyfills/1.0/es5-shim.min.js"></script>
+  <script src="https://cdn.auth0.com/js/base64.js"></script>
+  <script src="https://cdn.auth0.com/js/es5-shim.min.js"></script>
   <![endif]-->
 
-  <script src="https://cdn.auth0.com/js/auth0/9.16/auth0.min.js"></script>
-  <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
+  <script src="https://cdn.auth0.com/js/lock/11.30/lock.min.js"></script>
   <script>
-    window.addEventListener('load', function() {
+    // Decode utf8 characters properly
+    var config = JSON.parse(decodeURIComponent(escape(window.atob('@@config@@'))));
+    config.extraParams = config.extraParams || {};
+    var connection = config.connection;
+    var prompt = config.prompt;
+    var languageDictionary;
+    var language;
 
-      var config = JSON.parse(
-        decodeURIComponent(escape(window.atob('@@config@@')))
-      );
+    if (config.dict && config.dict.signin && config.dict.signin.title) {
+      languageDictionary = { title: config.dict.signin.title };
+    } else if (typeof config.dict === 'string') {
+      language = config.dict;
+    }
+    var loginHint = config.extraParams.login_hint;
+    var colors = config.colors || {};
 
-      var leeway = config.internalOptions.leeway;
-      if (leeway) {
-        var convertedLeeway = parseInt(leeway);
-      
-        if (!isNaN(convertedLeeway)) {
-          config.internalOptions.leeway = convertedLeeway;
-        }
-      }
-
-      var params = Object.assign({
-        overrides: {
-          __tenant: config.auth0Tenant,
-          __token_issuer: config.authorizationServer.issuer
-        },
-        domain: config.auth0Domain,
-        clientID: config.clientID,
-        redirectUri: config.callbackURL,
-        responseType: 'code'
-      }, config.internalOptions);
-
-      var webAuth = new auth0.WebAuth(params);
-      var databaseConnection = 'Username-Password-Authentication';
-      var captcha = webAuth.renderCaptcha(
-        document.querySelector('.captcha-container')
-      );
-
-      function login(e) {
-        e.preventDefault();
-        var button = this;
-        var username = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-        button.disabled = true;
-        webAuth.login({
-          realm: databaseConnection,
-          username: username,
-          password: password,
-          captcha: captcha.getValue()
-        }, function(err) {
-          if (err) displayError(err);
-          button.disabled = false;
-        });
-      }
-
-      function signup() {
-        var button = this;
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-
-        button.disabled = true;
-        webAuth.redirect.signupAndLogin({
-          connection: databaseConnection,
-          email: email,
-          password: password,
-          captcha: captcha.getValue()
-        }, function(err) {
-          if (err) displayError(err);
-          button.disabled = false;
-        });
-      }
-
-      function loginWithGoogle() {
-        webAuth.authorize({
-          connection: 'google-oauth2'
-        }, function(err) {
-          if (err) displayError(err);
-        });
-      }
-
-      function displayError(err) {
-        captcha.reload();
-        var errorMessage = document.getElementById('error-message');
-        errorMessage.innerHTML = err.policy || err.description;
-        errorMessage.style.display = 'block';
-      }
-
-      document.getElementById('btn-login').addEventListener('click', login);
-      document.getElementById('btn-google').addEventListener('click', loginWithGoogle);
-      document.getElementById('btn-signup').addEventListener('click', signup);
+    // Available Lock configuration options: https://auth0.com/docs/libraries/lock/v11/configuration
+    var lock = new Auth0Lock(config.clientID, config.auth0Domain, {
+      auth: {
+        redirectUrl: config.callbackURL,
+        responseType: (config.internalOptions || {}).response_type ||
+          (config.callbackOnLocationHash ? 'token' : 'code'),
+        params: config.internalOptions
+      },
+      configurationBaseUrl: config.clientConfigurationBaseUrl,
+      overrides: {
+        __tenant: config.auth0Tenant,
+        __token_issuer: config.authorizationServer.issuer
+      },
+      assetsUrl:  config.assetsUrl,
+      allowedConnections: connection ? [connection] : null,
+      rememberLastLogin: !prompt,
+      language: language,
+      languageBaseUrl: config.languageBaseUrl,
+      languageDictionary: languageDictionary,
+      theme: {
+        logo: 'https://raw.githubusercontent.com/saranchockan/Flexcel/master/img/icon/nativeImage.png',
+        primaryColor:    colors.primary ? colors.primary : 'green'
+      },
+      prefill: loginHint ? { email: loginHint, username: loginHint } : null,
+      closable: false,
+      defaultADUsernameFromEmailPrefix: false
     });
+
+    if(colors.page_background) {
+      var css = '.auth0-lock.auth0-lock .auth0-lock-overlay { background: ' +
+                  colors.page_background +
+                ' }';
+      var style = document.createElement('style');
+
+      style.appendChild(document.createTextNode(css));
+
+      document.body.appendChild(style);
+    }
+
+    lock.show();
   </script>
 </body>
 </html>
