@@ -62,7 +62,7 @@ development of the brand website.
 2. [Wiki Documentation](https://github.com/saranchockan/flexcel-cloud/wiki/Frontend-Documentation)
 
 ## Communication
-### Slack
+### Slack [TBD]
 
 
 

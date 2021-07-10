@@ -311,10 +311,12 @@ export default class FlowNavigation extends Component {
                         this.addTab()
                         event.preventDefault()
                         break
+                    // Ctrl + O
                     case 79:
                         this.prevTab()
                         event.preventDefault()
                         break
+                    // Ctrl + P
                     case 80:
                         this.nextTab()
                         event.preventDefault()
@@ -388,6 +390,7 @@ export default class FlowNavigation extends Component {
                 >
 
                 </HotkeyConfigModal>
+
             </div>
         )
     }

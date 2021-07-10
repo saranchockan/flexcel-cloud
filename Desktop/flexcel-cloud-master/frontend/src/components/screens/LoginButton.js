@@ -10,5 +10,3 @@ const LoginButton = () => {
         </button>
     )
 }
-
-export default LoginButton
