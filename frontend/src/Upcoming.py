@@ -2,7 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
 
-driver = webdriver.Chrome('./frontend/node_modules/chromedriver/lib/chromedriver/chromedriver')
+driver = webdriver.Chrome('./node_modules/chromedriver/lib/chromedriver/chromedriver')
 
 def combine(x):
     ret = ''

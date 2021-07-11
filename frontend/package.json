@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.5.0",
+    "chromedriver": "^91.0.1",
     "handsontable": "^7.4.2",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
@@ -18,6 +19,7 @@
     "react-scripts": "3.4.1",
     "react-summernote": "^2.0.2",
     "react-tabtab": "^2.0.0",
+    "selenium-webdriver": "^4.0.0-beta.4",
     "styled-components": "^4.0.0"
   },
   "scripts": {
@@ -41,4 +43,4 @@
       "last 1 safari version"
     ]
   }
-} 
+}
