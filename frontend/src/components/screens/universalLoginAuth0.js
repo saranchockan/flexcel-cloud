@@ -68,8 +68,8 @@
       languageBaseUrl: config.languageBaseUrl,
       languageDictionary: languageDictionary,
       theme: {
-        logo: 'https://raw.githubusercontent.com/saranchockan/Flexcel/master/img/icon/nativeImage.png',
-        primaryColor:    colors.primary ? colors.primary : 'green'
+        logo: 'https://i.ibb.co/qFZDrBv/flexcel-Logo.png',
+        primaryColor: '#000000',
       },
       prefill: loginHint ? { email: loginHint, username: loginHint } : null,
       closable: false,
@@ -91,3 +91,13 @@
   </script>
 </body>
 </html>
+<style>
+  @media (min-width: 481px){ 
+    .auth0-lock.auth0-lock .auth0-lock-header-bg { 
+      background: #000000; 
+    } 
+  }
+  .auth0-lock.auth0-lock .auth0-lock-header {
+  	color: #fff;
+  }
+</style>
