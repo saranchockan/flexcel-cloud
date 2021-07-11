@@ -20,7 +20,8 @@
     "react-summernote": "^2.0.2",
     "react-tabtab": "^2.0.0",
     "selenium-webdriver": "^4.0.0-beta.4",
-    "styled-components": "^4.0.0"
+    "styled-components": "^4.0.0",
+    "webdriver": "^7.7.4"
   },
   "scripts": {
     "start": "react-scripts start",
