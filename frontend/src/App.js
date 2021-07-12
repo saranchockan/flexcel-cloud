@@ -11,9 +11,20 @@ function App() {
     const { loginWithRedirect } = useAuth0();
 
 	if(!isAuthenticated) {
-		return <Login></Login>
+		if(document.getElementById('login') != null) {
+			window.onload = function(){
+				document.getElementById('login').click();
+			}
+		}
+		return (
+			<div>
+				<button id="login" onClick={() => loginWithRedirect()}>
+                    Log In
+                </button>
+			</div>
+		);
 	}
-	
+
 	return <LogoutButton></LogoutButton>
 
 }
