@@ -10,13 +10,14 @@ function App() {
 	
 	const {user, isAuthenticated} = useAuth0();
 
-	if(!isAuthenticated) {
+	/*if(!isAuthenticated) {
 		return (<Login/>);
 	} 
     
     return (
 		<LogoutButton/>
-	);
+	);*/
+	return <Flow/>;
 	
 }
 
