@@ -3,9 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
+import APIkeys from './APIkeys.json';
 
-const domain = "flexcel-cloud.us.auth0.com";
-const clientId = "iRQD8MmLx0fRDOoFMFkfqMDPluCjdgAU";
+const domain = APIkeys.REACT_APP_AUTH0_DOMAIN;
+const clientId = APIkeys.REACT_APP_AUTH0_CLIENT_ID;
 
 ReactDOM.render(
   <Auth0Provider

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './../../styling/Login.css';
 import Button from 'react-bootstrap/esm/Button';
-import LoginButton from './LoginButton';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export default function Login() {
