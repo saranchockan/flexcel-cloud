@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styling/App.css';
 import Flow from './components/screens/Flow'
 import Login from './components/screens/Login';
 import { useAuth0 } from '@auth0/auth0-react';
 import LogoutButton from './components/parts/Buttons/LogoutButton';
+import Main from "./components/main/Main";
+import Navbar from "./components/navbar/Navbar";
+import Sidebar from "./components/sidebar/Sidebar";
 
 function App() {
 	
+	const [sidebarOpen, setsidebarOpen] = useState(false);
+	const openSidebar = () => {
+		setsidebarOpen(true);
+	};
+	const closeSidebar = () => {
+		setsidebarOpen(false);
+	};
 	const {user, isAuthenticated} = useAuth0();
     const { loginWithRedirect } = useAuth0();
 
@@ -25,8 +35,13 @@ function App() {
 		);
 	}
 
-	return <LogoutButton></LogoutButton>
-
+	return (
+		<div className="container">
+			<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
+			<Main />
+			<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} />
+		</div>
+	);
 }
 
 export default App;

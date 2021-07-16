@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
 import APIkeys from './APIkeys.json';
+import "./index.css";
 
 const domain = APIkeys.REACT_APP_AUTH0_DOMAIN;
 const clientId = APIkeys.REACT_APP_AUTH0_CLIENT_ID;
