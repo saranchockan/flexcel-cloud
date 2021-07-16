@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './styling/App.css';
-import Flow from './components/screens/Flow'
+/*import Flow from './components/screens/Flow';
+
+For some reason, when I insert this line or if I change lines 20-21 in index.html, the formatting of the Dashboard screws up.
+
+*/
 import Login from './components/screens/Login';
 import { useAuth0 } from '@auth0/auth0-react';
 import LogoutButton from './components/parts/Buttons/LogoutButton';
