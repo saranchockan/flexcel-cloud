@@ -12,6 +12,7 @@
 
 # misc
 .DS_Store
+/frontend/src/APIkeys.json
 .env.local
 .env.development.local
 .env.test.local
