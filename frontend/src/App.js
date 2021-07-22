@@ -1,12 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react';
 import './styling/App.css';
 import Flow from './components/screens/Flow'
+import Login from './components/screens/Login';
+import LoginButton from './components/screens/LoginButton';
+import LogoutButton from './components/screens/LogoutButton';
 
-export default class App extends Component {
+function App() {
 
-  render() {
+	/*if(!isAuthenticated) {
+		return (<Login/>);
+	} 
+    
     return (
-      <Flow />
-    )
-  }
+		<LogoutButton/>
+	);*/
+	return <Flow/>;
+	
 }
+
+export default App;
