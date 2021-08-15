@@ -38,7 +38,6 @@ function App() {
 			</div>
 		);
 	}
-
 	return (
 		<div className="container">
 			<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
@@ -47,5 +46,4 @@ function App() {
 		</div>
 	);
 }
-
 export default App;
