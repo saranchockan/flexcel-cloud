@@ -68,7 +68,7 @@ function App() {
 			return (
 				<div className="container">
 					<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} logOut={logOut} />
-					<Main />
+					<Flow />
 					<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} logOut={logOut} />
 				</div>
 			);
