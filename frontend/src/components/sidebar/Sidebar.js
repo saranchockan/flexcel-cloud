@@ -2,7 +2,7 @@ import "./Sidebar.css";
 import logo from "../../assets/logo.png";
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Sidebar = ({ sidebarOpen, closeSidebar, logOut}) => {
+const Sidebar = ({ sidebarOpen, closeSidebar, logOut, setPageToFlows}) => {
   return (
     <div className={sidebarOpen ? "sidebar_responsive" : ""} id="sidebar">
       <div className="sidebar__title">
@@ -59,7 +59,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar, logOut}) => {
         </div>
         <div className="sidebar__link">
           <i className="fa fa-files-o"></i>
-          <a href="#">Apply for leave</a>
+          <a href="#" onClick={() => setPageToFlows()}>Flows</a>
         </div>
         <h2>PAYROLL</h2>
         <div className="sidebar__link">
