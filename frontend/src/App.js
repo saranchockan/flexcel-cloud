@@ -15,14 +15,23 @@ import Sidebar from "./components/sidebar/Sidebar";
 function App() {
 	
 	const [sidebarOpen, setsidebarOpen] = useState(false);
+	const [loggedOut, lg] = useState(false);
+	const {logout} = useAuth0();
 	const openSidebar = () => {
 		setsidebarOpen(true);
 	};
 	const closeSidebar = () => {
 		setsidebarOpen(false);
 	};
+	const logOut = () => {
+		lg(true);
+	};
 	const {user, isAuthenticated} = useAuth0();
     const { loginWithRedirect } = useAuth0();
+
+	if(loggedOut) {
+		logout();
+	}
 
 	if(!isAuthenticated) {
 		if(document.getElementById('login') != null) {
@@ -40,9 +49,9 @@ function App() {
 	}
 	return (
 		<div className="container">
-			<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} />
+			<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} logOut={logOut} />
 			<Main />
-			<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} />
+			<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} logOut={logOut} />
 		</div>
 	);
 }

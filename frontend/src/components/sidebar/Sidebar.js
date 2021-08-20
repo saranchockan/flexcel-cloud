@@ -1,7 +1,8 @@
 import "./Sidebar.css";
 import logo from "../../assets/logo.png";
+import { useAuth0 } from '@auth0/auth0-react';
 
-const Sidebar = ({ sidebarOpen, closeSidebar }) => {
+const Sidebar = ({ sidebarOpen, closeSidebar, logOut}) => {
   return (
     <div className={sidebarOpen ? "sidebar_responsive" : ""} id="sidebar">
       <div className="sidebar__title">
@@ -71,7 +72,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
         </div>
         <div className="sidebar__logout">
           <i className="fa fa-power-off"></i>
-          <a href="#">Log out</a>
+          <a href="#" onClick={() => logOut()}>Log out</a>
         </div>
       </div>
     </div>
