@@ -54,15 +54,15 @@ function App() {
 	switch(page) {
 		default: 
 			return (
-				<div className="container">
+				<div className="flex main_screen">
 					<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} logOut={logOut} setPageToFlows = {setPageToFlows}/>
-					<Main name={user.name} />
 					<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} logOut={logOut} setPageToFlows = {setPageToFlows}/>
+					<Main name={user.name} />
 				</div>
 			);
 		case "Flow":
 			return (
-				<div className="container">
+				<div className="">
 					<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} logOut={logOut} />
 					<Flow />
 					<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} logOut={logOut} />
