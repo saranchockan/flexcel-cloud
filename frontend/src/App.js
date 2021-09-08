@@ -20,9 +20,14 @@ function App() {
 		setsidebarOpen(false);
 	};
 	//auth0 hooks
-	const {logout} = useAuth0();
-	const {user, isAuthenticated} = useAuth0();
-    const { loginWithRedirect } = useAuth0();
+	const {
+		isLoading,
+		isAuthenticated,
+		error,
+		user,
+		loginWithRedirect,
+		logout,
+	  } = useAuth0();
 	const logOut = () => {
 		lg(true);
 	};
@@ -37,30 +42,21 @@ function App() {
 	if(loggedOut) {
 		logout();
 	}
+	if (isLoading) {
+		return <div>Loading...</div>;
+	  }
+	  if (error) {
+		return <div>{error.message}</div>;
+	  }
 
-	//bring them to auth page if they're not logged in
-	if(!isAuthenticated) {
-		if(document.getElementById('login') != null) {
-			window.onload = function(){
-				document.getElementById('login').click();
-			}
-		}
-		return (
-			<div>
-				<button id="login" onClick={() => loginWithRedirect()}>
-                    Log In
-                </button>
-			</div>
-		);
-	}
-
+	  if (isAuthenticated) {
 	//handle what page they're on after they logged in
 	switch(page) {
 		default: 
 			return (
 				<div className="container">
 					<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} logOut={logOut} setPageToFlows = {setPageToFlows}/>
-					<Main />
+					<Main name={user.name} />
 					<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} logOut={logOut} setPageToFlows = {setPageToFlows}/>
 				</div>
 			);
@@ -74,6 +70,8 @@ function App() {
 			);
 		//case "RFD Diary":
 	}
-	
+	} else {
+		loginWithRedirect();
+	}
 }
 export default App;
