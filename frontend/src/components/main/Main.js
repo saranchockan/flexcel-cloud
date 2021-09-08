@@ -1,8 +1,9 @@
 import "./Main.css";
 import hello from "../../assets/hello.svg";
 import Chart from "../charts/Chart";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const Main = () => {
+const Main = (props) => {
   return (
     <main>
       <div className="main__container">
@@ -11,7 +12,7 @@ const Main = () => {
         <div className="main__title">
           <img src={hello} alt="hello" />
           <div className="main__greeting">
-            <h1>Hello Codersbite</h1>
+            <h1>Hello {props.name}</h1>
             <p>Welcome to your admin dashboard</p>
           </div>
         </div>
