@@ -62,10 +62,10 @@ function App() {
 			);
 		case "Flow":
 			return (
-				<div className="">
+				<div className="flex main_screen">
 					<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} logOut={logOut} />
-					<Flow />
 					<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} logOut={logOut} />
+					<Flow />
 				</div>
 			);
 		//case "RFD Diary":
