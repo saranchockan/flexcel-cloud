@@ -2,6 +2,7 @@ main {
   background: #f3f4f6;
   grid-area: main;
   overflow-y: auto;
+  width: 100%;
 }
 
 .main__container {
