@@ -2,7 +2,7 @@ import "./Sidebar.css";
 import logo from "../../assets/logo.png";
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Sidebar = ({ sidebarOpen, closeSidebar, logOut, setPageToFlows}) => {
+const Sidebar = ({ sidebarOpen, closeSidebar, logOut, setPageToFlows, setPageToDashboard, setPageToRFDDiary, page}) => {
   return (
     <div className={sidebarOpen ? "sidebar_responsive" : ""} id="sidebar">
       <div className="sidebar__title">
@@ -19,56 +19,17 @@ const Sidebar = ({ sidebarOpen, closeSidebar, logOut, setPageToFlows}) => {
       </div>
 
       <div className="sidebar__menu">
-        <div className="sidebar__link active_menu_link">
+        <div className={page == "Dashboard" ? "sidebar__link active_menu_link" : "sidebar__link"}>
           <i className="fa fa-home"></i>
-          <a href="#">Dashboard</a>
+          <a href="#" onClick={() => setPageToDashboard()}>Dashboard</a>
         </div>
-        <h2>MNG</h2>
-        <div className="sidebar__link">
-          <i className="fa fa-user-secret" aria-hidden="true"></i>
-          <a href="#">Admin Management</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-building-o"></i>
-          <a href="#">Company Management</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-wrench"></i>
-          <a href="#">Employee Management</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-archive"></i>
-          <a href="#">Warehouse</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-handshake-o"></i>
-          <a href="#">Contracts</a>
-        </div>
-        <h2>LEAVE</h2>
-        <div className="sidebar__link">
-          <i className="fa fa-question"></i>
-          <a href="#">Requests</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-sign-out"></i>
-          <a href="#">Leave Policy</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-calendar-check-o"></i>
-          <a href="#">Special Days</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-files-o"></i>
+        <div className={page == "Flows" ? "sidebar__link active_menu_link" : "sidebar__link"}>
+          <i className="fa fa-file"></i>
           <a href="#" onClick={() => setPageToFlows()}>Flows</a>
         </div>
-        <h2>PAYROLL</h2>
-        <div className="sidebar__link">
-          <i className="fa fa-money"></i>
-          <a href="#">Payroll</a>
-        </div>
-        <div className="sidebar__link">
-          <i className="fa fa-briefcase"></i>
-          <a href="#">Paygrade</a>
+        <div className={page == "RFD Diary" ? "sidebar__link active_menu_link" : "sidebar__link"}>
+          <i className="fa fa-folder-open"></i>
+          <a href="#" onClick={() => setPageToRFDDiary()}>RFD Diary</a>
         </div>
         <div className="sidebar__logout">
           <i className="fa fa-power-off"></i>
