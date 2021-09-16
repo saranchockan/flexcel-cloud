@@ -2,9 +2,13 @@
   background: #020509;
   grid-area: sidebar;
   overflow-y: auto;
-  padding: 20px;
+  padding: 15px;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
+}
+
+.sidebar__text{
+  display: none;
 }
 
 .sidebar__title {
@@ -32,8 +36,8 @@
 }
 
 .sidebar__title > i {
+  display: inline;
   font-size: 18px;
-  display: none;
 }
 
 .sidebar__menu > h2 {

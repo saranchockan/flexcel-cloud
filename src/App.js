@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import './styling/App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -7,6 +7,8 @@ import Flow from './components/screens/Flow';
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
 import RFDDiary from './components/screens/RFDDiary';
+
+import PropTypes from 'prop-types'
 
 function getView(page, user) {
 	//handle what page they're on after they logged in
@@ -20,64 +22,76 @@ function getView(page, user) {
 	}
 }
 
-function App() {
+function App(){
+	return <MainPage auth={useAuth0()}></MainPage>
+}
 
-	//sidebar hooks
-	const [sidebarOpen, setsidebarOpen] = useState(false);
-	const [loggedOut, lg] = useState(false);
-	const openSidebar = () => {
-		setsidebarOpen(true);
-	};
-	const closeSidebar = () => {
-		setsidebarOpen(false);
-	};
-	//auth0 hooks
-	const {
-		isLoading,
-		isAuthenticated,
-		error,
-		user,
-		loginWithRedirect,
-		logout,
-		getAccessTokenSilently
-	} = useAuth0();
-	const logOut = () => {
-		lg(true);
-	};
+export default App
 
-	//what page we're on
-	const [page, setPage] = useState("Dashboard");
-	const setPageToDashboard = () => {
-		setPage("Dashboard");
-	};
-	const setPageToFlows = () => {
-		setPage("Flows");
-	};
-	const setPageToRFDDiary = () => {
-		setPage("RFD Diary");
-	};
-
-	//handle logging out if they click the log out button
-	if (loggedOut) {
-		logout();
-	}
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-	if (error) {
-		return <div>{error.message}</div>;
+class MainPage extends Component {
+	static propTypes = {
+		prop: PropTypes
 	}
 
-	if (isAuthenticated) {
-		getAccessTokenSilently().then(console.log)
-		return <div className="flex main_screen">
-			<Navbar sidebarOpen={sidebarOpen} openSidebar={openSidebar} logOut={logOut} />
-			<Sidebar sidebarOpen={sidebarOpen} closeSidebar={closeSidebar} logOut={logOut} setPageToFlows={setPageToFlows} setPageToDashboard={setPageToDashboard} setPageToRFDDiary={setPageToRFDDiary} page={page} />
-			{getView(page, user)}
-		</div>
+	state = {
+		sidebarOpen: true,
+		page: "Dashboard"
+	}
 
-	} else {
-		loginWithRedirect();
+	setSidebarOpen(p){
+		this.setState({sidebarOpen: p})
+	}
+
+	setPage(p){
+		this.setState({page: p})
+	}
+
+	render() {
+		const {
+			isLoading,
+			isAuthenticated,
+			error,
+			user,
+			loginWithRedirect,
+			logout,
+			getAccessTokenSilently
+		} = this.props.auth
+		const setPageToDashboard = () => {
+			this.setPage("Dashboard");
+		};
+		const setPageToFlows = () => {
+			this.setPage("Flows");
+		};
+		const setPageToRFDDiary = () => {
+			this.setPage("RFD Diary");
+		};
+
+		const closeSidebar = () => {
+			this.setSidebarOpen(false)
+		}
+
+		const openSidebar = () => {
+			this.setSidebarOpen(true)
+		}
+	
+		//handle logging out if they click the log out button
+		if (isLoading) {
+			return <div>Loading...</div>;
+		}
+		if (error) {
+			return <div>{error.message}</div>;
+		}
+	
+		if (isAuthenticated) {
+			console.log(this.state.sidebarOpen)
+			return <div className={"flex " + (this.state.sidebarOpen ? "main_screen" : "main_min_screen")}>
+						<Navbar sidebarOpen={this.state.sidebarOpen} logOut={logout} />
+						<Sidebar sidebarOpen={this.state.sidebarOpen} closeSidebar={closeSidebar} openSidebar={openSidebar} logOut={logout} setPageToFlows={setPageToFlows} setPageToDashboard={setPageToDashboard} setPageToRFDDiary={setPageToRFDDiary} page={this.state.page} />
+						{getView(this.state.page, user)}
+					</div>
+	
+		} else {
+			loginWithRedirect();
+		}
 	}
 }
-export default App;
