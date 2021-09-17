@@ -56,15 +56,10 @@ class MainPage extends Component {
 			logout,
 			getAccessTokenSilently
 		} = this.props.auth
-		const setPageToDashboard = () => {
-			this.setPage("Dashboard");
-		};
-		const setPageToFlows = () => {
-			this.setPage("Flows");
-		};
-		const setPageToRFDDiary = () => {
-			this.setPage("RFD Diary");
-		};
+
+		const page = (p) => {
+			this.setPage(p)
+		}
 
 		const closeSidebar = () => {
 			this.setSidebarOpen(false)
@@ -83,10 +78,10 @@ class MainPage extends Component {
 		}
 	
 		if (isAuthenticated) {
-			console.log(this.state.sidebarOpen)
+			console.log(this.state.page)
 			return <div className={"flex " + (this.state.sidebarOpen ? "main_screen" : "main_min_screen")}>
 						<Navbar sidebarOpen={this.state.sidebarOpen} logOut={logout} />
-						<Sidebar sidebarOpen={this.state.sidebarOpen} closeSidebar={closeSidebar} openSidebar={openSidebar} logOut={logout} setPageToFlows={setPageToFlows} setPageToDashboard={setPageToDashboard} setPageToRFDDiary={setPageToRFDDiary} page={this.state.page} />
+						<Sidebar sidebarOpen={this.state.sidebarOpen} closeSidebar={closeSidebar} openSidebar={openSidebar} logOut={logout} setPage={page} page={this.state.page} />
 						{getView(this.state.page, user)}
 					</div>
 	

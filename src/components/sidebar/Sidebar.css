@@ -7,7 +7,7 @@
   transition: all 0.5s;
 }
 
-.sidebar__text{
+.sidebar__ceasetoexist{
   display: none;
 }
 
@@ -72,7 +72,6 @@
 }
 
 .sidebar__link > i {
-  margin-right: 10px;
   font-size: 18px;
 }
 
@@ -90,7 +89,6 @@
 }
 
 .sidebar__logout > i {
-  margin-right: 10px;
   font-size: 18px;
 }
 
@@ -99,14 +97,4 @@
   z-index: 9999 !important;
   left: 0 !important;
   position: absolute;
-}
-
-@media only screen and (max-width: 978px) {
-  #sidebar {
-    display: none;
-  }
-
-  .sidebar__title > i {
-    display: inline;
-  }
 }
