@@ -42,10 +42,9 @@ main {
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  height: 70px;
-  padding: 25px;
+  height: 250px;
   border-radius: 5px;
+  padding: 10px;
   background: #ffffff;
   box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
 }
@@ -53,6 +52,7 @@ main {
 .card_inner {
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-between;
 }
 
@@ -193,4 +193,25 @@ main {
     grid-template-columns: 1fr;
     margin-top: 30px;
   }
+}
+
+.card__title__text {
+  font-size: 30px;
+}
+
+.card__info__text {
+  font-size: 60px;
+}
+
+.change {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.change__text {
+  font-size: 25px;
+  padding-top:12px;
+  padding-left: 10px;
 }

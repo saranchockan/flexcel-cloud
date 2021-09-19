@@ -22,50 +22,39 @@ const Main = (props) => {
         {/* <!-- MAIN CARDS STARTS HERE --> */}
         <div className="main__cards">
           <div className="card">
-            <i
-              className="fa fa-user-o fa-2x text-lightblue"
-              aria-hidden="true"
-            ></i>
+            {/* <!-- add icon here if applicable --> */}
             <div className="card_inner">
-              <p className="text-primary-p">Number of Subscribers</p>
-              <span className="font-bold text-title">578</span>
+              <p className="font-bold card__title__text">Record</p>
+              <p className="font-bold card__info__text">999-999</p>
+            </div>
+            <div className="change">
+              <i class="fa fa-arrow-up fa-2x" style={{color:'rgb(56, 240, 56)'}} aria-hidden="true"></i> {/* <!-- later, add if statement on whether to use up or down arrow --> */}
+              <p className="change__text">99.9%</p>
             </div>
           </div>
 
           <div className="card">
-            <i className="fa fa-calendar fa-2x text-red" aria-hidden="true"></i>
             <div className="card_inner">
-              <p className="text-primary-p">Times of Watching</p>
-              <span className="font-bold text-title">2467</span>
+              <p className="font-bold card__title__text">Bids</p>
+              <p className="font-bold card__info__text">9999</p>
+            </div>
+            <div className="change">
+              <i class="fa fa-arrow-down fa-2x" style={{color:'rgb(240, 56, 56)'}} aria-hidden="true"></i> {/* <!-- later, add if statement on whether to use up or down arrow --> */}
+              <p className="change__text">99.9%</p>
             </div>
           </div>
 
           <div className="card">
-            <i
-              className="fa fa-video-camera fa-2x text-yellow"
-              aria-hidden="true"
-            ></i>
             <div className="card_inner">
-              <p className="text-primary-p">Number of Videos</p>
-              <span className="font-bold text-title">340</span>
-            </div>
-          </div>
-
-          <div className="card">
-            <i
-              className="fa fa-thumbs-up fa-2x text-green"
-              aria-hidden="true"
-            ></i>
-            <div className="card_inner">
-              <p className="text-primary-p">Number of Likes</p>
-              <span className="font-bold text-title">645</span>
+              <p className="font-bold card__title__text">Bid Rounds</p>
+              <p className="font-bold card__info__text">999</p>
             </div>
           </div>
         </div>
         {/* <!-- MAIN CARDS ENDS HERE --> */}
 
         {/* <!-- CHARTS STARTS HERE --> */}
-        <div className="charts">
+        <div className="charts"> 
           <div className="charts__left">
             <div className="charts__left__title">
               <div>
