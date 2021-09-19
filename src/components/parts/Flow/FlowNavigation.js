@@ -4,6 +4,7 @@ import RenameModal from '../modals/RenameModal'
 import DeleteTabWarningModal from '../modals/DeleteTabWarningModal'
 import HotkeyConfigModal from '../modals/HotkeyConfigModal'
 import Luckysheet from '../../Luckysheet';
+import $ from 'jquery'; 
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
@@ -14,16 +15,12 @@ export default class FlowNavigation extends Component {
 
     constructor(props) {
         super(props)
-
-        // Allow this to be changed later
-        let flowTabNames = ['AC', 'Framework', 'NC']
         
         // Initialize flow settings, modals, feature configurations
         this.state = {
             gridApi: null,
             gridColumnApi: null,
             currentFlowTabIndex: 0,
-            flowTabNames: flowTabNames,
             flowSettings: {
                 height: 500,
                 width: 500,
@@ -97,6 +94,9 @@ export default class FlowNavigation extends Component {
     // Calculates flow height and width based off flow container and nav tab height 
     // and changes the handsontable flow settings state 
     setFlowHeightAndWidth = () => {
+        let newHeight = (window.innerHeight - $('#root > div > nav').height())
+        if(this.state.flowSettings.height != newHeight)
+            this.setState({flowSettings:{...this.state.flowSettings, height: newHeight}})
         this.luckysheet.resize()
         // Error checking needed? Will .nav only return one component?
         // var flowNavigationContainerHeight = $('#flowNavigationContainer').height()
@@ -144,78 +144,78 @@ export default class FlowNavigation extends Component {
         // Gets the updated current selecte cell and updates state
         // var newSelectedCells = this.getCurrentSelectedCell()
         // Determining current active index
-        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) >= this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
-        // Update state
-        this.setState({
-            currentFlowTabIndex: newCurrentFlowTabIndex,
-        }, () => {
-            // this.selectLastSelectedCell()
-        })
+        // var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) >= this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
+        // // Update state
+        // this.setState({
+        //     currentFlowTabIndex: newCurrentFlowTabIndex,
+        // }, () => {
+        //     // this.selectLastSelectedCell()
+        // })
     }
     // Sets the previous tab to active
     prevTab = () => {
-        console.log('Prev Tab')
-        // Gets the updated current selecte cell and updates state
+        // console.log('Prev Tab')
+        // // Gets the updated current selecte cell and updates state
 
-        var newSelectedCells = this.getCurrentSelectedCell()
-        // Determining current active index
-        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
-        this.setState({
-            currentFlowTabIndex: newCurrentFlowTabIndex,
-            selectedCells: newSelectedCells,
-        }, () => {
-            this.selectLastSelectedCell()
-        })
+        // var newSelectedCells = this.getCurrentSelectedCell()
+        // // Determining current active index
+        // var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
+        // this.setState({
+        //     currentFlowTabIndex: newCurrentFlowTabIndex,
+        //     selectedCells: newSelectedCells,
+        // }, () => {
+        //     this.selectLastSelectedCell()
+        // })
     }
 
     // Adds a flow tab next to current flow tab index
     addTab = () => {
-        console.log('Tab Added!')
-        // Adding flow tab names
-        var newFlowTabNames = this.state.flowTabNames
-        newFlowTabNames.splice(this.state.currentFlowTabIndex + 1, 0, 'New Tab')
-        // Adding flow data 
-        // Updating state, rendering UI
-        this.setState({
-            flowTabNames: newFlowTabNames,
-        }, () => {
-            this.verifyFlowsData()
-            this.nextTab()
-        })
+        // console.log('Tab Added!')
+        // // Adding flow tab names
+        // var newFlowTabNames = this.state.flowTabNames
+        // newFlowTabNames.splice(this.state.currentFlowTabIndex + 1, 0, 'New Tab')
+        // // Adding flow data 
+        // // Updating state, rendering UI
+        // this.setState({
+        //     flowTabNames: newFlowTabNames,
+        // }, () => {
+        //     this.verifyFlowsData()
+        //     this.nextTab()
+        // })
     }
 
     // Deletes the current active flow tab
     deleteTab = () => {
-        // Deleting tab name
-        var newFlowTabNames = this.state.flowTabNames
-        newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
-        // Deleting handsontable reference
-        var newHandsontableFlows = this.state.handsontableFlows
-        newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
-        // Deleting flow data
-        var newFlowsData = this.state.flowsData
-        newFlowsData.splice(this.state.currentFlowTabIndex, 1)
-        // Deleting selected cells data
-        var newSelectedCells = this.state.selectedCells
-        newSelectedCells.splice(this.state.currentFlowTabIndex, 1)
-        // Updating state, rendering UI
-        this.setState({
-            flowTabNames: newFlowTabNames,
-            flowsData: newFlowsData,
-            handsontableFlows: newHandsontableFlows,
-            selectedCells: newSelectedCells,
-        }, () => {
-            this.closeDeleteTabWarningModal()
-            this.prevTab()
-        })
+        // // Deleting tab name
+        // var newFlowTabNames = this.state.flowTabNames
+        // newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
+        // // Deleting handsontable reference
+        // var newHandsontableFlows = this.state.handsontableFlows
+        // newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
+        // // Deleting flow data
+        // var newFlowsData = this.state.flowsData
+        // newFlowsData.splice(this.state.currentFlowTabIndex, 1)
+        // // Deleting selected cells data
+        // var newSelectedCells = this.state.selectedCells
+        // newSelectedCells.splice(this.state.currentFlowTabIndex, 1)
+        // // Updating state, rendering UI
+        // this.setState({
+        //     flowTabNames: newFlowTabNames,
+        //     flowsData: newFlowsData,
+        //     handsontableFlows: newHandsontableFlows,
+        //     selectedCells: newSelectedCells,
+        // }, () => {
+        //     this.closeDeleteTabWarningModal()
+        //     this.prevTab()
+        // })
     }
 
     // Checks if current flow tab index exists; Important
     // to check if tab has been deleted
     currentTabExists = () => {
-        if (this.state.currentFlowTabIndex >= this.state.flowTabNames.length)
-            return false
-        return true
+        // if (this.state.currentFlowTabIndex >= this.state.flowTabNames.length)
+        //     return false
+        // return true
     }
     // Function executes everytime a tab is selected.
     // Renders the current handsontable sheet to adjust settings (colHeader, width, height)
@@ -248,16 +248,16 @@ export default class FlowNavigation extends Component {
     }
     // Renames the tab and closes the modal
     renameTab = () => {
-        var newFlowTabNames = this.state.flowTabNames
-        var tabRenameInput = this.state.renameModalTextInput.current.value
-        // Can't have empty tab name
-        if (tabRenameInput !== '') {
-            newFlowTabNames[this.state.currentFlowTabIndex] = this.state.renameModalTextInput.current.value
-        }
-        this.setState({
-            flowTabNames: newFlowTabNames,
-            showTabRenameModal: false
-        })
+        // var newFlowTabNames = this.state.flowTabNames
+        // var tabRenameInput = this.state.renameModalTextInput.current.value
+        // // Can't have empty tab name
+        // if (tabRenameInput !== '') {
+        //     newFlowTabNames[this.state.currentFlowTabIndex] = this.state.renameModalTextInput.current.value
+        // }
+        // this.setState({
+        //     flowTabNames: newFlowTabNames,
+        //     showTabRenameModal: false
+        // })
     }
 
     // Closes the delete tab warning modal
@@ -288,11 +288,11 @@ export default class FlowNavigation extends Component {
                         break
                     case 73:
                         // Can't delete all tabs, one tab must be there
-                        if (this.state.flowTabNames.length > 1) {
-                            this.setState({
-                                showDeleteTabWarningModal: true
-                            })
-                        }
+                        // if (this.state.flowTabNames.length > 1) {
+                        //     this.setState({
+                        //         showDeleteTabWarningModal: true
+                        //     })
+                        // }
                         event.preventDefault()
                         break
                     case 75:
@@ -323,30 +323,30 @@ export default class FlowNavigation extends Component {
     }
 
     verifyFlowsData(){
-        this.state.flowTabNames.map((flowTab, ind) => {
-            if(this.state.flowsCols[ind] == null){
-                this.state.flowsCols[ind] = []
-            }
-        for (let index = 0; index < this.state.flowSettings.minCols; index++) {
-                this.state.flowsCols[ind][index] = ((String.fromCharCode(index % 26 + 65)) + Math.floor(index / 26))
-        }
-        for (let index = 0; index < this.state.flowSettings.minRows; index++) {
-            if(this.state.flowsData[ind] == null){
-                this.state.flowsData[ind] = []
-            }
-            if(this.state.flowsData[ind].length - 1 < index){
-                this.state.flowsData[ind][index] = {numRow: index + ''}
-                this.state.flowsCols[ind].forEach(col => {
-                    this.state.flowsData[ind][index][col] = ''
-                });
-            }else{
-                this.state.flowsCols[ind].forEach(col => {
-                    if(!this.state.flowsData[ind][index].hasOwnProperty(col))
-                    this.state.flowsData[ind][index][col] = ''
-                });
-            }
-        }
-        });
+        // this.state.flowTabNames.map((flowTab, ind) => {
+        //     if(this.state.flowsCols[ind] == null){
+        //         this.state.flowsCols[ind] = []
+        //     }
+        // for (let index = 0; index < this.state.flowSettings.minCols; index++) {
+        //         this.state.flowsCols[ind][index] = ((String.fromCharCode(index % 26 + 65)) + Math.floor(index / 26))
+        // }
+        // for (let index = 0; index < this.state.flowSettings.minRows; index++) {
+        //     if(this.state.flowsData[ind] == null){
+        //         this.state.flowsData[ind] = []
+        //     }
+        //     if(this.state.flowsData[ind].length - 1 < index){
+        //         this.state.flowsData[ind][index] = {numRow: index + ''}
+        //         this.state.flowsCols[ind].forEach(col => {
+        //             this.state.flowsData[ind][index][col] = ''
+        //         });
+        //     }else{
+        //         this.state.flowsCols[ind].forEach(col => {
+        //             if(!this.state.flowsData[ind][index].hasOwnProperty(col))
+        //             this.state.flowsData[ind][index][col] = ''
+        //         });
+        //     }
+        // }
+        // });
     }
 
     // Configuring window and document listeners
@@ -369,72 +369,11 @@ export default class FlowNavigation extends Component {
         this.setFlowHeightAndWidth()
     }
 
-    onGridReady(params){
-        this.setState({gridApi : (params.api)})
-        this.setState({gridColumnApi : (params.gridColumnApi)})
-
-        const rowData = () => {return this.state.flowsData[this.state.currentFlowTabIndex]}
-        
-        setTimeout(function () {
-          params.api.setRowData(rowData());
-        }, 500);
-      }
-
     render() {
-        // currstate = this.state
-        const gridReady = (params) => {
-            this.onGridReady(params)
-        }
 
         return (
-            <div style={{height:'92%'}}>
-                <Luckysheet/>
-                {/* Sets up flow navigation tabs */}
-                {/* <Tabs id='tabsNav' justify variant='pills' activeKey={('tab-' + this.state.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
-                    {
-                        this.state.flowTabNames.map((value, index) => {
-                            return (
-                                <Tab eventKey={('tab-' + index)} title={value}>
-                                        <div style={{ width:'100%', height: $('#flowNavigationContainer').height() - ($('#flowNavigationContainer .nav').height() + 55) + 'px'}}>
-                                            <div
-                                                id="myGrid"
-                                                style={{
-                                                    height: '100%',
-                                                    width: '100%',
-                                                }}
-                                                className="ag-theme-balham-dark"
-                                            >
-                                                <AgGridReact
-                                                    defaultColDef={{
-                                                        sortable: true,
-                                                        resizable: true,
-                                                        editable: true
-                                                    }}
-                                                    rowHeight={40}
-                                                    onGridReady={gridReady}
-                                                    frameworkComponents={{
-                                                        textRenderer: renderText
-                                                    }}
-                                                >
-                                                    <AgGridColumn headerName="" field="numRow" width={40} editable={false}/>
-                                                    {this.state.flowsCols[this.state.currentFlowTabIndex].map((val) => {
-                                                        return <AgGridColumn
-                                                            field={val}
-                                                            width={this.state.flowSettings.colWidths}
-                                                            wrapText={true}
-                                                            autoHeight={true}
-                                                            headerName={val}
-                                                            cellRenderer='textRenderer'
-                                                        />
-                                                    })}
-                                                </AgGridReact>
-                                            </div>
-                                        </div>
-                                </Tab>
-                            )
-                        })
-                    }
-                </Tabs> */}
+            <div style={{height:this.state.flowSettings.height + 'px'}}>
+                <Luckysheet autosave={this.props.autosave} luckysheetData={this.props.luckysheetData}/>
 
                 {/* Modals */}
 
@@ -445,7 +384,7 @@ export default class FlowNavigation extends Component {
                     closeTabRenameModal={this.closeTabRenameModal}
                     renameTab={this.renameTab}
                     renameModalTextInput={this.state.renameModalTextInput}
-                    placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
+                    // placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
                 />
                 {/* Delete Tab Warning Modal */}
                 <DeleteTabWarningModal
