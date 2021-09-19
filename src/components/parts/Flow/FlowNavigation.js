@@ -1,27 +1,29 @@
 import React, { Component } from 'react'
-import $ from 'jquery';
 import './../../../styling/Flow.css';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
-import Handsontable from 'handsontable';
-import FlexcelFlow from '@handsontable/react';
-import RenameModal from './../modals/RenameModal'
-import DeleteTabWarningModal from './../modals/DeleteTabWarningModal'
-import HotkeyConfigModal from './../modals/HotkeyConfigModal'
+import RenameModal from '../modals/RenameModal'
+import DeleteTabWarningModal from '../modals/DeleteTabWarningModal'
+import HotkeyConfigModal from '../modals/HotkeyConfigModal'
+import Luckysheet from '../../Luckysheet';
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
 
 // Flow data, tab data should be part of state - depends on how tab switching works
-
 export default class FlowNavigation extends Component {
+    luckysheet = window.luckysheet;
 
     constructor(props) {
         super(props)
+
+        // Allow this to be changed later
+        let flowTabNames = ['AC', 'Framework', 'NC']
+        
         // Initialize flow settings, modals, feature configurations
         this.state = {
+            gridApi: null,
+            gridColumnApi: null,
             currentFlowTabIndex: 0,
-            flowTabNames: ['AC', 'Framework', 'NC'],
+            flowTabNames: flowTabNames,
             flowSettings: {
                 height: 500,
                 width: 500,
@@ -32,24 +34,18 @@ export default class FlowNavigation extends Component {
                     autoInsertRow: true
                 },
                 minSpareRows: true,
-                licenseKey: 'non-commercial-and-evaluation',
                 // Autocomplete configuration
                 afterChange: (changes) => {
                     this.handleAutocomplete(changes)
                 }
             },
-            flowsData: [[[]], [[]], [[]]],
-            // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
-            handsontableFlows: [React.createRef(), React.createRef(), React.createRef()],
-
+            flowsData: [],
+            flowsCols: [],
             // Modal configuration
             renameModalTextInput: React.createRef(),
             showTabRenameModal: false,
             showDeleteTabWarningModal: false,
             showHotkeyConfigModal: false,
-
-            // Selected cells
-            selectedCells: [[1, 0], [1, 0], [1, 0]],
 
             // Autocomplete snippets keys and values
             autocompleteDict: {
@@ -59,6 +55,8 @@ export default class FlowNavigation extends Component {
                 'mew': 'maximizing expected wellbeing'
             }
         }
+
+        //this.verifyFlowsData()
     }
 
     // Function executed when app is loaded
@@ -99,19 +97,22 @@ export default class FlowNavigation extends Component {
     // Calculates flow height and width based off flow container and nav tab height 
     // and changes the handsontable flow settings state 
     setFlowHeightAndWidth = () => {
+        this.luckysheet.resize()
         // Error checking needed? Will .nav only return one component?
-        var flowNavigationContainerHeight = $('#flowNavigationContainer').height()
-        var navTabHeight = $('#flowNavigationContainer .nav').height()
-        var newFlowWidth = $('#flowNavigationContainer .nav').width()
-        var newFlowHeight = flowNavigationContainerHeight - navTabHeight
-        this.setState({
-            flowSettings: {
-                ...this.state.flowSettings,
-                height: newFlowHeight,
-                width: newFlowWidth,
-                // colWidths? Need an offset to calculate colWidth
-            }
-        })
+        // var flowNavigationContainerHeight = $('#flowNavigationContainer').height()
+        // var navTabHeight = $('#flowNavigationContainer .nav').height()
+        // var newFlowWidth = $('#flowNavigationContainer .nav').width()
+        // var newFlowHeight = flowNavigationContainerHeight - navTabHeight
+        // // this.setState({
+        // //     flowSettings: {
+        // //         ...this.state.flowSettings,
+        // //         height: newFlowHeight,
+        // //         width: newFlowWidth,
+        // //         // colWidths? Need an offset to calculate colWidth
+        // //     }
+        // // })
+        // this.state.flowSettings.height = newFlowHeight
+        // this.state.flowSettings.height = newFlowWidth
     }
 
     // Gets the selected cell in the current handsontable flow
@@ -141,15 +142,14 @@ export default class FlowNavigation extends Component {
     nextTab = () => {
         console.log('Next Tab')
         // Gets the updated current selecte cell and updates state
-        var newSelectedCells = this.getCurrentSelectedCell()
+        // var newSelectedCells = this.getCurrentSelectedCell()
         // Determining current active index
         var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) >= this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
         // Update state
         this.setState({
             currentFlowTabIndex: newCurrentFlowTabIndex,
-            selectedCells: newSelectedCells,
         }, () => {
-            this.selectLastSelectedCell()
+            // this.selectLastSelectedCell()
         })
     }
     // Sets the previous tab to active
@@ -174,25 +174,14 @@ export default class FlowNavigation extends Component {
         // Adding flow tab names
         var newFlowTabNames = this.state.flowTabNames
         newFlowTabNames.splice(this.state.currentFlowTabIndex + 1, 0, 'New Tab')
-        // Adding handsontable reference 
-        var newHandsontableFlows = this.state.handsontableFlows
-        newHandsontableFlows.splice(this.state.currentFlowTabIndex + 1, 0, React.createRef())
         // Adding flow data 
-        var newFlowsData = this.state.flowsData
-        newFlowsData.splice(this.state.currentFlowTabIndex + 1, 0, [[]])
-        // Adding selected cell data
-        var newSelectedCells = this.state.selectedCells
-        newSelectedCells.splice(this.state.currentFlowTabIndex + 1, 0, [1, 0])
         // Updating state, rendering UI
         this.setState({
             flowTabNames: newFlowTabNames,
-            flowsData: newFlowsData,
-            handsontableFlows: newHandsontableFlows,
-            selectedCells: newSelectedCells
         }, () => {
+            this.verifyFlowsData()
             this.nextTab()
         })
-
     }
 
     // Deletes the current active flow tab
@@ -231,24 +220,23 @@ export default class FlowNavigation extends Component {
     // Function executes everytime a tab is selected.
     // Renders the current handsontable sheet to adjust settings (colHeader, width, height)
     onTabSelect = (key) => {
-        console.log('Tab selected!')
+        console.log('Tab selected!' + key)
         // Calculates current active tab index
-        var tabIndex = parseInt(key.charAt(key.length - 1))
+        var tabIndex = parseInt(key.split('-').pop())
         this.setState({
             currentFlowTabIndex: tabIndex
         })
-        this.renderCurrentHandsontableFlow()
     }
 
-    // Renders the current active handsontable tab
-    // Timeout for 20 ms is necessary for the rest of the components to load
-    // and then render the handsontable so that it can display properly    
-    renderCurrentHandsontableFlow = () => {
-        setTimeout(() => {
-            var currentFlowHotInstance = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance
-            currentFlowHotInstance.render()
-        }, 20)
-    }
+    // // Renders the current active handsontable tab
+    // // Timeout for 20 ms is necessary for the rest of the components to load
+    // // and then render the handsontable so that it can display properly    
+    // renderCurrentFlow = () => {
+    //     setTimeout(() => {
+    //         var currentFlowHotInstance = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance
+    //         currentFlowHotInstance.render()
+    //     }, 20)
+    // }
 
     // Modal configuration
 
@@ -334,6 +322,33 @@ export default class FlowNavigation extends Component {
         }
     }
 
+    verifyFlowsData(){
+        this.state.flowTabNames.map((flowTab, ind) => {
+            if(this.state.flowsCols[ind] == null){
+                this.state.flowsCols[ind] = []
+            }
+        for (let index = 0; index < this.state.flowSettings.minCols; index++) {
+                this.state.flowsCols[ind][index] = ((String.fromCharCode(index % 26 + 65)) + Math.floor(index / 26))
+        }
+        for (let index = 0; index < this.state.flowSettings.minRows; index++) {
+            if(this.state.flowsData[ind] == null){
+                this.state.flowsData[ind] = []
+            }
+            if(this.state.flowsData[ind].length - 1 < index){
+                this.state.flowsData[ind][index] = {numRow: index + ''}
+                this.state.flowsCols[ind].forEach(col => {
+                    this.state.flowsData[ind][index][col] = ''
+                });
+            }else{
+                this.state.flowsCols[ind].forEach(col => {
+                    if(!this.state.flowsData[ind][index].hasOwnProperty(col))
+                    this.state.flowsData[ind][index][col] = ''
+                });
+            }
+        }
+        });
+    }
+
     // Configuring window and document listeners
     componentDidMount() {
         // Adding onLoad() and onResize() listeners
@@ -341,6 +356,8 @@ export default class FlowNavigation extends Component {
         window.addEventListener('resize', this.handleResize);
         // Hotkey configuration
         document.addEventListener('keydown', this.handleHotkeys)
+
+        this.setFlowHeightAndWidth()
     }
     componentWillUnmount() {
         window.removeEventListener('load', this.handleLoad);
@@ -348,23 +365,76 @@ export default class FlowNavigation extends Component {
         document.removeEventListener('keydown', this.handleHotkeys)
     }
 
+    componentDidUpdate(){
+        this.setFlowHeightAndWidth()
+    }
+
+    onGridReady(params){
+        this.setState({gridApi : (params.api)})
+        this.setState({gridColumnApi : (params.gridColumnApi)})
+
+        const rowData = () => {return this.state.flowsData[this.state.currentFlowTabIndex]}
+        
+        setTimeout(function () {
+          params.api.setRowData(rowData());
+        }, 500);
+      }
+
     render() {
+        // currstate = this.state
+        const gridReady = (params) => {
+            this.onGridReady(params)
+        }
+
         return (
-            <div>
+            <div style={{height:'92%'}}>
+                <Luckysheet/>
                 {/* Sets up flow navigation tabs */}
-                <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
+                {/* <Tabs id='tabsNav' justify variant='pills' activeKey={('tab-' + this.state.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
                     {
                         this.state.flowTabNames.map((value, index) => {
                             return (
                                 <Tab eventKey={('tab-' + index)} title={value}>
-                                    <div id='flowContainer'>
-                                        <FlexcelFlow ref={this.state.handsontableFlows[index]} data={this.state.flowsData[index]} settings={this.state.flowSettings} />
-                                    </div>
+                                        <div style={{ width:'100%', height: $('#flowNavigationContainer').height() - ($('#flowNavigationContainer .nav').height() + 55) + 'px'}}>
+                                            <div
+                                                id="myGrid"
+                                                style={{
+                                                    height: '100%',
+                                                    width: '100%',
+                                                }}
+                                                className="ag-theme-balham-dark"
+                                            >
+                                                <AgGridReact
+                                                    defaultColDef={{
+                                                        sortable: true,
+                                                        resizable: true,
+                                                        editable: true
+                                                    }}
+                                                    rowHeight={40}
+                                                    onGridReady={gridReady}
+                                                    frameworkComponents={{
+                                                        textRenderer: renderText
+                                                    }}
+                                                >
+                                                    <AgGridColumn headerName="" field="numRow" width={40} editable={false}/>
+                                                    {this.state.flowsCols[this.state.currentFlowTabIndex].map((val) => {
+                                                        return <AgGridColumn
+                                                            field={val}
+                                                            width={this.state.flowSettings.colWidths}
+                                                            wrapText={true}
+                                                            autoHeight={true}
+                                                            headerName={val}
+                                                            cellRenderer='textRenderer'
+                                                        />
+                                                    })}
+                                                </AgGridReact>
+                                            </div>
+                                        </div>
                                 </Tab>
                             )
                         })
                     }
-                </Tabs>
+                </Tabs> */}
 
                 {/* Modals */}
 
