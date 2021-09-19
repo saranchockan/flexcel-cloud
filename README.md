@@ -1,7 +1,7 @@
 ## Frontend Libraries
 1. React
 2. react-bootstrap 
-3. Handsontable (Spreadsheet API)
+3. Luckysheets (Spreadsheet API)
 4. Summernote (Speech Doc API)
 
 ## Available Scripts
