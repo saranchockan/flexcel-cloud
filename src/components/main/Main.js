@@ -13,7 +13,7 @@ const Main = (props) => {
           <img src={hello} alt="hello" />
           <div className="main__greeting">
             <h1>Hello {props.name}</h1>
-            <p>Welcome to your admin dashboard</p>
+            <p>Welcome to your Flexcel dashboard</p>
           </div>
         </div>
 
