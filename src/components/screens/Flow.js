@@ -24,7 +24,7 @@ export default class Flow extends Component {
             speechDocTabNames: ['Doc 1', 'Doc 2', 'Doc 3', 'Doc 4', 'Doc 5',],
             speechDocValues: ['', '', '', '', ''],
             luckysheetData: [{
-                "name": "Cell", //Worksheet name
+                "name": "PRO", //Worksheet name
                 "color": "", //Worksheet color
                 "index": 0, //Worksheet index
                 "status": 1, //Worksheet active status
@@ -34,7 +34,18 @@ export default class Flow extends Component {
                 "column": 5, //the number of columns in a sheet
                 "defaultRowHeight": 19, //Customized default row height
                 "defaultColWidth": 200, //Customized default column width
-                "celldata": [], //Initial the cell data
+                "celldata": [
+                    {
+                        r: 0,
+                        c: 0,
+                        v: {
+                            v: 'Pro Constructive',
+                            tb: 2,
+                            bg: '#c9c9c9',
+                            ht: 0,
+                        }
+                    }
+                ], //Initial the cell data
                 "config": {
                     "merge":{}, //merged cells
                     "rowlen":{}, //Table row height
