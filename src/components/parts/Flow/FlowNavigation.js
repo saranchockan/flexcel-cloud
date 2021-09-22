@@ -3,7 +3,7 @@ import './../../../styling/Flow.css';
 import RenameModal from '../modals/RenameModal'
 import DeleteTabWarningModal from '../modals/DeleteTabWarningModal'
 import HotkeyConfigModal from '../modals/HotkeyConfigModal'
-import Luckysheet from '../../Luckysheet';
+import Luckysheet from './Luckysheet';
 import $ from 'jquery'; 
 
 // FlowNavigation contains the navigation tab and the hansontable flows

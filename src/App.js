@@ -9,7 +9,6 @@ import Sidebar from "./components/sidebar/Sidebar";
 import RFDDiary from './components/screens/RFDDiary';
 
 import PropTypes from 'prop-types'
-import Luckysheet from './components/Luckysheet';
 
 function getView(page, user) {
 	//handle what page they're on after they logged in

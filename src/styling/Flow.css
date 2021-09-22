@@ -6,7 +6,6 @@
     background: #f3f4f6;
     grid-area: main;
     overflow-y: auto;
-    
 }
 
 #flowNavigationContainer{
@@ -19,3 +18,20 @@
     height: 100%;
     width: 35%;
 }
+
+.split-horizontal {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+  .split-vertical {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .gutter {
+    flex-shrink: 0;
+    flex-grow: 0;
+    background: gray;
+  }
