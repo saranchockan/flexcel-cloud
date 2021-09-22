@@ -8,7 +8,7 @@ import 'bootstrap/js/dist/modal'
 import 'bootstrap/js/dist/dropdown'
 import 'bootstrap/js/dist/tooltip'
 import '../../../styling/App.css'
-import ReactQuill, { Quill } from 'react-quill';
+import QuillComponent from './Quill'
 
 // SpeechDoc.js is the component with Speech Doc(s) and tab navigation
 // Only non-static functionality is renaming the tab (for now)
@@ -124,42 +124,30 @@ export default class SpeechDoc extends Component {
     $('.note-statusbar').hide();
   }
 
-
-
   onChange(content) {
     this.state.tabContents[this.state.currentSpeechDocTabIndex] = content
     this.props.changeTabContents(this.state.tabContents)
     this.props.autosave()
   }
 
-  //TODO: WORK ON USING THIS (this.props.initialValues)
-  onInit = (note, ind) => {
-    note.reset()
-    const regex = /(\<\w*)((\s\/\>)|(.*\<\/\w*\>))/i
-    if (this.props.initialValues[ind].match(regex) !== null) {
-      note.replace(this.props.initialValues[ind])
-    }
-  }
-
   render() {
     let index = 0;
     const change = (c) => { this.onChange(c) }
-    const oI = (c) => { this.onInit(c, index++) }
 
     // this.docOptions.height = this.state.height
     return (
       <div>
-        {/* <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentSpeechDocTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
+        <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentSpeechDocTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
           {
             this.props.tabNames.map((value, index) => {
               return (
-                <Tab eventKey={('tab-' + index)} title={value}> */}
-                  <ReactQuill/>
-                {/* </Tab>
+                <Tab eventKey={('tab-' + index)} title={value}>
+                  <QuillComponent value={this.state.tabContents[index]} setValue={() => {change(index)}}/>
+                </Tab>
               )
             })
           }
-        </Tabs> */}
+        </Tabs>
 
         <RenameModal
           renameEntity='Speech Doc'

@@ -25,7 +25,7 @@ export default class Flow extends Component {
     constructor() {
         super()
         this.state = {
-            speechDocTabNames: ['Doc 1', 'Doc 2', 'Doc 3', 'Doc 4', 'Doc 5',],
+            speechDocTabNames: ['Doc 1', 'Doc 2', 'Doc 3', 'Doc 4', 'RFD',],
             speechDocValues: ['', '', '', '', ''],
             luckysheetData: [{
                 "name": "PRO", //Worksheet name
@@ -121,8 +121,8 @@ export default class Flow extends Component {
             isLoading: true,
             width: 400,
             panes: [
-                { name: genName(), size: 0.5 },
-                { name: genName(), size: 0.5 },
+                { name: genName(), size: 0.6 },
+                { name: genName(), size: 0.4 },
             ],
         }
         this.timer = 0;
