@@ -20,8 +20,9 @@ const Main = (props) => {
         {/* <!-- MAIN TITLE ENDS HERE --> */}
 
         {/* <!-- MAIN CARDS STARTS HERE --> */}
+        <p className="font-bold section_title_ao">Analytics Overview</p>
         <div className="main__cards">
-          <div className="card">
+          <div className="analytics_card">
             {/* <!-- add icon here if applicable --> */}
             <div className="card_inner">
               <p className="font-bold card__title__text">Record</p>
@@ -33,7 +34,7 @@ const Main = (props) => {
             </div>
           </div>
 
-          <div className="card">
+          <div className="analytics_card">
             <div className="card_inner">
               <p className="font-bold card__title__text">Bids</p>
               <p className="font-bold card__info__text">9999</p>
@@ -44,7 +45,7 @@ const Main = (props) => {
             </div>
           </div>
 
-          <div className="card">
+          <div className="analytics_card">
             <div className="card_inner">
               <p className="font-bold card__title__text">Bid Rounds</p>
               <p className="font-bold card__info__text">999</p>
@@ -53,52 +54,28 @@ const Main = (props) => {
         </div>
         {/* <!-- MAIN CARDS ENDS HERE --> */}
 
-        {/* <!-- CHARTS STARTS HERE --> */}
-        <div className="charts"> 
-          <div className="charts__left">
-            <div className="charts__left__title">
-              <div>
-                <h1>Daily Reports</h1>
-                <p>Cupertino, California, USA</p>
-              </div>
-              <i className="fa fa-usd" aria-hidden="true"></i>
-            </div>
-            <Chart />
-          </div>
-
-          <div className="charts__right">
-            <div className="charts__right__title">
-              <div>
-                <h1>Stats Reports</h1>
-                <p>Cupertino, California, USA</p>
-              </div>
-              <i className="fa fa-usd" aria-hidden="true"></i>
-            </div>
-
-            <div className="charts__right__cards">
-              <div className="card1">
-                <h1>Income</h1>
-                <p>$75,300</p>
-              </div>
-
-              <div className="card2">
-                <h1>Sales</h1>
-                <p>$124,200</p>
-              </div>
-
-              <div className="card3">
-                <h1>Users</h1>
-                <p>3900</p>
-              </div>
-
-              <div className="card4">
-                <h1>Orders</h1>
-                <p>1881</p>
-              </div>
-            </div>
-          </div>
+        {/* <!-- upcoming tournaments starts here --> */}
+        <p className="font-bold section_title_ut">Upcoming Tournaments</p>
+        <div className="upcoming_tournaments">
+          <table className="upcoming_tournaments_table">
+            <tr className="upcoming_tournaments_table">
+              <th className="upcoming_tournaments_table_title_name">Name</th>
+              <th className="upcoming_tournaments_table_title_date">Date</th>
+            </tr>
+            <tr className="upcoming_tournaments_table">
+              <th className="upcoming_tournaments_name">Placeholder Tournament Name</th>
+              <th className="upcoming_tournaments_date">09/22/2021</th>
+            </tr>
+            <tr className="upcoming_tournaments_table">
+              <th className="upcoming_tournaments_name">Placeholder Tournament Name</th>
+              <th className="upcoming_tournaments_date">09/22/2021</th>
+            </tr>
+            <tr className="upcoming_tournaments_table">
+              <th className="upcoming_tournaments_name">Placeholder Tournament Name</th>
+              <th className="upcoming_tournaments_date">09/22/2021</th>
+            </tr>
+          </table>
         </div>
-        {/* <!-- CHARTS ENDS HERE --> */}
       </div>
     </main>
   );
