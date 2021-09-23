@@ -46,6 +46,20 @@ main {
   display: flex;
   flex-direction: column;
   height: vw;
+  width: 20vw;
+  border-radius: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 10px;
+  background: #ffffff;
+  margin-left: 15px;
+  box-shadow: 5px 5px 13px #ededed, -5px -5px 13px #ffffff;
+}
+
+.analytics_card_leftmost {
+  display: flex;
+  flex-direction: column;
+  height: vw;
+  width: 20vw;
   border-radius: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.125);
   padding: 10px;

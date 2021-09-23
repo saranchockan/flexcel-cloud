@@ -22,7 +22,7 @@ const Main = (props) => {
         {/* <!-- MAIN CARDS STARTS HERE --> */}
         <p className="font-bold section_title_ao">Analytics Overview</p>
         <div className="main__cards">
-          <div className="analytics_card">
+          <div className="analytics_card_leftmost">
             {/* <!-- add icon here if applicable --> */}
             <div className="card_inner">
               <p className="font-bold card__title__text">Record</p>
