@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import ReactSummernote from 'react-summernote';
 import RenameModal from './../modals/RenameModal'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/js/dist/modal'
 import 'bootstrap/js/dist/dropdown'
 import 'bootstrap/js/dist/tooltip'
-import 'react-summernote/dist/react-summernote.css';
-import 'react-summernote/lang/summernote-ru-RU';
 import '../../../styling/App.css'
+import QuillComponent from './Quill'
 
 // SpeechDoc.js is the component with Speech Doc(s) and tab navigation
 // Only non-static functionality is renaming the tab (for now)
@@ -23,17 +21,20 @@ export default class SpeechDoc extends Component {
   constructor(props) {
     super(props)
     this.docOptions = {
-      height: 500,
-      width: 500,
-      dialogsInBody: false,
-      shortcuts: false,
-      toolbar: []
+      dialogsInBody: true,
+      disableResizeEditor: true,
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+      ],
     }
     this.state = {
       currentSpeechDocTabIndex: 0,
-      speechDocTabNames: ['Doc 1', 'Doc 2', 'Doc 3', 'Doc 4', 'Doc 5',],
       renameModalTextInput: React.createRef(),
       showTabRenameModal: false,
+      tabContents: props.tabContents,
     }
   }
 
@@ -50,11 +51,10 @@ export default class SpeechDoc extends Component {
   // Calculates speech doc height and width based off speech doc 
   // container and timer height
   setSpeechDocHeightAndWidth = () => {
-    var speechDocNavTabHeight = $('#speechDocContainer .nav').height()
-    var speechDocContainerHeight = $('#speechDocContainer').height()
-    var speechDocContainerWidth = $('#speechDocContainer').width()
-    $('.note-editable').height((speechDocContainerHeight - speechDocNavTabHeight - 25))
-    $('.note-editor').width(speechDocContainerWidth - 2)
+    // let newHeight = (window.innerHeight - ($('#root > div > nav').height() + $('#speechDocContainer > div > nav').height() ))
+    // console.log(this.state.height + ' ' + newHeight) 
+    // if(this.state.height != newHeight)
+    //     this.setState({ height: newHeight})
   }
 
   // Function executes everytime a tab is selected.
@@ -69,38 +69,38 @@ export default class SpeechDoc extends Component {
 
   // Renames the tab and closes the modal
   renameTab = () => {
-    var newSpeechDocTabNames = this.state.speechDocTabNames
+    var newSpeechDocTabNames = this.props.tabNames
     var tabRenameInput = this.state.renameModalTextInput.current.value
     // Can't have empty tab name
     if (tabRenameInput !== '') {
       newSpeechDocTabNames[this.state.currentSpeechDocTabIndex] = this.state.renameModalTextInput.current.value
     }
+    this.props.changeTabNames(newSpeechDocTabNames)
     this.setState({
-        speechDocTabNames: newSpeechDocTabNames,
-        showTabRenameModal: false
+      showTabRenameModal: false
     })
   }
 
   // Closes the tab rename modal
   closeTabRenameModal = () => {
     this.setState({
-        showTabRenameModal: false
+      showTabRenameModal: false
     })
   }
 
   // Handles hotkey combinations and fires methods 
   // associated with the feature 
   handleHotkeys = (event) => {
-    if(!event.repeat){
+    if (!event.repeat) {
       if ((event.ctrlKey || event.metaKey)) {
-        switch(event.keyCode){
+        switch (event.keyCode) {
           // Rename Tab Modal
           case 69:
             this.setState({
               showTabRenameModal: true
-          })
-          event.preventDefault()
-          break
+            })
+            event.preventDefault()
+            break
         }
       }
     }
@@ -110,7 +110,7 @@ export default class SpeechDoc extends Component {
     window.addEventListener('load', this.handleLoad)
     window.addEventListener('resize', this.handleResize)
     document.addEventListener('keydown', this.handleHotkeys)
-    
+
   }
 
   componentWillMount() {
@@ -119,15 +119,30 @@ export default class SpeechDoc extends Component {
     document.removeEventListener('keydown', this.handleHotkeys)
   }
 
+  componentDidUpdate() {
+    this.setSpeechDocHeightAndWidth();
+    $('.note-statusbar').hide();
+  }
+
+  onChange(content) {
+    this.state.tabContents[this.state.currentSpeechDocTabIndex] = content
+    this.props.changeTabContents(this.state.tabContents)
+    this.props.autosave()
+  }
+
   render() {
+    let index = 0;
+    const change = (c) => { this.onChange(c) }
+
+    // this.docOptions.height = this.state.height
     return (
       <div>
         <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentSpeechDocTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
           {
-            this.state.speechDocTabNames.map((value, index) => {
+            this.props.tabNames.map((value, index) => {
               return (
                 <Tab eventKey={('tab-' + index)} title={value}>
-                  <ReactSummernote options={this.docOptions} />
+                  <QuillComponent value={this.state.tabContents[index]} setValue={() => {change(index)}}/>
                 </Tab>
               )
             })
@@ -135,12 +150,12 @@ export default class SpeechDoc extends Component {
         </Tabs>
 
         <RenameModal
-          renameEntity = 'Speech Doc'
+          renameEntity='Speech Doc'
           showTabRenameModal={this.state.showTabRenameModal}
           closeTabRenameModal={this.closeTabRenameModal}
           renameTab={this.renameTab}
           renameModalTextInput={this.state.renameModalTextInput}
-          placeHolderTabName={this.state.speechDocTabNames[this.state.currentSpeechDocTabIndex]}
+          placeHolderTabName={this.props.tabNames[this.state.currentSpeechDocTabIndex]}
         />
       </div>
     );

@@ -22,7 +22,7 @@ function getView(page, user) {
 	}
 }
 
-function App(){
+function App(props){
 	return <MainPage auth={useAuth0()}></MainPage>
 }
 
@@ -30,7 +30,7 @@ export default App
 
 class MainPage extends Component {
 	static propTypes = {
-		prop: PropTypes
+		auth: PropTypes.object
 	}
 
 	state = {
@@ -79,7 +79,7 @@ class MainPage extends Component {
 	
 		if (isAuthenticated) {
 			console.log(this.state.page)
-			return <div className={"flex " + (this.state.sidebarOpen ? "main_screen" : "main_min_screen")} style={{gridTemplateRows: (this.state.page == 'Flows' ? '0.2fr 3fr' : '0fr 3fr')}}>
+			return <div className={"flex " + (this.state.sidebarOpen ? "main_screen" : "main_min_screen")} style={{gridTemplateRows: (this.state.page == 'Flows' ? '0.1fr 3fr' : '0fr 3fr')}}>
 						{this.state.page == 'Flows' ? <Navbar sidebarOpen={this.state.sidebarOpen} logOut={logout} /> : <div></div>}
 						<Sidebar sidebarOpen={this.state.sidebarOpen} closeSidebar={closeSidebar} openSidebar={openSidebar} logOut={logout} setPage={page} page={this.state.page} />
 						{getView(this.state.page, user)}

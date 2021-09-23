@@ -1,27 +1,26 @@
 import React, { Component } from 'react'
-import $ from 'jquery';
 import './../../../styling/Flow.css';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
-import Handsontable from 'handsontable';
-import FlexcelFlow from '@handsontable/react';
-import RenameModal from './../modals/RenameModal'
-import DeleteTabWarningModal from './../modals/DeleteTabWarningModal'
-import HotkeyConfigModal from './../modals/HotkeyConfigModal'
+import RenameModal from '../modals/RenameModal'
+import DeleteTabWarningModal from '../modals/DeleteTabWarningModal'
+import HotkeyConfigModal from '../modals/HotkeyConfigModal'
+import Luckysheet from './Luckysheet';
+import $ from 'jquery'; 
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
 
 // Flow data, tab data should be part of state - depends on how tab switching works
-
 export default class FlowNavigation extends Component {
+    luckysheet = window.luckysheet;
 
     constructor(props) {
         super(props)
+        
         // Initialize flow settings, modals, feature configurations
         this.state = {
+            gridApi: null,
+            gridColumnApi: null,
             currentFlowTabIndex: 0,
-            flowTabNames: ['AC', 'Framework', 'NC'],
             flowSettings: {
                 height: 500,
                 width: 500,
@@ -32,24 +31,18 @@ export default class FlowNavigation extends Component {
                     autoInsertRow: true
                 },
                 minSpareRows: true,
-                licenseKey: 'non-commercial-and-evaluation',
                 // Autocomplete configuration
                 afterChange: (changes) => {
                     this.handleAutocomplete(changes)
                 }
             },
-            flowsData: [[[]], [[]], [[]]],
-            // Needs to be auto-generated i.e based of flowTab length? Use lambda, map?
-            handsontableFlows: [React.createRef(), React.createRef(), React.createRef()],
-
+            flowsData: [],
+            flowsCols: [],
             // Modal configuration
             renameModalTextInput: React.createRef(),
             showTabRenameModal: false,
             showDeleteTabWarningModal: false,
             showHotkeyConfigModal: false,
-
-            // Selected cells
-            selectedCells: [[1, 0], [1, 0], [1, 0]],
 
             // Autocomplete snippets keys and values
             autocompleteDict: {
@@ -59,6 +52,8 @@ export default class FlowNavigation extends Component {
                 'mew': 'maximizing expected wellbeing'
             }
         }
+
+        //this.verifyFlowsData()
     }
 
     // Function executed when app is loaded
@@ -99,19 +94,25 @@ export default class FlowNavigation extends Component {
     // Calculates flow height and width based off flow container and nav tab height 
     // and changes the handsontable flow settings state 
     setFlowHeightAndWidth = () => {
+        let newHeight = (window.innerHeight - $('#root > div > nav').height())
+        if(this.state.flowSettings.height != newHeight)
+            this.setState({flowSettings:{...this.state.flowSettings, height: newHeight}})
+        this.luckysheet.resize()
         // Error checking needed? Will .nav only return one component?
-        var flowNavigationContainerHeight = $('#flowNavigationContainer').height()
-        var navTabHeight = $('#flowNavigationContainer .nav').height()
-        var newFlowWidth = $('#flowNavigationContainer .nav').width()
-        var newFlowHeight = flowNavigationContainerHeight - navTabHeight
-        this.setState({
-            flowSettings: {
-                ...this.state.flowSettings,
-                height: newFlowHeight,
-                width: newFlowWidth,
-                // colWidths? Need an offset to calculate colWidth
-            }
-        })
+        // var flowNavigationContainerHeight = $('#flowNavigationContainer').height()
+        // var navTabHeight = $('#flowNavigationContainer .nav').height()
+        // var newFlowWidth = $('#flowNavigationContainer .nav').width()
+        // var newFlowHeight = flowNavigationContainerHeight - navTabHeight
+        // // this.setState({
+        // //     flowSettings: {
+        // //         ...this.state.flowSettings,
+        // //         height: newFlowHeight,
+        // //         width: newFlowWidth,
+        // //         // colWidths? Need an offset to calculate colWidth
+        // //     }
+        // // })
+        // this.state.flowSettings.height = newFlowHeight
+        // this.state.flowSettings.height = newFlowWidth
     }
 
     // Gets the selected cell in the current handsontable flow
@@ -141,114 +142,101 @@ export default class FlowNavigation extends Component {
     nextTab = () => {
         console.log('Next Tab')
         // Gets the updated current selecte cell and updates state
-        var newSelectedCells = this.getCurrentSelectedCell()
+        // var newSelectedCells = this.getCurrentSelectedCell()
         // Determining current active index
-        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) >= this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
-        // Update state
-        this.setState({
-            currentFlowTabIndex: newCurrentFlowTabIndex,
-            selectedCells: newSelectedCells,
-        }, () => {
-            this.selectLastSelectedCell()
-        })
+        // var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex + 1) >= this.state.flowTabNames.length) ? 0 : (this.state.currentFlowTabIndex + 1)
+        // // Update state
+        // this.setState({
+        //     currentFlowTabIndex: newCurrentFlowTabIndex,
+        // }, () => {
+        //     // this.selectLastSelectedCell()
+        // })
     }
     // Sets the previous tab to active
     prevTab = () => {
-        console.log('Prev Tab')
-        // Gets the updated current selecte cell and updates state
+        // console.log('Prev Tab')
+        // // Gets the updated current selecte cell and updates state
 
-        var newSelectedCells = this.getCurrentSelectedCell()
-        // Determining current active index
-        var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
-        this.setState({
-            currentFlowTabIndex: newCurrentFlowTabIndex,
-            selectedCells: newSelectedCells,
-        }, () => {
-            this.selectLastSelectedCell()
-        })
+        // var newSelectedCells = this.getCurrentSelectedCell()
+        // // Determining current active index
+        // var newCurrentFlowTabIndex = ((this.state.currentFlowTabIndex === 0) ? (this.state.flowTabNames.length - 1) : (this.state.currentFlowTabIndex - 1))
+        // this.setState({
+        //     currentFlowTabIndex: newCurrentFlowTabIndex,
+        //     selectedCells: newSelectedCells,
+        // }, () => {
+        //     this.selectLastSelectedCell()
+        // })
     }
 
     // Adds a flow tab next to current flow tab index
     addTab = () => {
-        console.log('Tab Added!')
-        // Adding flow tab names
-        var newFlowTabNames = this.state.flowTabNames
-        newFlowTabNames.splice(this.state.currentFlowTabIndex + 1, 0, 'New Tab')
-        // Adding handsontable reference 
-        var newHandsontableFlows = this.state.handsontableFlows
-        newHandsontableFlows.splice(this.state.currentFlowTabIndex + 1, 0, React.createRef())
-        // Adding flow data 
-        var newFlowsData = this.state.flowsData
-        newFlowsData.splice(this.state.currentFlowTabIndex + 1, 0, [[]])
-        // Adding selected cell data
-        var newSelectedCells = this.state.selectedCells
-        newSelectedCells.splice(this.state.currentFlowTabIndex + 1, 0, [1, 0])
-        // Updating state, rendering UI
-        this.setState({
-            flowTabNames: newFlowTabNames,
-            flowsData: newFlowsData,
-            handsontableFlows: newHandsontableFlows,
-            selectedCells: newSelectedCells
-        }, () => {
-            this.nextTab()
-        })
-
+        // console.log('Tab Added!')
+        // // Adding flow tab names
+        // var newFlowTabNames = this.state.flowTabNames
+        // newFlowTabNames.splice(this.state.currentFlowTabIndex + 1, 0, 'New Tab')
+        // // Adding flow data 
+        // // Updating state, rendering UI
+        // this.setState({
+        //     flowTabNames: newFlowTabNames,
+        // }, () => {
+        //     this.verifyFlowsData()
+        //     this.nextTab()
+        // })
     }
 
     // Deletes the current active flow tab
     deleteTab = () => {
-        // Deleting tab name
-        var newFlowTabNames = this.state.flowTabNames
-        newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
-        // Deleting handsontable reference
-        var newHandsontableFlows = this.state.handsontableFlows
-        newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
-        // Deleting flow data
-        var newFlowsData = this.state.flowsData
-        newFlowsData.splice(this.state.currentFlowTabIndex, 1)
-        // Deleting selected cells data
-        var newSelectedCells = this.state.selectedCells
-        newSelectedCells.splice(this.state.currentFlowTabIndex, 1)
-        // Updating state, rendering UI
-        this.setState({
-            flowTabNames: newFlowTabNames,
-            flowsData: newFlowsData,
-            handsontableFlows: newHandsontableFlows,
-            selectedCells: newSelectedCells,
-        }, () => {
-            this.closeDeleteTabWarningModal()
-            this.prevTab()
-        })
+        // // Deleting tab name
+        // var newFlowTabNames = this.state.flowTabNames
+        // newFlowTabNames.splice(this.state.currentFlowTabIndex, 1)
+        // // Deleting handsontable reference
+        // var newHandsontableFlows = this.state.handsontableFlows
+        // newHandsontableFlows.splice(this.state.currentFlowTabIndex, 1)
+        // // Deleting flow data
+        // var newFlowsData = this.state.flowsData
+        // newFlowsData.splice(this.state.currentFlowTabIndex, 1)
+        // // Deleting selected cells data
+        // var newSelectedCells = this.state.selectedCells
+        // newSelectedCells.splice(this.state.currentFlowTabIndex, 1)
+        // // Updating state, rendering UI
+        // this.setState({
+        //     flowTabNames: newFlowTabNames,
+        //     flowsData: newFlowsData,
+        //     handsontableFlows: newHandsontableFlows,
+        //     selectedCells: newSelectedCells,
+        // }, () => {
+        //     this.closeDeleteTabWarningModal()
+        //     this.prevTab()
+        // })
     }
 
     // Checks if current flow tab index exists; Important
     // to check if tab has been deleted
     currentTabExists = () => {
-        if (this.state.currentFlowTabIndex >= this.state.flowTabNames.length)
-            return false
-        return true
+        // if (this.state.currentFlowTabIndex >= this.state.flowTabNames.length)
+        //     return false
+        // return true
     }
     // Function executes everytime a tab is selected.
     // Renders the current handsontable sheet to adjust settings (colHeader, width, height)
     onTabSelect = (key) => {
-        console.log('Tab selected!')
+        console.log('Tab selected!' + key)
         // Calculates current active tab index
-        var tabIndex = parseInt(key.charAt(key.length - 1))
+        var tabIndex = parseInt(key.split('-').pop())
         this.setState({
             currentFlowTabIndex: tabIndex
         })
-        this.renderCurrentHandsontableFlow()
     }
 
-    // Renders the current active handsontable tab
-    // Timeout for 20 ms is necessary for the rest of the components to load
-    // and then render the handsontable so that it can display properly    
-    renderCurrentHandsontableFlow = () => {
-        setTimeout(() => {
-            var currentFlowHotInstance = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance
-            currentFlowHotInstance.render()
-        }, 20)
-    }
+    // // Renders the current active handsontable tab
+    // // Timeout for 20 ms is necessary for the rest of the components to load
+    // // and then render the handsontable so that it can display properly    
+    // renderCurrentFlow = () => {
+    //     setTimeout(() => {
+    //         var currentFlowHotInstance = this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance
+    //         currentFlowHotInstance.render()
+    //     }, 20)
+    // }
 
     // Modal configuration
 
@@ -260,16 +248,16 @@ export default class FlowNavigation extends Component {
     }
     // Renames the tab and closes the modal
     renameTab = () => {
-        var newFlowTabNames = this.state.flowTabNames
-        var tabRenameInput = this.state.renameModalTextInput.current.value
-        // Can't have empty tab name
-        if (tabRenameInput !== '') {
-            newFlowTabNames[this.state.currentFlowTabIndex] = this.state.renameModalTextInput.current.value
-        }
-        this.setState({
-            flowTabNames: newFlowTabNames,
-            showTabRenameModal: false
-        })
+        // var newFlowTabNames = this.state.flowTabNames
+        // var tabRenameInput = this.state.renameModalTextInput.current.value
+        // // Can't have empty tab name
+        // if (tabRenameInput !== '') {
+        //     newFlowTabNames[this.state.currentFlowTabIndex] = this.state.renameModalTextInput.current.value
+        // }
+        // this.setState({
+        //     flowTabNames: newFlowTabNames,
+        //     showTabRenameModal: false
+        // })
     }
 
     // Closes the delete tab warning modal
@@ -300,11 +288,11 @@ export default class FlowNavigation extends Component {
                         break
                     case 73:
                         // Can't delete all tabs, one tab must be there
-                        if (this.state.flowTabNames.length > 1) {
-                            this.setState({
-                                showDeleteTabWarningModal: true
-                            })
-                        }
+                        // if (this.state.flowTabNames.length > 1) {
+                        //     this.setState({
+                        //         showDeleteTabWarningModal: true
+                        //     })
+                        // }
                         event.preventDefault()
                         break
                     case 75:
@@ -334,6 +322,33 @@ export default class FlowNavigation extends Component {
         }
     }
 
+    verifyFlowsData(){
+        // this.state.flowTabNames.map((flowTab, ind) => {
+        //     if(this.state.flowsCols[ind] == null){
+        //         this.state.flowsCols[ind] = []
+        //     }
+        // for (let index = 0; index < this.state.flowSettings.minCols; index++) {
+        //         this.state.flowsCols[ind][index] = ((String.fromCharCode(index % 26 + 65)) + Math.floor(index / 26))
+        // }
+        // for (let index = 0; index < this.state.flowSettings.minRows; index++) {
+        //     if(this.state.flowsData[ind] == null){
+        //         this.state.flowsData[ind] = []
+        //     }
+        //     if(this.state.flowsData[ind].length - 1 < index){
+        //         this.state.flowsData[ind][index] = {numRow: index + ''}
+        //         this.state.flowsCols[ind].forEach(col => {
+        //             this.state.flowsData[ind][index][col] = ''
+        //         });
+        //     }else{
+        //         this.state.flowsCols[ind].forEach(col => {
+        //             if(!this.state.flowsData[ind][index].hasOwnProperty(col))
+        //             this.state.flowsData[ind][index][col] = ''
+        //         });
+        //     }
+        // }
+        // });
+    }
+
     // Configuring window and document listeners
     componentDidMount() {
         // Adding onLoad() and onResize() listeners
@@ -341,6 +356,8 @@ export default class FlowNavigation extends Component {
         window.addEventListener('resize', this.handleResize);
         // Hotkey configuration
         document.addEventListener('keydown', this.handleHotkeys)
+
+        this.setFlowHeightAndWidth()
     }
     componentWillUnmount() {
         window.removeEventListener('load', this.handleLoad);
@@ -348,23 +365,15 @@ export default class FlowNavigation extends Component {
         document.removeEventListener('keydown', this.handleHotkeys)
     }
 
+    componentDidUpdate(){
+        this.setFlowHeightAndWidth()
+    }
+
     render() {
+
         return (
-            <div>
-                {/* Sets up flow navigation tabs */}
-                <Tabs justify variant='pills' activeKey={('tab-' + this.state.currentFlowTabIndex)} onSelect={(key) => this.onTabSelect(key)}>
-                    {
-                        this.state.flowTabNames.map((value, index) => {
-                            return (
-                                <Tab eventKey={('tab-' + index)} title={value}>
-                                    <div id='flowContainer'>
-                                        <FlexcelFlow ref={this.state.handsontableFlows[index]} data={this.state.flowsData[index]} settings={this.state.flowSettings} />
-                                    </div>
-                                </Tab>
-                            )
-                        })
-                    }
-                </Tabs>
+            <div style={{height:this.state.flowSettings.height + 'px'}}>
+                <Luckysheet autosave={this.props.autosave} luckysheetData={this.props.luckysheetData}/>
 
                 {/* Modals */}
 
@@ -375,7 +384,7 @@ export default class FlowNavigation extends Component {
                     closeTabRenameModal={this.closeTabRenameModal}
                     renameTab={this.renameTab}
                     renameModalTextInput={this.state.renameModalTextInput}
-                    placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
+                    // placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
                 />
                 {/* Delete Tab Warning Modal */}
                 <DeleteTabWarningModal
