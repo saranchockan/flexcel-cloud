@@ -47,7 +47,8 @@ export default class Flow extends Component {
                             tb: 2,
                             bg: '#c9c9c9',
                             ht: 0,
-                        }
+                            fc: '#FF0000'
+                        },
                     },
                     {
                         r: 0,

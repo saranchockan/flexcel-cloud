@@ -9,6 +9,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import RFDDiary from './components/screens/RFDDiary';
 
 import PropTypes from 'prop-types'
+import DropdownBar from './components/parts/Flow/DropdownBar';
 
 function getView(page, user) {
 	//handle what page they're on after they logged in
@@ -22,7 +23,7 @@ function getView(page, user) {
 	}
 }
 
-function App(props){
+function App(props) {
 	return <MainPage auth={useAuth0()}></MainPage>
 }
 
@@ -33,17 +34,41 @@ class MainPage extends Component {
 		auth: PropTypes.object
 	}
 
-	state = {
-		sidebarOpen: true,
-		page: "Dashboard"
+	constructor(props){
+		super(props)
+
+		this.state = {
+			sidebarOpen: true,
+			page: "Dashboard",
+			dropDownInfo: {
+				show: false,
+				top: 0,
+				left: 0,
+				attributes: {}
+			}
+		}
+
+		this.setSidebarOpen = this.setSidebarOpen.bind(this)
+		this.setPage = this.setPage.bind(this)
+		this.handleClick = this.handleClick.bind(this)
 	}
 
-	setSidebarOpen(p){
-		this.setState({sidebarOpen: p})
+	setSidebarOpen(p) {
+		this.setState({ sidebarOpen: p })
 	}
 
-	setPage(p){
-		this.setState({page: p})
+	setPage(p) {
+		this.setState({ page: p })
+	}
+
+	handleClick(e){
+		console.log(e.target.closest('navbar__left'))
+		if(!e.target.closest('a') && this.state.dropDownInfo.show){
+			this.setState({dropDownInfo: {
+				...this.state.dropDownInfo,
+				show: false
+			}})
+		}
 	}
 
 	render() {
@@ -57,18 +82,6 @@ class MainPage extends Component {
 			getAccessTokenSilently
 		} = this.props.auth
 
-		const page = (p) => {
-			this.setPage(p)
-		}
-
-		const closeSidebar = () => {
-			this.setSidebarOpen(false)
-		}
-
-		const openSidebar = () => {
-			this.setSidebarOpen(true)
-		}
-	
 		//handle logging out if they click the log out button
 		if (isLoading) {
 			return <div>Loading...</div>;
@@ -76,15 +89,18 @@ class MainPage extends Component {
 		if (error) {
 			return <div>{error.message}</div>;
 		}
-	
+
 		if (isAuthenticated) {
-			console.log(this.state.page)
-			return <div className={"flex " + (this.state.sidebarOpen ? "main_screen" : "main_min_screen")} style={{gridTemplateRows: (this.state.page == 'Flows' ? '0.1fr 3fr' : '0fr 3fr')}}>
-						{this.state.page == 'Flows' ? <Navbar sidebarOpen={this.state.sidebarOpen} logOut={logout} /> : <div></div>}
-						<Sidebar sidebarOpen={this.state.sidebarOpen} closeSidebar={closeSidebar} openSidebar={openSidebar} logOut={logout} setPage={page} page={this.state.page} />
-						{getView(this.state.page, user)}
-					</div>
-	
+			console.log(this.state.dropDownInfo)
+			return <div className={"flex " + (this.state.sidebarOpen ? "main_screen" : "main_min_screen")} style={{ gridTemplateRows: (this.state.page == 'Flows' ? '0.1fr 3fr' : '0fr 3fr') }}>
+				{
+					<DropdownBar handleClick={this.handleClick} dropDownInfo={this.state.dropDownInfo}></DropdownBar>
+				}
+				{this.state.page == 'Flows' ? <Navbar show={this.state.dropDownInfo.show} setDropdownInfo={(n) => this.setState({dropDownInfo: {...this.state.dropDownInfo, ...n}})}/> : <div></div>}
+				<Sidebar sidebarOpen={this.state.sidebarOpen} closeSidebar={() => {this.setSidebarOpen(false)}} openSidebar={() => {this.setSidebarOpen(true)}} logOut={logout} setPage={this.setPage} page={this.state.page} />
+				{getView(this.state.page, user)}
+			</div>
+
 		} else {
 			loginWithRedirect();
 		}

@@ -13,7 +13,7 @@ const modules = {
 }
 
 const formats = [
-  'header',
+  'header', 'background',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
   'list', 'bullet', 'indent',
   'link', 'image'

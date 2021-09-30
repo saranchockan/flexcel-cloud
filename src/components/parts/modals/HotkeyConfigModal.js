@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import 'bootstrap/dist/css/bootstrap.css';
 import Modal from 'react-bootstrap/Modal'
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
@@ -19,7 +20,7 @@ export default class HotkeyConfigModal extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Accordion defaultActiveKey="0">
-                        <Card>
+                        <Card style={{height: 'fit-content'}}>
                             <Accordion.Toggle as={Card.Header} eventKey="0">
                                 Tab Navigation
                             </Accordion.Toggle>
@@ -40,7 +41,7 @@ export default class HotkeyConfigModal extends Component {
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
-                        <Card>
+                        <Card style={{height: 'fit-content'}}>
                             <Accordion.Toggle as={Card.Header} eventKey="1">
                                 Template Configuration
                             </Accordion.Toggle>
@@ -71,7 +72,7 @@ export default class HotkeyConfigModal extends Component {
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
-                        <Card>
+                        <Card style={{height: 'fit-content'}}>
                             <Accordion.Toggle as={Card.Header} eventKey="2">
                                 Spreadsheet
                             </Accordion.Toggle>
@@ -79,7 +80,7 @@ export default class HotkeyConfigModal extends Component {
                                 <Card.Body>Hello! I'm another body</Card.Body>
                             </Accordion.Collapse>
                         </Card>
-                        <Card>
+                        <Card style={{height: 'fit-content'}}>
                             <Accordion.Toggle as={Card.Header} eventKey="3">
                                 SpeechDoc
                             </Accordion.Toggle>

@@ -23,12 +23,6 @@ export default class SpeechDoc extends Component {
     this.docOptions = {
       dialogsInBody: true,
       disableResizeEditor: true,
-      toolbar: [
-        ['style', ['style']],
-        ['font', ['bold', 'underline', 'clear']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-      ],
     }
     this.state = {
       currentSpeechDocTabIndex: 0,
@@ -36,6 +30,7 @@ export default class SpeechDoc extends Component {
       showTabRenameModal: false,
       tabContents: props.tabContents,
     }
+    this.onChange = this.onChange.bind(this)
   }
 
   // Function executed when app is loaded
@@ -99,7 +94,6 @@ export default class SpeechDoc extends Component {
             this.setState({
               showTabRenameModal: true
             })
-            event.preventDefault()
             break
         }
       }
@@ -132,7 +126,6 @@ export default class SpeechDoc extends Component {
 
   render() {
     let index = 0;
-    const change = (c) => { this.onChange(c) }
 
     // this.docOptions.height = this.state.height
     return (
@@ -142,7 +135,7 @@ export default class SpeechDoc extends Component {
             this.props.tabNames.map((value, index) => {
               return (
                 <Tab eventKey={('tab-' + index)} title={value}>
-                  <QuillComponent value={this.state.tabContents[index]} setValue={() => {change(index)}}/>
+                  <QuillComponent value={this.state.tabContents[index]} setValue={(c) => {this.onChange(c)}}/>
                 </Tab>
               )
             })

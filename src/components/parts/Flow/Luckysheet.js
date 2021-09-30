@@ -1,10 +1,9 @@
 import React from 'react';
-
 class Luckysheet extends React.Component {
     state = {
         tmpRowHeight: 0,
         tmp: true,
-        c: 0
+
     }
 
     componentDidMount() {
@@ -16,36 +15,29 @@ class Luckysheet extends React.Component {
             column: 5,
             rows: 40,
             allowCopy: true,
+            smoothScroll: true,
             showtoolbar: false,
+            showstatisticBar: false,
+            showstatisticBarConfig: {
+                count: false, // Count bar
+                view: false, // Print view
+                zoom: false // Zoom
+            },
             sheetFormulaBar: false,
             rowHeaderWidth: 0,
             columnHeaderHeight: 0,
             defaultColWidth: 200,
             data: this.props.luckysheetData,
             showsheetbarConfig: {
-                add: false, //Add worksheet
+                add: true, //Add worksheet
                 menu: false, //Worksheet management menu
                 sheet: true //Worksheet display
             },
             hook: {
-                // rangeClearBefore: (range, data) => {
-                //     for (let index = 0; index < range.length; index++) {
-                //         const element = range[index];
+                addNewSheet: (c) => {
 
-                //         if(element.row[0] == 0 || element.row[1] == 0){
-                //             return false
-                //         }
-                //     }
-                // },
-                // rangeDeleteBefore: (range, data) => {
-                //     for (let index = 0; index < range.length; index++) {
-                //         const element = range[index];
-
-                //         if(element.row[0] == 0 || element.row[1] == 0){
-                //             return false
-                //         }
-                //     }
-                // },
+                    return false
+                },
                 cellEditBefore: (range) => {
                     for (let index = 0; index < range.length; index++) {
                         const element = range[index];
@@ -55,29 +47,27 @@ class Luckysheet extends React.Component {
                         }
                     }
                 },
-                // rangeCutBefore: (range, data) => {
-                //     for (let index = 0; index < range.length; index++) {
-                //         const element = range[index];
-
-                //         if(element.row[0] == 0 || element.row[1] == 0){
-                //             return false
-                //         }
-                //     }
-                // },
+                cellRenderBefore: (cell, position, sheet, ctx) => {
+                    // if(position.r == 1) return false
+                }, 
                 updated: (o) => {
-                    let onceUndo = 0
-                    if (o.type == 'datachange') {
-                        if (o.curdata.length >= 1 && onceUndo == 0)
+                    let shouldUndo = false
+                    if (this.state.tmp) {
+                        if (o.curdata != null && o.curdata.length >= 1)
                             if (JSON.stringify(o.curdata[0]) !== JSON.stringify(o.data[0])) {
-                                if (this.state.tmp) {
-                                    onceUndo++
-                                    this.state.tmp = false
-                                    luckysheet.undo()
-                                    return
-                                } else {
-                                    this.state.tmp = true
-                                }
+                                shouldUndo = true
                             }
+
+                        if (shouldUndo) {
+                            this.state.tmp = false
+                            luckysheet.undo()
+                            return
+                        }
+                    } else {
+                        this.state.tmp = true
+                    }
+
+                    if (o.type == 'datachange') {
                         for (let index = 0; index < o.range.length; index++) {
                             const element = o.range[index];
 
@@ -86,12 +76,9 @@ class Luckysheet extends React.Component {
                                 rowHeights[index] = "auto"
                             }
 
-                            console.log(rowHeights)
-
                             luckysheet.setRowHeight(rowHeights)
                         }
                     }
-                    this.props.autosave()
                 },
             },
         });

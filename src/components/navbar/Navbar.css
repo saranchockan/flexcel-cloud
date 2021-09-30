@@ -1,7 +1,7 @@
 .navbar {
   background: #ffffff;
   grid-area: nav;
-  height: 60px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
