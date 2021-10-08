@@ -2,6 +2,7 @@ import "./Main.css";
 import hello from "../../assets/hello.svg";
 import Chart from "../charts/Chart";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getTest, putTest } from "../../api/API";
 
 const Main = (props) => {
   return (

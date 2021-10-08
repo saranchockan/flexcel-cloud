@@ -12,8 +12,12 @@ function __internal_fetch(link, headers, handleError, callback){
         .catch(reason => handleError(reason))
 }
 
-function getTest(){
-    __internal_fetch('/', getMethod, (e) => {console.log(e)}, (e) => {console.log(e)})
+export function putTest(){
+    __internal_fetch('', putMethod, (e) => {console.log(e)}, (e) => {console.log(e)})
+}
+
+export function getTest(){
+    __internal_fetch('', getMethod, (e) => {console.log(e)}, (e) => {console.log(e)})
 }
 
 const putMethod = {
@@ -21,7 +25,7 @@ const putMethod = {
     headers: {
      'Content-type': 'application/json'
     },
-    //body: JSON.stringify({'type' : 'flow', 'value' : {'TEST' : 'TEST'}})
+    body: JSON.stringify({'type' : 'flow', 'value' : {'TEST' : 'TEST'}})
 }
 
 const getMethod = {
@@ -29,7 +33,7 @@ const getMethod = {
     headers: {
      'Content-type': 'application/json'
     },
-    //body: JSON.stringify({'type' : 'flow', 'value' : {'TEST' : 'TEST'}})
+    body: JSON.stringify({'type' : 'flow'})
 }
 
 /**
