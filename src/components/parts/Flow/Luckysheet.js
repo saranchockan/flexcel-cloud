@@ -34,7 +34,7 @@ class Luckysheet extends React.Component {
             },
             hook: {
                 addNewSheet: (c) => {
-
+                    this.props.openTemplate()
                     return false
                 },
                 cellEditBefore: (range) => {

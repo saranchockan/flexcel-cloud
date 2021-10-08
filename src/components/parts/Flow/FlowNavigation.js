@@ -234,7 +234,7 @@ export default class FlowNavigation extends Component {
 
         return (
             <div style={{height:this.state.flowSettings.height + 'px'}}>
-                <Luckysheet autosave={this.props.autosave} luckysheetData={this.props.luckysheetData}/>
+                <Luckysheet autosave={this.props.autosave} luckysheetData={this.props.luckysheetData} openTemplate={() => this.setState({showTemplateChooserModal: true})}/>
 
                 {/* Modals */}
 
