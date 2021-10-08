@@ -5,18 +5,45 @@ import DeleteTabWarningModal from '../modals/DeleteTabWarningModal'
 import HotkeyConfigModal from '../modals/HotkeyConfigModal'
 import Luckysheet from './Luckysheet';
 import $ from 'jquery'; 
+import TemplateChooserModal from '../modals/TemplateChooserModal';
 
-// const KEYS = {
-//     A: 
-// }
+const charNum = (c) => {return c.charCodeAt(0)}
+const luckysheet = window.luckysheet;
+
+export let HOTKEY_CONFIGURATION = {
+    [charNum('P')] : 0,
+    [charNum('O')] : 1,
+    [charNum('K')] : 2,
+    [charNum('I')] : 3,
+}
 
 // FlowNavigation contains the navigation tab and the hansontable flows
 // Functionality - add and delete tabs; renaming tabs, dragging tabs re-ordering
 
 // Flow data, tab data should be part of state - depends on how tab switching works
 export default class FlowNavigation extends Component {
-    luckysheet = window.luckysheet;
+    HOTKEY_METHODS = {
+        'Next Tab' : () => {
+            let nextTab = luckysheet.getSheet().order + 1
+            if(nextTab >= luckysheet.getLuckysheetfile().length) nextTab = 0
+            luckysheet.setSheetShow({order:nextTab})
+        },
+        'Previous Tab' : () => {
+            let prevTab = luckysheet.getSheet().order - 1
+            if(prevTab < 0) prevTab = luckysheet.getLuckysheetfile().length - 1
+            luckysheet.setSheetShow({order:prevTab})
+        },
+        'New Tab' : () => {
+            luckysheet.setSheetAdd()
+        },
+        'Template Configuration' : () => {
+            this.setState({
+                showTemplateChooserModal: true
+            })
+        }
+    }
 
+    luckysheet = window.luckysheet;
     constructor(props) {
         super(props)
         
@@ -38,6 +65,8 @@ export default class FlowNavigation extends Component {
             showTabRenameModal: false,
             showDeleteTabWarningModal: false,
             showHotkeyConfigModal: false,
+            showHotkeyConfigModal: false,
+            showTemplateChooserModal: false,
 
             // Autocomplete snippets keys and values
             autocompleteDict: {
@@ -51,6 +80,8 @@ export default class FlowNavigation extends Component {
         //this.verifyFlowsData()
     }
 
+
+
     // Function executed when app is loaded
     handleLoad = () => {
         console.log('LOADED')
@@ -61,29 +92,6 @@ export default class FlowNavigation extends Component {
     handleResize = () => {
         console.log('RESIZE')
         this.setFlowHeightAndWidth()
-    }
-
-    // Function that handles autocomplete feature
-    handleAutocomplete = (changes) => {
-        if (changes !== null && changes !== undefined) {
-            changes.forEach(([row, prop, oldValue, newValue]) => {
-                if (newValue !== undefined && newValue !== null) {
-                    var autocompleteUsed = false
-                    var cellLine = newValue.split(' ')
-                    for (var i = 0; i < cellLine.length; i++) {
-                        var word = cellLine[i]
-                        if (word in this.state.autocompleteDict) {
-                            cellLine[i] = this.state.autocompleteDict[word]
-                            autocompleteUsed = true
-                        }
-                    }
-                    if (autocompleteUsed) {
-                        cellLine = cellLine.join(" ")
-                        this.state.handsontableFlows[this.state.currentFlowTabIndex].current.hotInstance.setDataAtCell(row, prop, cellLine)
-                    }
-                }
-            });
-        }
     }
 
     // Calculates flow height and width based off flow container and nav tab height 
@@ -151,75 +159,55 @@ export default class FlowNavigation extends Component {
         })
     }
 
+    // Closes the hotkey config modal
+    closeTemplateChooserModal = () => {
+        this.setState({
+            showTemplateChooserModal: false
+        })
+    }
+
     // Handles hotkey combinations and fires methods 
     // associated with the feature 
     handleHotkeys = (event) => {
         if (!event.repeat) {
             if ((event.ctrlKey || event.metaKey)) {
-                console.log(event.keyCode)
-                switch (event.keyCode) {
-                    case 72:
-                        this.setState({
-                            showHotkeyConfigModal: true
-                        })
-                        event.preventDefault()
-                        break
-                    case 73:
-                        // Can't delete all tabs, one tab must be there
-                        // if (this.state.flowTabNames.length > 1) {
-                        //     this.setState({
-                        //         showDeleteTabWarningModal: true
-                        //     })
-                        // }
-                        event.preventDefault()
-                        break
-                    case 75:
-                        this.addTab()
-                        event.preventDefault()
-                        break
-                    // Ctrl + O
-                    case 79:
-                        this.prevTab()
-                        event.preventDefault()
-                        break
-                    // Ctrl + P
-                    case 80:
-                        this.nextTab()
-                        event.preventDefault()
-                        break
-                    case 82:
-                        event.preventDefault()
-                        break
+                if(event.keyCode in HOTKEY_CONFIGURATION){
+                    Object.values(this.HOTKEY_METHODS)[HOTKEY_CONFIGURATION[event.keyCode]]()
+                    event.preventDefault()
                 }
+                // switch (event.keyCode) {
+                //     case 72:
+                //         this.setState({
+                //             showHotkeyConfigModal: true
+                //         })
+                //         event.preventDefault()
+                //         break
+                //     case 73:
+                //         // Can't delete all tabs, one tab must be there
+                //         // if (this.state.flowTabNames.length > 1) {
+                //         //     this.setState({
+                //         //         showDeleteTabWarningModal: true
+                //         //     })
+                //         // }
+                //         event.preventDefault()
+                //         break
+                //     case 75:
+                //         this.luckysheet.setSheetAdd()
+                //         event.preventDefault()
+                //         break
+                //     // Ctrl + O
+                //     case 79:
+                //         break
+                //     // Ctrl + P
+                //     case 82:
+                //         event.preventDefault()
+                //         break
+                // }
             }
         }
     }
 
     verifyFlowsData(){
-        // this.state.flowTabNames.map((flowTab, ind) => {
-        //     if(this.state.flowsCols[ind] == null){
-        //         this.state.flowsCols[ind] = []
-        //     }
-        // for (let index = 0; index < this.state.flowSettings.minCols; index++) {
-        //         this.state.flowsCols[ind][index] = ((String.fromCharCode(index % 26 + 65)) + Math.floor(index / 26))
-        // }
-        // for (let index = 0; index < this.state.flowSettings.minRows; index++) {
-        //     if(this.state.flowsData[ind] == null){
-        //         this.state.flowsData[ind] = []
-        //     }
-        //     if(this.state.flowsData[ind].length - 1 < index){
-        //         this.state.flowsData[ind][index] = {numRow: index + ''}
-        //         this.state.flowsCols[ind].forEach(col => {
-        //             this.state.flowsData[ind][index][col] = ''
-        //         });
-        //     }else{
-        //         this.state.flowsCols[ind].forEach(col => {
-        //             if(!this.state.flowsData[ind][index].hasOwnProperty(col))
-        //             this.state.flowsData[ind][index][col] = ''
-        //         });
-        //     }
-        // }
-        // });
     }
 
     // Configuring window and document listeners
@@ -267,6 +255,11 @@ export default class FlowNavigation extends Component {
                 />
                 {/* Hotkey configuration modal */}
 
+                {/* Template configuration modal */}
+                <TemplateChooserModal
+                    showHotkeyConfigModal={this.state.showTemplateChooserModal}
+                    closeHotkeyConfigModal={this.closeTemplateChooserModal}
+                />
             </div>
         )
     }

@@ -15,13 +15,13 @@ export default class TemplateChooserModal extends Component {
                 onHide={this.props.closeHotkeyConfigModal}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Hotkey Configuration</Modal.Title>
+                    <Modal.Title>Template Configuration</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Accordion defaultActiveKey="0">
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="0">
-                                Tab Navigation
+                                Default Templates
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
@@ -42,7 +42,7 @@ export default class TemplateChooserModal extends Component {
                         </Card>
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="1">
-                                Template Configuration
+                                My Templates
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey="1">
                                 <Card.Body>
@@ -71,31 +71,6 @@ export default class TemplateChooserModal extends Component {
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
-                        <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="2">
-                                Spreadsheet
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="2">
-                                <Card.Body>Hello! I'm another body</Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
-                        <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="3">
-                                SpeechDoc
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="3">
-                                <Card.Body>
-                                    <ListGroup>
-                                        <ListGroup.Item>
-                                            <h3>
-                                                <Badge variant="dark">Ctrl + E</Badge> : Rename Doc
-                                            </h3>
-                                        </ListGroup.Item>
-                                    </ListGroup>
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
-
                     </Accordion>
                 </Modal.Body>
             </Modal>
