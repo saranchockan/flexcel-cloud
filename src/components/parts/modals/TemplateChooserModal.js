@@ -4,6 +4,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import Badge from 'react-bootstrap/Badge'
 import ListGroup from 'react-bootstrap/ListGroup'
+import { TEMPLATES } from '../../screens/Templates'
 // This component is the modal that will 
 // display the templates for addable sheets
 
@@ -26,16 +27,20 @@ export default class TemplateChooserModal extends Component {
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
                                     <ListGroup>
-                                        <ListGroup.Item>
-                                            <h3>
-                                                <Badge variant="dark">Ctrl + P</Badge> : Next Tab
-                                            </h3>
-                                        </ListGroup.Item>
-                                        <ListGroup.Item>
-                                            <h3>
-                                                <Badge variant="dark">Ctrl + O</Badge> : Previous Tab
-                                            </h3>
-                                        </ListGroup.Item>
+                                        {
+                                            Object.keys(TEMPLATES).map((val, ind) => {
+                                                return <ListGroup.Item onClick={(e) => {
+                                                    window.luckysheet.setSheetAdd({
+                                                        sheetObject: Object.values(TEMPLATES)[ind],
+                                                        order: window.luckysheet.getSheet().order + 1,
+                                                        success: null})
+                                                }}>
+                                                    <h3>
+                                                        <Badge variant="dark">DEFAULT</Badge> {val}
+                                                    </h3>
+                                                </ListGroup.Item>
+                                            })
+                                        }
                                     </ListGroup>
                                 </Card.Body>
                             </Accordion.Collapse>

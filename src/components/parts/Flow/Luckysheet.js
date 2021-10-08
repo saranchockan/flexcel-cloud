@@ -3,7 +3,6 @@ class Luckysheet extends React.Component {
     state = {
         tmpRowHeight: 0,
         tmp: true,
-
     }
 
     componentDidMount() {
