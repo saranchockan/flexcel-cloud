@@ -4,12 +4,16 @@ const DEFAULT_ERR_HANDLER = (reason) => {
     console.log(reason)
 }
 
-function __internal_fetch(link, headers, params, handleError, callback){
+function __internal_fetch(link, headers, handleError, callback){
     headers['apiKey'] = '';
     fetch(API_LINK + link, headers)
         .then(res => res.json())
         .then(data => callback(data))
         .catch(reason => handleError(reason))
+}
+
+function getTest(){
+    __internal_fetch('/', getMethod, (e) => {console.log(e)}, (e) => {console.log(e)})
 }
 
 const putMethod = {
