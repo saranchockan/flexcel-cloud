@@ -1,4 +1,4 @@
-const API_LINK = ''
+const API_LINK = 'https://cors-anywhere.herokuapp.com/http://3.231.167.221/storage/3'
 
 const DEFAULT_ERR_HANDLER = (reason) => {
     console.log(reason)
@@ -12,6 +12,21 @@ function __internal_fetch(link, headers, params, handleError, callback){
         .catch(reason => handleError(reason))
 }
 
+const putMethod = {
+    method: 'PUT', 
+    headers: {
+     'Content-type': 'application/json'
+    },
+    //body: JSON.stringify({'type' : 'flow', 'value' : {'TEST' : 'TEST'}})
+}
+
+const getMethod = {
+    method: 'GET', 
+    headers: {
+     'Content-type': 'application/json'
+    },
+    //body: JSON.stringify({'type' : 'flow', 'value' : {'TEST' : 'TEST'}})
+}
 
 /**
  * Autosaving Documentation
