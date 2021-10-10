@@ -1,29 +1,33 @@
-const API_LINK = 'https://cors-anywhere.herokuapp.com/http://3.231.167.221/storage/3'
+const API_LINK = 'http://localhost:8080/http://3.231.167.221/storage/3'
 
 const DEFAULT_ERR_HANDLER = (reason) => {
     console.log(reason)
 }
 
-function __internal_fetch(link, headers, handleError, callback){
+function __internal_fetch(link, headers, params, handleError, callback){
     headers['apiKey'] = '';
-    fetch(API_LINK + link, headers)
+    var url = new URL(API_LINK + link)
+    url.search = new URLSearchParams(params).toString();
+    console.log(url.search);
+    fetch(url, headers)
         .then(res => res.json())
         .then(data => callback(data))
         .catch(reason => handleError(reason))
 }
 
 export function putTest(){
-    __internal_fetch('', putMethod, (e) => {console.log(e)}, (e) => {console.log(e)})
+    __internal_fetch('', putMethod, {}, (e) => {console.log(e)}, (e) => {console.log(e)})
 }
 
 export function getTest(){
-    __internal_fetch('', getMethod, (e) => {console.log(e)}, (e) => {console.log(e)})
+    __internal_fetch('', getMethod, {'type' : 'flow'}, (e) => {console.log(e)}, (e) => {console.log(e)})
 }
 
 const putMethod = {
     method: 'PUT', 
     headers: {
-     'Content-type': 'application/json'
+        "X-Requested-With": "XMLHttpRequest",
+        'Content-type': 'application/json'
     },
     body: JSON.stringify({'type' : 'flow', 'value' : {'TEST' : 'TEST'}})
 }
@@ -31,9 +35,9 @@ const putMethod = {
 const getMethod = {
     method: 'GET', 
     headers: {
-     'Content-type': 'application/json'
+        "X-Requested-With": "XMLHttpRequest",
+        'Content-type': 'application/json'
     },
-    body: JSON.stringify({'type' : 'flow'})
 }
 
 /**
