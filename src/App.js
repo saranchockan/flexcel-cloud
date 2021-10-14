@@ -10,6 +10,8 @@ import RFDDiary from './components/screens/RFDDiary';
 
 import PropTypes from 'prop-types'
 import DropdownBar from './components/parts/Flow/DropdownBar';
+import { setAccessToken } from './api/API';
+import { wait } from '@testing-library/dom';
 
 function getView(page, user) {
 	//handle what page they're on after they logged in
@@ -71,6 +73,16 @@ class MainPage extends Component {
 		}
 	}
 
+	componentDidMount() {
+		const {
+			getAccessTokenSilently
+		} = this.props.auth
+		const setTok = async () => {
+			setAccessToken(await getAccessTokenSilently())
+		}
+		setTok()
+	}
+
 	render() {
 		const {
 			isLoading,
@@ -79,7 +91,6 @@ class MainPage extends Component {
 			user,
 			loginWithRedirect,
 			logout,
-			getAccessTokenSilently
 		} = this.props.auth
 
 		//handle logging out if they click the log out button

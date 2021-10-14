@@ -1,10 +1,16 @@
+import React, { useState } from 'react';
 import "./Main.css";
 import hello from "../../assets/hello.svg";
 import Chart from "../charts/Chart";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getTest, putTest } from "../../api/API";
+import { getTest, putDB, getDB, putTest } from "../../api/API";
 
 const Main = (props) => {
+  putDB("None", "Record_W", "11243");
+  const[res, setRes] = useState();
+  React.useEffect(() => {
+    getDB("None", "Record_W", (e) => {setRes(e)});
+  });
   return (
     <main>
       <div className="main__container">
@@ -27,7 +33,7 @@ const Main = (props) => {
             {/* <!-- add icon here if applicable --> */}
             <div className="card_inner">
               <p className="font-bold card__title__text">Record</p>
-              <p className="font-bold card__info__text">999-999</p>
+              <p className="font-bold card__info__text">{res}-999</p>
             </div>
             <div className="change">
               <i class="fa fa-arrow-up fa-2x" style={{color:'rgb(56, 240, 56)'}} aria-hidden="true"></i> {/* <!-- later, add if statement on whether to use up or down arrow --> */}

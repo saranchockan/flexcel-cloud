@@ -1,4 +1,7 @@
-const API_LINK = 'http://localhost:8080/http://3.231.167.221/storage/3'
+const API_LINK = 'http://localhost:8080/http://3.231.167.221/storage'
+let accessToken = ''
+let store = ''
+let wait = 'false'
 
 const DEFAULT_ERR_HANDLER = (reason) => {
     console.log(reason)
@@ -15,6 +18,35 @@ function __internal_fetch(link, headers, params, handleError, callback){
         .catch(reason => handleError(reason))
 }
 
+export function setAccessToken(newAccessToken) {
+    accessToken = newAccessToken;
+    console.log(accessToken);
+}
+
+export function putDB(folderName, type, value){ //send file to db
+    const putMethod = {
+        method: 'PUT', 
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({'type' : type, 'value' : value})
+    }
+    __internal_fetch('/' + accessToken + '/' + folderName, putMethod, {}, (e) => {console.log(e)}, (e) => {console.log(e)})
+}
+
+export function getDB(folderName, type, callback){
+    const getMethod = {
+        method: 'GET', 
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            'Content-type': 'application/json'
+        },
+    }
+    __internal_fetch('/' + accessToken + '/' + folderName, getMethod, {'type' : type}, (e) => {console.log(e)}, (e) => {callback(e)})
+}
+
+/* testing
 export function putTest(){
     __internal_fetch('', putMethod, {}, (e) => {console.log(e)}, (e) => {console.log(e)})
 }
@@ -38,7 +70,7 @@ const getMethod = {
         "X-Requested-With": "XMLHttpRequest",
         'Content-type': 'application/json'
     },
-}
+}*/
 
 /**
  * Autosaving Documentation
