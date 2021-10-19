@@ -15,6 +15,7 @@ export let HOTKEY_CONFIGURATION = {
     [charNum('O')] : 1,
     [charNum('K')] : 2,
     [charNum('I')] : 3,
+    [charNum('R')] : 4,
 }
 
 // FlowNavigation contains the navigation tab and the hansontable flows
@@ -36,10 +37,11 @@ export default class FlowNavigation extends Component {
         'New Tab' : () => {
             luckysheet.setSheetAdd()
         },
-        'Template Configuration' : () => {
-            this.setState({
-                showTemplateChooserModal: true
-            })
+        'Delete Tab' : () => {
+            luckysheet.setSheetDelete({order: luckysheet.getSheet().order})
+        },
+        'Rename Tab' : () => {
+            this.setState({showTabRenameModal: true})
         }
     }
 
@@ -243,7 +245,10 @@ export default class FlowNavigation extends Component {
                     renameEntity='Tab'
                     showTabRenameModal={this.state.showTabRenameModal}
                     closeTabRenameModal={this.closeTabRenameModal}
-                    renameTab={this.renameTab}
+                    renameTab={() => {
+                        luckysheet.setSheetName(this.state.renameModalTextInput.current.value)
+                        this.closeTabRenameModal()
+                    }}
                     renameModalTextInput={this.state.renameModalTextInput}
                     // placeHolderTabName={this.state.flowTabNames[this.state.currentFlowTabIndex]}
                 />

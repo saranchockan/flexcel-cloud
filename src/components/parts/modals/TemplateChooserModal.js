@@ -34,9 +34,10 @@ export default class TemplateChooserModal extends Component {
                                                         sheetObject: Object.values(TEMPLATES)[ind],
                                                         order: window.luckysheet.getSheet().order + 1,
                                                         success: null})
+                                                    this.props.closeHotkeyConfigModal()
                                                 }}>
-                                                    <h3>
-                                                        <Badge variant="dark">DEFAULT</Badge> {val}
+                                                    <h3 style={{cursor: 'pointer'}}>
+                                                        {val}
                                                     </h3>
                                                 </ListGroup.Item>
                                             })
@@ -54,22 +55,7 @@ export default class TemplateChooserModal extends Component {
                                     <ListGroup>
                                         <ListGroup.Item>
                                             <h3>
-                                                <Badge variant="dark">Ctrl + K</Badge> : Add AFF Tab
-                                            </h3>
-                                        </ListGroup.Item>
-                                        <ListGroup.Item>
-                                            <h3>
-                                                <Badge variant="dark">Ctrl + J</Badge> : Add NEG Tab
-                                            </h3>
-                                        </ListGroup.Item>
-                                        <ListGroup.Item>
-                                            <h3>
-                                                <Badge variant="dark">Ctrl + I</Badge> : Delete Tab
-                                            </h3>
-                                        </ListGroup.Item>
-                                        <ListGroup.Item>
-                                            <h3>
-                                                <Badge variant="dark">Ctrl + R</Badge> : Rename Tab
+                                                WIP
                                             </h3>
                                         </ListGroup.Item>
                                     </ListGroup>
