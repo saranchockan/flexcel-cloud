@@ -1,4 +1,4 @@
-const API_LINK = 'http://localhost:8080/http://3.231.167.221/storage'
+const API_LINK = 'http://localhost:8080/http://3.239.209.203/storage'
 let accessToken = ''
 let store = ''
 let wait = 'false'
@@ -10,6 +10,7 @@ const DEFAULT_ERR_HANDLER = (reason) => {
 function __internal_fetch(link, headers, params, handleError, callback){
     headers['apiKey'] = '';
     var url = new URL(API_LINK + link)
+    console.log(url.href);
     url.search = new URLSearchParams(params).toString();
     console.log(url.search);
     fetch(url, headers)

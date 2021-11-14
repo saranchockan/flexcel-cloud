@@ -6,7 +6,7 @@ import Main from "./components/main/Main";
 import Flow from './components/screens/Flow';
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
-import RFDDiary from './components/screens/RFDDiary';
+import FileSystem from './components/screens/FileSystem';
 
 import PropTypes from 'prop-types'
 import DropdownBar from './components/parts/Flow/DropdownBar';
@@ -20,8 +20,8 @@ function getView(page, user) {
 			return <Main name={user.name} />
 		case "Flows":
 			return <Flow />
-		case "RFD Diary":
-			return <RFDDiary />
+		case "File System":
+			return <FileSystem />
 	}
 }
 
@@ -47,7 +47,8 @@ class MainPage extends Component {
 				top: 0,
 				left: 0,
 				attributes: {}
-			}
+			},
+			didAccessTokenSet: false
 		}
 
 		this.setSidebarOpen = this.setSidebarOpen.bind(this)
@@ -79,6 +80,9 @@ class MainPage extends Component {
 		} = this.props.auth
 		const setTok = async () => {
 			setAccessToken(await getAccessTokenSilently())
+			this.setState({
+				didAccessTokenSet: true
+			})
 		}
 		setTok()
 	}
@@ -94,7 +98,7 @@ class MainPage extends Component {
 		} = this.props.auth
 
 		//handle logging out if they click the log out button
-		if (isLoading) {
+		if (isLoading && !this.state.didAccessTokenSet) {
 			return <div>Loading...</div>;
 		}
 		if (error) {

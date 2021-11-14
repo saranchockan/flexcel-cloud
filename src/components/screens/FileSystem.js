@@ -6,10 +6,6 @@ export default class RFDDiary extends Component {
         prop: PropTypes
     }
 
-    componentDidMount(){
-        
-    }
-
     render() {
         return (
             <div>
