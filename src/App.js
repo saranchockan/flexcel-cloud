@@ -6,7 +6,7 @@ import Main from "./components/main/Main";
 import Flow from './components/screens/Flow';
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/sidebar/Sidebar";
-import FileSystem from './components/screens/FileSystem';
+import FileManager from './components/screens/FileManager';
 
 import PropTypes from 'prop-types'
 import DropdownBar from './components/parts/Flow/DropdownBar';
@@ -21,7 +21,7 @@ function getView(page, user) {
 		case "Flows":
 			return <Flow />
 		case "File System":
-			return <FileSystem />
+			return <FileManager />
 	}
 }
 

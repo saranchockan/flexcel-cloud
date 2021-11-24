@@ -5,7 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 const PAGES_ICON = {
   'Dashboard' : 'fa-home',
   'Flows' : 'fa-file', 
-  'File System' : 'fa-folder-open'
+  'File Manager' : 'fa-folder-open'
 }
 
 const Sidebar = ({ sidebarOpen, closeSidebar, logOut, setPage, page, openSidebar}) => {
