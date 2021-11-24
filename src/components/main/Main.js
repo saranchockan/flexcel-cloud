@@ -64,7 +64,7 @@ const Main = (props) => {
 				{/* <!-- upcoming tournaments starts here --> */}
 				<p className="font-bold section_title_ut">Upcoming Tournaments</p>
 				<div className="upcoming_tournaments">
-					<table className="upcoming_tou	rnaments_table">
+					<table className="upcoming_tournaments_table">
 						<tr className="upcoming_tournaments_table">
 							<th className="upcoming_tournaments_table_title_name">Name</th>
 							<th className="upcoming_tournaments_table_title_date">Date</th>
