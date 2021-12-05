@@ -1,0 +1,98 @@
+/* ###################### tree ###################### */
+
+.folder-items {
+    padding-left: 20px;
+}
+
+.folder > .btn-group {
+    margin-bottom: 20px;
+}
+
+.folder > .btn-group > .file-system-folder {
+    margin-right: 10px;
+    border: 0;
+}
+
+.file-system-history {
+    border-radius: 0;
+    margin: 5px 0;
+}
+
+.file-system-item {
+    padding: 5px;
+    height: 42px;
+}
+
+.file-system-item > .row {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* .file-system-item .item-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+} */
+
+.file-system-file {
+    border-left: 1;
+    border-right: 1;
+}
+
+.file-system-folder:focus {
+    outline: none;
+}
+
+.file-system-folder {
+    border-left: 0;
+    border-right: 0;
+}
+
+.file-system-file-header {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom-width: 3px;
+    font-weight: bold;
+}
+
+.changing { 
+    transition: all .2s ease-in-out;
+    transform: scale(10);
+}
+
+.edit-item-form-group {
+    margin-bottom: 0;
+}
+
+.edit-item-input {
+    border-radius: 0;
+    height: 100%;
+}
+
+.item-icon-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.item-icon-container > .glyphicon {
+    top: 0px;
+}
+
+.item-icon-container > .preview-img {
+    max-width: 100%;
+    max-height: 20px;
+}
+
+.item-icon-container > .item-icon {
+    background-color: #ddd;
+    color: #777;
+    padding: 4px 3px;
+    border-radius: 6px;
+    width: 65px;
+    text-align: center;
+}

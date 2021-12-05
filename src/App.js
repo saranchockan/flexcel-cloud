@@ -20,7 +20,7 @@ function getView(page, user) {
 			return <Main name={user.name} />
 		case "Flows":
 			return <Flow />
-		case "File System":
+		case "File Manager":
 			return <FileManager />
 	}
 }
